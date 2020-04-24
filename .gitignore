@@ -1,3 +1,14 @@
+local.properties
+build
+classes
+**/build
+.gradle
+**/.gradle
+.idea
+*.iml
+**/*.iml
+*.hprof
+
 # Compiled class file
 *.class
 
