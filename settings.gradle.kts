@@ -35,3 +35,4 @@ rootProject.name = "asoft-kotlin-libs"
 include(":core:email")
 include(":core:test")
 include(":core:io")
+include(":core:klock")
