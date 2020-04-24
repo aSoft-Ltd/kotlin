@@ -1,7 +1,8 @@
-import com.android.build.gradle.LibraryExtension
-import org.gradle.api.JavaVersion
+plugins {
+    id("com.android.library")
+}
 
-fun LibraryExtension.configureAndroid() {
+android {
     compileSdkVersion(28)
     defaultConfig {
         minSdkVersion(1)

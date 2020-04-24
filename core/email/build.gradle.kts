@@ -1,67 +1,35 @@
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
-    id("maven-publish")
-    id("com.jfrog.bintray")
+    `asoft-lib`
 }
 
-android { configureAndroid() }
-
-kotlin {
-    android {
-        compilations.all {
-            kotlinOptions { jvmTarget = "1.8" }
-        }
-        publishLibraryVariants("release")
-    }
-
-    jvm {
-        compilations.all {
-            kotlinOptions { jvmTarget = "1.8" }
+kotlin.sourceSets {
+    val commonMain by getting {
+        dependencies {
+            implementation(kotlin("stdlib-common"))
         }
     }
 
-    js {
-        compilations.all {
-            kotlinOptions {
-                metaInfo = true
-                sourceMap = true
-                moduleKind = "commonjs"
-            }
+    val commonTest by getting {
+        dependencies {
+            implementation(project(":core:test"))
         }
     }
 
-    sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-common"))
-            }
+    val androidMain by getting {
+        dependencies {
+            implementation(kotlin("stdlib"))
         }
+    }
 
-        val commonTest by getting {
-            dependencies {
-                implementation(project(":core:test"))
-            }
+    val jvmMain by getting {
+        dependencies {
+            implementation(kotlin("stdlib"))
         }
+    }
 
-        val androidMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib"))
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib"))
-            }
-        }
-
-        val jsMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-js"))
-            }
+    val jsMain by getting {
+        dependencies {
+            implementation(kotlin("stdlib-js"))
         }
     }
 }
-
-bintray { configureBintray(project) }

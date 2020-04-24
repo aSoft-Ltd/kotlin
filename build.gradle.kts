@@ -6,5 +6,5 @@ allprojects {
         maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
     }
     group = "tz.co.asoft"
-    version = "0.0.0"
+    version = "0.0.1."
 }
