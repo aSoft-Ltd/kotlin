@@ -12,7 +12,7 @@ android {
     sourceSets {
         getByName("main") {
             manifest.srcFile("src/androidMain/AndroidManifest.xml")
-            resources.srcDirs("src/androidMain/resources")
+            res.srcDirs("src/androidMain/resources")
         }
     }
 
