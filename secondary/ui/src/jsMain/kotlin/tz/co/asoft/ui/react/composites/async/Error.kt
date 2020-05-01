@@ -3,8 +3,10 @@ package tz.co.asoft.ui.react.composites.async
 import kotlinx.coroutines.launch
 import kotlinx.css.*
 import react.RBuilder
+import react.RState
 import styled.css
 import styled.styledDiv
+import tz.co.asoft.component.Component
 import tz.co.asoft.components.CState
 import tz.co.asoft.components.ScopedComponent
 import tz.co.asoft.ui.action.Action
@@ -14,7 +16,7 @@ import tz.co.asoft.ui.react.icons.reacticons.mdErrorOutline
 import tz.co.asoft.ui.react.widget.button.primaryButton
 import tz.co.asoft.ui.theme.main
 
-class Error(p: Props) : ScopedComponent<Props, CState>(p) {
+class Error(p: Props) : Component<Props, RState>(p) {
     class Props : ModuleProps() {
         var msg = ""
         var actions = listOf<Action>()

@@ -14,6 +14,10 @@ object versions {
         const val html = "0.7.1"
     }
 
+    object android {
+        const val build_tools = "3.6.0"
+    }
+
     object google {
         const val maps = "17.0.0"
     }

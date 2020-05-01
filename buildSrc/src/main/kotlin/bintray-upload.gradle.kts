@@ -15,7 +15,7 @@ bintray {
     key = props["bintray.key"] as String
     project.addModuleJson()
     publish = true
-    setPublications("kotlinMultiplatform", "metadata", "androidRelease", "jvm", "js")
+    setPublications(*publishing.publications.map { it.name }.toTypedArray())
     pkg = PackageConfig().apply {
         repo = "kotlin"
         name = project.name

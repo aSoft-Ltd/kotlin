@@ -15,7 +15,7 @@ import tz.co.asoft.ui.react.composites.framework.navmenu.NavMenuComponent.Props
 import tz.co.asoft.ui.react.composites.framework.navmenu.NavMenuComponent.State
 
 class NavMenuComponent : RComponent<Props, State>() {
-    companion object Props : ModuleProps() {
+    class Props : ModuleProps() {
         lateinit var module: Module
         var onClick = { _: Module.Section -> }
         lateinit var selectedSection: Module.Section

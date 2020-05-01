@@ -18,7 +18,7 @@ import styled.styledDiv
 import tz.co.asoft.ui.react.icons.reacticons.faSyncAlt
 
 class BadgeUI(p: Props) : RComponent<Props, RState>(p) {
-    object Props : ThemedProps() {
+    class Props : ThemedProps() {
         var badge: Badge? = null
     }
 
@@ -96,7 +96,7 @@ class BadgeUI(p: Props) : RComponent<Props, RState>(p) {
     }
 }
 
-fun RBuilder.badge(b: Badge? = null, handler: RHandler<Props> = {}) = child(BadgeUI::class.js, Props) {
+fun RBuilder.badge(b: Badge? = null, handler: RHandler<Props> = {}) = child(BadgeUI::class.js, Props()) {
     attrs.badge = b
     handler()
 }

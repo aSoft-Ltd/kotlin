@@ -32,8 +32,6 @@ class FrameworkComponent(p: Props) : RComponent<Props, State>(p) {
         var footer = "Footer"
         var title = "Title"
         var onSignOut = {}
-
-        //        var user: User? = null
         var showDashboard = false
         var modules = arrayOf<Module>()
         var pages = arrayOf<Page>()

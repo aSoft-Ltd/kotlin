@@ -20,7 +20,7 @@ import tz.co.asoft.ui.react.tools.onDesktop
 import tz.co.asoft.ui.react.tools.onMobile
 
 class NavPane : RComponent<Props, State>() {
-    companion object Props : ModuleProps() {
+    class Props : ModuleProps() {
         var onMenuItemClicked = { _: Module.Section -> }
         var title = "Nav Pane Title"
         var onCloseDrawer = {}

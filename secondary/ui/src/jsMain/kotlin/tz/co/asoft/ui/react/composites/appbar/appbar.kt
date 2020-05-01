@@ -9,7 +9,7 @@ import kotlinx.css.properties.boxShadow
 import react.*
 
 class AppBar(p: Props) : RComponent<AppBar.Props, AppBar.State>(p) {
-    object Props : ThemedProps()
+    class Props : ThemedProps()
     class State : RState
 
     override fun RBuilder.render(): dynamic = horizontalLayout {
@@ -28,4 +28,4 @@ class AppBar(p: Props) : RComponent<AppBar.Props, AppBar.State>(p) {
     }
 }
 
-fun RBuilder.appBar(handler: RHandler<AppBar.Props>) = child(AppBar::class.js, AppBar.Props, handler)
+fun RBuilder.appBar(handler: RHandler<AppBar.Props>) = child(AppBar::class.js, AppBar.Props(), handler)

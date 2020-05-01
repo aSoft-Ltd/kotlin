@@ -1,4 +1,4 @@
 plugins {
     id("multiplatform-lib")
-    id("bintray-upload")
+    id("bintray-upload-multiplatform")
 }

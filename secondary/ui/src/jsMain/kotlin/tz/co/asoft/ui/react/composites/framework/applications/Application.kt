@@ -27,7 +27,7 @@ import tz.co.asoft.ui.react.tools.onPaper
 import kotlin.browser.document
 
 class Application : ScopedRComponent<Props, State>() {
-    companion object Props : ModuleProps() {
+    class Props : ModuleProps() {
         var onDrawerOpen = {}
         var onLogout = {}
         var title = "Module Name"
@@ -129,7 +129,6 @@ class Application : ScopedRComponent<Props, State>() {
                         }
                     }
                     +props.userName
-//                    +props.user.name
                 }
 
                 styledDiv {
@@ -157,7 +156,6 @@ class Application : ScopedRComponent<Props, State>() {
         it.match.params.apply {
             theme = props.theme
             themes = props.themes
-//            user = props.user
 
             allPerms = getPermissions()
 
