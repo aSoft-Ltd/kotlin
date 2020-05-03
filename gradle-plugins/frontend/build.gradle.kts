@@ -43,11 +43,3 @@ artifacts {
     archives(sourcesJar)
     archives(javadocJar)
 }
-
-tasks.create("publications") {
-    doLast {
-        publishing.publications.forEach {
-            println(it.name)
-        }
-    }
-}

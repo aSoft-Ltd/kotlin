@@ -21,7 +21,7 @@ bintray {
         name = project.name
         userOrg = "asofttz"
         setLicenses("WTFPL")
-        vcsUrl = "https://github.com/andylamax/${project.name}.git"
+        vcsUrl = "https://github.com/aSoft-Ltd/kotlin/tree/master/${project.gitPath}"
         version = VersionConfig().apply {
             name = project.version as String
             vcsTag = name

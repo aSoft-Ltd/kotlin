@@ -15,16 +15,24 @@ bintray {
     key = props["bintray.key"] as String
     project.addModuleJson()
     publish = true
-    setPublications(*publishing.publications.map { it.name }.toTypedArray())
+    setPublications("pluginMaven","${project.name}PluginMarkerMaven")
     pkg = PackageConfig().apply {
         repo = "kotlin"
         name = project.name
         userOrg = "asofttz"
         setLicenses("WTFPL")
-        vcsUrl = "https://github.com/andylamax/${project.name}.git"
+        vcsUrl = "https://github.com/aSoft-Ltd/kotlin/tree/master/${project.gitPath}"
         version = VersionConfig().apply {
             name = project.version as String
             vcsTag = name
+        }
+    }
+}
+
+tasks.create("publications") {
+    doLast {
+        publishing.publications.forEach {
+            println(it.name)
         }
     }
 }
