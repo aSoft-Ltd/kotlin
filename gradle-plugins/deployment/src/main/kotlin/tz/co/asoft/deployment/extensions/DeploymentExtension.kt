@@ -1,12 +1,10 @@
 package tz.co.asoft.deployment.extensions
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Project
 import org.gradle.api.tasks.Exec
 import org.gradle.jvm.tasks.Jar
 import org.jetbrains.kotlin.gradle.frontend.FrontendPlugin
-import org.jetbrains.kotlin.gradle.targets.js.KotlinJsTarget
 import tz.co.asoft.deployment.target.Target
 import tz.co.asoft.deployment.target.TargetDeligate
 import tz.co.asoft.deployment.tasks.EnvironmentJsonFileTask
@@ -22,32 +20,42 @@ open class DeploymentExtension(val project: Project) {
         createTasks(targets)
     }
 
-    private fun createTasks(targets: Array<out Target>) = targets.forEach {
-        project.tasks.create(it.envTaskName, EnvironmentJsonFileTask::class.java, it)
+    private fun createTasks(targets: Array<out Target>) = targets.forEach { target ->
+        project.tasks.create(target.envTaskName, EnvironmentJsonFileTask::class.java, target)
+            .apply {
+                group = "environment"
+            }
         when {
-            project.targetsAndroid -> createTasksForAndroid(it)
-            project.targetsJvm -> createTasksForJvm(it)
-            project.targetsJs -> createTasksForJs(it)
+            project.targetsAndroid -> project.afterEvaluate { createTasksForAndroid(target) }
+            project.targetsJvm -> createTasksForJvm(target)
+            project.targetsJs -> createTasksForJs(target)
         }
     }
 
     private fun createTasksForAndroid(target: Target) {
-        val variants = project.extensions.findByType(AppExtension::class.java)?.applicationVariants
-        val variant = variants?.firstOrNull { it.name == target.name } ?: return
+        val variants =
+            project.extensions.findByType(BaseAppModuleExtension::class.java)?.applicationVariants
+        val variant =
+            variants?.firstOrNull { it.name.toLowerCase() == target.name.toLowerCase() } ?: return
 
         val installRunTaskName = "installRun${target.name.capitalize()}"
 
-        project.tasks.create(installRunTaskName, Exec::class.java) {
-            it.group = "run"
-            it.dependsOn(project.tasks.getByName(target.envTaskName))
-            it.dependsOn("installRun${target.name.capitalize()}")
-            it.commandLine("adb", "shell", "monkey", "-p", variant.applicationId + " 1")
-            it.doLast { println("Launching ${variant.applicationId}") }
+        project.tasks.getByName("assemble${target.name.capitalize()}").apply {
+            group = "assemble"
+            dependsOn(target.envTaskName)
         }
 
-        project.tasks.create("run${target.name.capitalize()}").dependsOn(installRunTaskName)
+        project.tasks.getByName("install${target.name.capitalize()}").apply {
+            group = "install"
+            dependsOn(target.envTaskName)
+        }
 
-        project.tasks.getByName("assemble${target.name.capitalize()}").dependsOn(target.envTaskName)
+        project.tasks.create(installRunTaskName, Exec::class.java).apply {
+            group = "run"
+            dependsOn("install${target.name.capitalize()}")
+            commandLine("adb", "shell", "monkey", "-p", variant.applicationId + " 1")
+            doLast { println("Launching ${variant.applicationId}") }
+        }
     }
 
     private fun createTasksForJvm(target: Target) {
