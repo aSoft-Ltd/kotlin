@@ -12,8 +12,7 @@ open class EnvironmentJsonFileTask @Inject constructor(@Input val target: Target
     @OutputDirectories
     val outputDirs = mutableListOf<File>().apply {
         if (project.targetsAndroid) {
-            val k = target.name
-            add(project.resolveDir("build/intermediates/merged_assets/$k/merge${k.capitalize()}Assets/out"))
+            add(project.resolveDir("build/intermediates/merged_assets/${target.name}/out"))
         }
 
         if (project.targetsJvm) {

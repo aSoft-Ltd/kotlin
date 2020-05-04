@@ -1,7 +1,7 @@
 package tz.co.asoft.logging
 
-import tz.co.asoft.logging.tools.Cause
 import tz.co.asoft.persist.repo.IRepo
+import tz.co.asoft.persist.tools.Cause
 
 expect open class Logger(source: String = "anonymous", repo: IRepo<Log>? = null) {
     protected val source: String

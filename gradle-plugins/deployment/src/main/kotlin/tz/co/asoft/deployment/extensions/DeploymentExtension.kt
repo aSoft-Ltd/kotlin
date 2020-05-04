@@ -52,6 +52,7 @@ open class DeploymentExtension(val project: Project) {
 
         project.tasks.create(installRunTaskName, Exec::class.java).apply {
             group = "run"
+            dependsOn(target.envTaskName)
             dependsOn("install${target.name.capitalize()}")
             commandLine("adb", "shell", "monkey", "-p", variant.applicationId + " 1")
             doLast { println("Launching ${variant.applicationId}") }
@@ -81,7 +82,13 @@ open class DeploymentExtension(val project: Project) {
     }
 
     private fun createTasksForJs(target: Target) {
-        project.plugins.apply(FrontendPlugin::class.java)
+        if (!project.plugins.hasPlugin(FrontendPlugin::class.java)) {
+            project.plugins.apply(FrontendPlugin::class.java)
+        }
+
+        if (!project.plugins.hasPlugin("kotlin-dce-js")) {
+            project.plugins.apply("kotlin-dce-js")
+        }
 
         project.tasks.create("run${target.name.capitalize()}").apply {
             group = "run"
