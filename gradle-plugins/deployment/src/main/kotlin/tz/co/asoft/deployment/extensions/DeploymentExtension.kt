@@ -114,6 +114,7 @@ open class DeploymentExtension(val project: Project) {
                     it.from("build/bundle", "src/jsMain/resources")
                     it.into(deployDir)
                 }
+                println("Copied into ${deployDir.absolutePath}")
             }
         }
     }

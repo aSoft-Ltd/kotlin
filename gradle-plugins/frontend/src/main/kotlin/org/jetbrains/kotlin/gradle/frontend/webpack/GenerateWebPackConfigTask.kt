@@ -179,12 +179,12 @@ open class GenerateWebPackConfigTask : DefaultTask() {
             "module" to mapOf(
                 "rules" to listOf(
                     mapOf(
-                        "test" to "new RegExp('\\.css$')",
+                        "test" to """*/\.css$/*""",
                         "use" to listOf("style-loader", "css-loader")
                     ),
                     mapOf(
-                        "test" to "new RegExp('\\.js$')",
-                        "exclude" to "new RegExp('node_modules')",
+                        "test" to """*/\.js$/*""",
+                        "exclude" to "*/node_modules/*",
                         "use" to mapOf(
                             "loader" to "babel-loader",
                             "options" to mapOf(
@@ -193,11 +193,11 @@ open class GenerateWebPackConfigTask : DefaultTask() {
                         )
                     ),
                     mapOf(
-                        "test" to "new RegExp('\\.(jpe?g|png|gif|svg)$','i')",
+                        "test" to """*/\.(jpe?g|png|gif|svg)$/*i""",
                         "loader" to "file-loader?name=app/images/[name].[ext]"
                     ),
                     mapOf(
-                        "test" to Regex("new RegExp('\\.(woff(2)?|ttf|eot|svg)(\\?v=\\d+\\.\\d+\\.\\d+)?\$')"),
+                        "test" to """*/\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/*""",
                         "use" to listOf(
                             mapOf(
                                 "loader" to "file-loader",
@@ -224,7 +224,12 @@ open class GenerateWebPackConfigTask : DefaultTask() {
         webPackConfigFile.bufferedWriter().use { out ->
             out.appendln("'use strict';")
             out.append("var config = ")
-            out.append(JsonBuilder(json).toPrettyString())
+            val configJson = JsonBuilder(json).toPrettyString()
+                .replace("""/*i"""", "/i")
+                .replace("""/*"""", "/")
+                .replace(""""*/""", "/")
+                .replace("\\\\", "\\")
+            out.append(configJson)
             out.appendln(";")
 
             if (defined.isNotEmpty()) {

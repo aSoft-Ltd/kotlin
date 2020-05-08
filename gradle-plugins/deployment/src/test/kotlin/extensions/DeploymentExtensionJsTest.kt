@@ -74,6 +74,10 @@ class DeploymentExtensionJsTest {
                 }
             }
             
+            npm {
+                webpackDependencies()
+            }
+            
             kotlinFrontend {
                 webpack{
                     contentPath = project.file("src/web")
@@ -145,7 +149,7 @@ class DeploymentExtensionJsTest {
 
     @Test
     fun `has bundleDebug task`() {
-        runner.withArguments(":bundleDebug", "--stacktrace").build().apply {
+        runner.withArguments(":bundleDebug").build().apply {
             println(output)
             assertEquals(TaskOutcome.SUCCESS, task(":bundleDebug")?.outcome)
         }
