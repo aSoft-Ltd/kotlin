@@ -5,6 +5,7 @@ import org.gradle.api.*
 import org.gradle.api.tasks.*
 import org.jetbrains.kotlin.gradle.frontend.config.*
 import org.jetbrains.kotlin.gradle.frontend.rollup.*
+import org.jetbrains.kotlin.gradle.frontend.util.delegateClosureOf
 import org.jetbrains.kotlin.gradle.frontend.webpack.*
 import java.util.*
 
@@ -17,8 +18,8 @@ open class KotlinFrontendExtension(val project: Project) : GroovyObjectSupport()
 
     @Internal
     private val _bundlers = linkedMapOf(
-            "webpack" to WebPackBundler,
-            "rollup" to RollupBundler
+        "webpack" to WebPackBundler,
+        "rollup" to RollupBundler
     )
 
     @Input
@@ -45,18 +46,19 @@ open class KotlinFrontendExtension(val project: Project) : GroovyObjectSupport()
     var nodeJsMirror: String = ""
 
     fun bundles(): List<BundleConfig> = Collections.unmodifiableList(
-            bundleBuilders.map { p ->
-                val (id, builder) = p
+        bundleBuilders.map { p ->
+            val (id, builder) = p
 
-                val config = _bundlers[id]?.createConfig(project) ?: throw GradleException("bundle $id is not supported")
-                for (configurator in defaultBundleConfigurators) {
-                    configurator(config)
-                }
-
-                builder(config)
-
-                config
+            val config = _bundlers[id]?.createConfig(project)
+                ?: throw GradleException("bundle $id is not supported")
+            for (configurator in defaultBundleConfigurators) {
+                configurator(config)
             }
+
+            builder(config)
+
+            config
+        }
     )
 
     @Internal
@@ -98,6 +100,9 @@ open class KotlinFrontendExtension(val project: Project) : GroovyObjectSupport()
         _ext[name] = value
     }
 
+    fun webpack(configure: WebPackExtension.() -> Unit = {}) =
+        bundle("webpack", delegateClosureOf(configure))
+
     @Suppress("unused") // groovy magic method - don't change name/signature
     fun methodMissing(name: String, args: Any?): Any? {
         if (name.endsWith("Bundle") && args is Array<*>) {
@@ -106,7 +111,10 @@ open class KotlinFrontendExtension(val project: Project) : GroovyObjectSupport()
 
             when (arg) {
                 is Closure<*> -> return bundle(bundlerId, arg)
-                is Function1<*, *> -> @Suppress("UNCHECKED_CAST") return bundle<BundleConfig>(bundlerId, arg as Function1<BundleConfig, Unit>)
+                is Function1<*, *> -> @Suppress("UNCHECKED_CAST") return bundle<BundleConfig>(
+                    bundlerId,
+                    arg as Function1<BundleConfig, Unit>
+                )
             }
         }
 
@@ -123,6 +131,10 @@ open class KotlinFrontendExtension(val project: Project) : GroovyObjectSupport()
             }
         }
 
-        throw MissingMethodException(name, KotlinFrontendExtension::class.java, args as? Array<*> ?: arrayOf(args))
+        throw MissingMethodException(
+            name,
+            KotlinFrontendExtension::class.java,
+            args as? Array<*> ?: arrayOf(args)
+        )
     }
 }

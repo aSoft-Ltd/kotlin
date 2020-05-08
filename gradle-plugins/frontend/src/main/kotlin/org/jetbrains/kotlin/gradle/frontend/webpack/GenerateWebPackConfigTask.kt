@@ -54,8 +54,8 @@ open class GenerateWebPackConfigTask : DefaultTask() {
     @get:Input
     val isDceEnabled: Boolean by lazy {
         !project.tasks
-                .withType(KotlinJsDce::class.java)
-                .none { it.isEnabled }
+            .withType(KotlinJsDce::class.java)
+            .none { it.isEnabled }
     }
 
     init {
@@ -72,9 +72,9 @@ open class GenerateWebPackConfigTask : DefaultTask() {
         val resolveRoots = mutableListOf<String>()
 
         val dceOutputFiles = project.tasks
-                .withType(KotlinJsDce::class.java)
-                .filter { it.isEnabled && !it.name.contains("test", ignoreCase = true) }
-                .flatMap { it.outputs.files }
+            .withType(KotlinJsDce::class.java)
+            .filter { it.isEnabled && !it.name.contains("test", ignoreCase = true) }
+            .flatMap { it.outputs.files }
 
         if (dceOutputFiles.isEmpty() || testMode) {
             resolveRoots.add(getContextDir(testMode).toRelativeString(project.buildDir))
@@ -85,17 +85,17 @@ open class GenerateWebPackConfigTask : DefaultTask() {
             while (queue.isNotEmpty()) {
                 val current = queue.removeFirst()
                 val dependencies = current.configurations.findByName("compile")?.allDependencies
-                        ?.filterIsInstance<ProjectDependency>().orEmpty()
-                        .mapNotNull { it.dependencyProject }
+                    ?.filterIsInstance<ProjectDependency>().orEmpty()
+                    .mapNotNull { it.dependencyProject }
 
                 allProjects.addAll(dependencies)
                 queue.addAll(dependencies)
             }
 
             allProjects.flatMap { it.tasks.filterIsInstance<Kotlin2JsCompile>() }
-                    .filter { !it.name.contains("test", ignoreCase = true) }
-                    .map { project.file(it.outputFileBridge()) }
-                    .forEach { resolveRoots.add(it.parentFile.toRelativeString(project.buildDir)) }
+                .filter { !it.name.contains("test", ignoreCase = true) }
+                .map { project.file(it.outputFileBridge()) }
+                .forEach { resolveRoots.add(it.parentFile.toRelativeString(project.buildDir)) }
         } else {
             resolveRoots.addAll(dceOutputFiles.map { it.toRelativeString(project.buildDir) })
             resolveRoots.addAll(dceOutputFiles.map { it.absolutePath })
@@ -105,7 +105,8 @@ open class GenerateWebPackConfigTask : DefaultTask() {
             resolveRoots.add(kotlinOutput(project).absolutePath)
         }
 
-        val sourceSets: SourceSetContainer? = project.convention.findPlugin(JavaPluginConvention::class.java)?.sourceSets
+        val sourceSets: SourceSetContainer? =
+            project.convention.findPlugin(JavaPluginConvention::class.java)?.sourceSets
         val mainSourceSet: SourceSet? = sourceSets?.findByName("main")
         val resources = mainSourceSet?.output?.resourcesDir
 
@@ -117,17 +118,19 @@ open class GenerateWebPackConfigTask : DefaultTask() {
         resolveRoots.add(project.buildDir.resolve("node_modules").absolutePath)
         resolveRoots.add(npm.nodeModulesDir.absolutePath)
         resolveRoots.add(npm.nodeModulesDir.toRelativeString(webPackConfigFile))
-        resolveRoots.add(project.buildDir.resolve("node_modules").toRelativeString(project.buildDir))
+        resolveRoots.add(
+            project.buildDir.resolve("node_modules").toRelativeString(project.buildDir)
+        )
 
         return resolveRoots
     }
 
     fun getContextDir(testMode: Boolean): File {
         val dceOutputs = project.tasks
-                .withType(KotlinJsDce::class.java)
-                .filter { it.isEnabled && !it.name.contains("test", ignoreCase = true) }
-                .map { it.destinationDir }
-                .firstOrNull()
+            .withType(KotlinJsDce::class.java)
+            .filter { it.isEnabled && !it.name.contains("test", ignoreCase = true) }
+            .map { it.destinationDir }
+            .firstOrNull()
 
         return if (dceOutputs == null || testMode) kotlinOutput(project).parentFile.absoluteFile!!
         else dceOutputs.absoluteFile
@@ -141,49 +144,81 @@ open class GenerateWebPackConfigTask : DefaultTask() {
     @TaskAction
     fun generateConfig() {
         val bundle = bundles.singleOrNull()
-                ?: throw GradleException("Only single webpack bundle supported")
+            ?: throw GradleException("Only single webpack bundle supported")
 
         val resolveRoots = getModuleResolveRoots(false)
 
-        val sourceSets: SourceSetContainer? = project.convention.findPlugin(JavaPluginConvention::class.java)?.sourceSets
+        val sourceSets: SourceSetContainer? =
+            project.convention.findPlugin(JavaPluginConvention::class.java)?.sourceSets
         val mainSourceSet: SourceSet? = sourceSets?.findByName("main")
         val resources = mainSourceSet?.output?.resourcesDir
 
         val contentBase = listOf(
-                bundle.contentPath?.absolutePath,
-                file("src/jsMain/resources")?.absolutePath,
-                file("src/main/resources")?.absolutePath,
-                resources?.absolutePath
+            bundle.contentPath?.absolutePath,
+            file("src/jsMain/resources")?.absolutePath,
+            file("src/main/resources")?.absolutePath,
+            resources?.absolutePath
         ).mapNotNull { it }
 
         val json = linkedMapOf(
-                "mode" to bundle.mode,
-                "context" to getContextDir(false).absolutePath,
-                "entry" to mapOf(
-                        bundle.bundleName to kotlinOutput(project).nameWithoutExtension.let { "./$it" }
-                ),
-                "output" to mapOf(
-                        "path" to bundleDirectory.absolutePath,
-                        "filename" to "[name].bundle.js",
-                        "chunkFilename" to "[id].bundle.js",
-                        "publicPath" to bundle.publicPath
-                ),
-                "devServer" to mapOf(
-                        "port" to bundle.port,
-                        "contentBase" to contentBase
-                ),
-                "module" to mapOf(
-                        "rules" to emptyList<Any>()
-                ),
-                "resolve" to mapOf(
-                        "modules" to resolveRoots
-                ),
-                "resolveLoader" to mapOf(
-                        "modules" to listOf(npm.nodeModulesDir.absolutePath),
-                        "extensions" to listOf(".js", ".json"),
-                        "mainFields" to listOf("loader", "main")
-                ),
-                "plugins" to listOf<Any>()
+            "mode" to bundle.mode,
+            "context" to getContextDir(false).absolutePath,
+            "entry" to mapOf(
+                bundle.bundleName to kotlinOutput(project).nameWithoutExtension.let { "./$it" }
+            ),
+            "output" to mapOf(
+                "path" to bundleDirectory.absolutePath,
+                "filename" to "[name].bundle.js",
+                "chunkFilename" to "[id].bundle.js",
+                "publicPath" to bundle.publicPath
+            ),
+            "devServer" to mapOf(
+                "port" to bundle.port,
+                "contentBase" to contentBase
+            ),
+            "module" to mapOf(
+                "rules" to listOf(
+                    mapOf(
+                        "test" to "new RegExp('\\.css$')",
+                        "use" to listOf("style-loader", "css-loader")
+                    ),
+                    mapOf(
+                        "test" to "new RegExp('\\.js$')",
+                        "exclude" to "new RegExp('node_modules')",
+                        "use" to mapOf(
+                            "loader" to "babel-loader",
+                            "options" to mapOf(
+                                "presets" to listOf("@babel/preset-env", "@babel/preset-react")
+                            )
+                        )
+                    ),
+                    mapOf(
+                        "test" to "new RegExp('\\.(jpe?g|png|gif|svg)$','i')",
+                        "loader" to "file-loader?name=app/images/[name].[ext]"
+                    ),
+                    mapOf(
+                        "test" to Regex("new RegExp('\\.(woff(2)?|ttf|eot|svg)(\\?v=\\d+\\.\\d+\\.\\d+)?\$')"),
+                        "use" to listOf(
+                            mapOf(
+                                "loader" to "file-loader",
+                                "options" to mapOf(
+                                    "name" to "[name].[ext]",
+                                    "outputPath" to "fonts/"
+                                )
+                            )
+                        )
+                    )
+                )
+            ),
+            "resolve" to mapOf(
+                "modules" to resolveRoots
+            ),
+            "resolveLoader" to mapOf(
+                "modules" to listOf(npm.nodeModulesDir.absolutePath),
+                "extensions" to listOf(".js", ".json"),
+                "mainFields" to listOf("loader", "main")
+            ),
+            "plugins" to listOf<Any>()
         )
 
         webPackConfigFile.bufferedWriter().use { out ->
@@ -219,7 +254,8 @@ open class GenerateWebPackConfigTask : DefaultTask() {
     private fun Kotlin2JsCompile.outputFileBridge(): File {
         kotlinOptions.outputFile?.let { return project.file(it) }
 
-        outputFile.javaClass.getMethod("getOutputFile")?.let { return project.file(it.invoke(outputFile)) }
+        outputFile.javaClass.getMethod("getOutputFile")
+            ?.let { return project.file(it.invoke(outputFile)) }
 
         throw IllegalStateException("Unable to locate kotlin2js output file")
     }
@@ -229,10 +265,14 @@ open class GenerateWebPackConfigTask : DefaultTask() {
             return when (dir) {
                 is String -> File(dir).let { if (it.isAbsolute) it else project.buildDir.resolve(it) }
                 is File -> dir
-                is Function0<*> -> handleFile(project, dir()
-                        ?: throw IllegalArgumentException("function for webPackConfig.bundleDirectory shouldn't return null"))
-                is Closure<*> -> handleFile(project, dir.call()
-                        ?: throw IllegalArgumentException("closure for webPackConfig.bundleDirectory shouldn't return null"))
+                is Function0<*> -> handleFile(
+                    project, dir()
+                        ?: throw IllegalArgumentException("function for webPackConfig.bundleDirectory shouldn't return null")
+                )
+                is Closure<*> -> handleFile(
+                    project, dir.call()
+                        ?: throw IllegalArgumentException("closure for webPackConfig.bundleDirectory shouldn't return null")
+                )
                 else -> project.file(dir)
             }
         }

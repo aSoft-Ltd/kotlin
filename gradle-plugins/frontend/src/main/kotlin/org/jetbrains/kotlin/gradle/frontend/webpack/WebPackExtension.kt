@@ -12,12 +12,12 @@ open class WebPackExtension(project: Project) : BundleConfig {
         get() = "webpack"
 
     @Input
-    override var bundleName: String = project.name
+    override var bundleName: String = "main"
 
     @Input
     override var sourceMapEnabled: Boolean = project.frontendExtension.sourceMaps
 
-    @InputFile
+    @InputDirectory
     @Optional
     var contentPath: File? = null
 
@@ -25,7 +25,7 @@ open class WebPackExtension(project: Project) : BundleConfig {
     var publicPath: String = "/"
 
     @Input
-    var host: String = "localhost"
+    var host: String = "0.0.0.0"
 
     @Input
     var port: Int = 8088

@@ -3,27 +3,27 @@ package tz.co.asoft.logging
 import tz.co.asoft.klock.DateTime
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import tz.co.asoft.klock.asDateTime
+import tz.co.asoft.klock.asFormatedDate
 import tz.co.asoft.persist.model.Entity
 
 @Serializable
 open class Log(
-        var level: String = Level.DEBUG.name,
-        var msg: String = "",
-        var source: String = "anonymous"
+    var level: String = Level.DEBUG.name,
+    var msg: String = "",
+    var source: String = "anonymous"
 ) : Entity {
     override var uid = ""
 
     var time = DateTime.nowUnixLong()
 
-    @Transient
-    private val logger
-        get() = Logger(source)
+    private val logger get() = Logger(source)
 
     enum class Level {
         ERROR, WARNING, DEBUG, FAILURE, INFO
     }
 
-    override fun toString() = DateTime.fromUnix(time).local.format("yyyy-MM-dd HH:mm:ss.SSS") + " ${levelString()} $source - $msg"
+    override fun toString() = "${time.asFormatedDate()} ${levelString()} $source - $msg"
 
     private fun levelString() = when (level) {
         Level.ERROR.name -> "[ ERROR ]"

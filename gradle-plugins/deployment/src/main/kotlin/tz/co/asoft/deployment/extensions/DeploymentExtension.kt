@@ -100,18 +100,21 @@ open class DeploymentExtension(val project: Project) {
             group = "bundle"
             dependsOn(project.tasks.getByName(target.envTaskName))
             finalizedBy(project.tasks.getByName("bundle"))
-            doLast {
-                val deployDir = project.resolveDir("build/deployment/${target.name}")
-                project.copy {
-                    it.from("build/bundle", "src/jsMain/resources", "build/resources/main")
-                    it.into(deployDir)
-                }
-            }
         }
 
         project.tasks.create("deploy${target.name.capitalize()}").apply {
             group = "deployment"
             dependsOn(bundleTask)
+            doLast {
+                val deployDir = project.resolveDir("build/deployment/${target.name}")
+                val resources = project.kotlinExt?.sourceSets?.findByName("jsMain")?.resources
+                val resDirs = resources?.sourceDirectories?.filterNotNull() ?: listOf()
+                project.copy {
+                    resDirs.forEach { dir -> it.from(dir) }
+                    it.from("build/bundle", "src/jsMain/resources")
+                    it.into(deployDir)
+                }
+            }
         }
     }
 }

@@ -18,9 +18,11 @@ open class NpmExtension(val project: Project) {
     val developmentDependencies: MutableList<Dependency> = ArrayList()
 
     @InputFile
-    var nodeModulesDir: File = project.file(project.rootProject.buildDir.absolutePath + File.separator + "node_modules").apply {
-        mkdirsOrFail()
-    }
+    var nodeModulesDir: File =
+        project.file(project.rootProject.buildDir.absolutePath + File.separator + "node_modules")
+            .apply {
+                mkdirsOrFail()
+            }
 
     @JvmOverloads
     fun dependency(name: String, version: String = "*") {
@@ -34,5 +36,18 @@ open class NpmExtension(val project: Project) {
     @JvmOverloads
     fun devDependency(name: String, version: String = "*") {
         developmentDependencies.add(Dependency(name, version, Dependency.DevelopmentScope))
+    }
+
+    fun webpackDependencies() {
+        devDependency("file-loader")
+        devDependency("style-loader")
+        devDependency("css-loader")
+        devDependency("less")
+        devDependency("less-loader")
+        devDependency("babel-loader", "8")
+
+        devDependency("@babel/core")
+        devDependency("@babel/preset-env")
+        devDependency("@babel/preset-react")
     }
 }

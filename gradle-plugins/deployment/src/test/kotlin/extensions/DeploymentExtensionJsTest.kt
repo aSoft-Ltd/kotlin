@@ -32,11 +32,29 @@ class DeploymentExtensionJsTest {
         """.trimIndent()
         )
 
+        projectDir.root.resolveFile("src/jsMain/kotlin/index.kt").makeParentsAndWriteText(
+            """
+            fun main() {
+                println("This works")
+            }
+        """.trimIndent()
+        )
+
+        projectDir.root.resolveFile("src/web/index.html").makeParentsAndWriteText(
+            """
+            <head><title>This Works</title></head>
+            <body>
+                This Works
+            </body>
+        """.trimIndent()
+        )
+
         projectDir.root.resolveFile("build.gradle.kts").makeParentsAndWriteText(
             """
             plugins{
                 kotlin("multiplatform")
                 id("tz.co.asoft.deployment")
+                id("tz.co.asoft.frontend")
             }
             
             repositories {
@@ -53,6 +71,12 @@ class DeploymentExtensionJsTest {
                             implementation(kotlin("stdlib-js"))
                         }
                     }
+                }
+            }
+            
+            kotlinFrontend {
+                webpack{
+                    contentPath = project.file("src/web")
                 }
             }
             
@@ -132,6 +156,14 @@ class DeploymentExtensionJsTest {
         runner.withArguments(":bundleStaging", "--stacktrace").build().apply {
             println(output)
             assertEquals(TaskOutcome.SUCCESS, task(":bundleStaging")?.outcome)
+        }
+    }
+
+    @Test
+    fun `has run task`() {
+        runner.withArguments(":runDebug").build().apply {
+            println(output)
+            assertEquals(TaskOutcome.SUCCESS, task(":runDebug")?.outcome)
         }
     }
 
