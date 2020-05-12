@@ -2,6 +2,9 @@ package tz.co.asoft.auth.usecase.registeruser
 
 import tz.co.asoft.auth.User
 import tz.co.asoft.auth.UserAccount
+import tz.co.asoft.auth.exceptions.EmailExistException
+import tz.co.asoft.auth.exceptions.PhoneExistException
+import tz.co.asoft.auth.exceptions.UserAccountExistException
 import tz.co.asoft.auth.repo.IUsersRepo
 import tz.co.asoft.auth.tools.hex.hex
 import tz.co.asoft.auth.tools.name.asName
@@ -12,7 +15,10 @@ import tz.co.asoft.persist.result.catching
 import tz.co.asoft.persist.tools.Cause
 import tz.co.asoft.phone.Phone
 
-open class RegisterUserUseCase(private val usersRepo: IUsersRepo, private val accountsRepo: IRepo<UserAccount>) : IRegisterUserUseCase {
+open class RegisterUserUseCase(
+    private val usersRepo: IUsersRepo,
+    private val accountsRepo: IRepo<UserAccount>
+) : IRegisterUserUseCase {
 
     fun User.validated() = User().also {
         it.name = name.asName().formated()
@@ -42,15 +48,14 @@ open class RegisterUserUseCase(private val usersRepo: IUsersRepo, private val ac
             name = u.name
             permits = u.permits
         }
+        if (accountsRepo.load(account.uid) != null) {
+            throw UserAccountExistException(account)
+        }
         val uAccount = accountsRepo.create(account)
         u.accounts.add(uAccount)
         u.password = SHA256.digest((u.password ?: "123456").encodeToByteArray()).hex
-        if (usersRepo.userWithEmailExists(u.emails)) throw emailExists()
-        if (usersRepo.userWithPhoneExists(u.phones)) throw phoneExists()
+        if (usersRepo.userWithEmailExists(u.emails)) throw EmailExistException(Email(u.emails.first()))
+        if (usersRepo.userWithPhoneExists(u.phones)) throw PhoneExistException(Phone(u.phones.first()))
         usersRepo.create(u)
     }
-
-    private fun emailExists() = Cause("User with same email already exists")
-
-    private fun phoneExists() = Cause("User with same phone already exists")
 }

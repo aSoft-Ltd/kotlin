@@ -10,6 +10,7 @@ import tz.co.asoft.components.CProps
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 
+@Deprecated("Do not use this class any more")
 abstract class ScopedRComponent<P : RProps, S : RState> : RComponent<P, S>, CoroutineScope {
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -39,6 +40,7 @@ abstract class ScopedRComponent<P : RProps, S : RState> : RComponent<P, S>, Coro
     }
 }
 
+@Deprecated("Do not use this class any more")
 abstract class ObservingRComponent<T, P : RProps, S : RState> : ScopedRComponent<P, S> {
 
     constructor() : super() {
@@ -54,7 +56,9 @@ abstract class ObservingRComponent<T, P : RProps, S : RState> : ScopedRComponent
     }
 }
 
-abstract class ObservingComponent<T, P : RProps, S : RState> : ObservingRComponent<MutableList<T>, P, S> {
+@Deprecated("Do not use this class any more")
+abstract class ObservingComponent<T, P : RProps, S : RState> :
+    ObservingRComponent<MutableList<T>, P, S> {
     constructor() : super() {
         state = jsObject { init() }
     }
@@ -65,9 +69,9 @@ abstract class ObservingComponent<T, P : RProps, S : RState> : ObservingRCompone
 }
 
 inline fun <P : CProps, reified T : Component<P, *>> RBuilder.child(
-        clazz: KClass<T>,
-        props: P? = null,
-        noinline handler: RHandler<P>
+    clazz: KClass<T>,
+    props: P? = null,
+    noinline handler: RHandler<P>
 ): ReactElement {
     val p: P = props ?: try {
         var newProps = T::class.js.asDynamic().Props.unsafeCast<P>()

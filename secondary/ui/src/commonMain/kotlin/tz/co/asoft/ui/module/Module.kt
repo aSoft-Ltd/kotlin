@@ -29,6 +29,6 @@ abstract class Module {
         open val isMenu: Boolean = true
         abstract val route: String
         abstract val component: Any
-        var show = { true }
+        open var show: suspend () -> Boolean = { true }
     }
 }

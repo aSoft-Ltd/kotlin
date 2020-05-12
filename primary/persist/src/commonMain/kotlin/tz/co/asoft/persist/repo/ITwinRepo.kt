@@ -42,7 +42,7 @@ interface ITwinRepo<T : Entity> : IRepo<T> {
         }
     }
 
-    override fun loadFlowing(ids: List<Any>) = flow {
+    override fun loadFlowing(ids: Collection<Any>) = flow {
         emit(localDao.load(ids))
         emit(remoteDao.load(ids))
     }

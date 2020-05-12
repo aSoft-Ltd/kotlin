@@ -7,7 +7,7 @@ open class AsyncDao<T : Any>(vararg individualDaos: IDao<out T>) : IDao<T> {
 
     private val daos: List<IDao<T>> = individualDaos.map { it as IDao<T> }
 
-    override suspend fun create(list: List<T>): List<T> = coroutineScope {
+    override suspend fun create(list: Collection<T>): List<T> = coroutineScope {
         daos.map { async { it.create(list) } }.mapNotNull { it.await() }.flatten()
     }
 
@@ -15,7 +15,7 @@ open class AsyncDao<T : Any>(vararg individualDaos: IDao<out T>) : IDao<T> {
         daos.map { async { it.create(t) } }.mapNotNull { it.await() }.first()
     }
 
-    override suspend fun edit(list: List<T>): List<T> = coroutineScope {
+    override suspend fun edit(list: Collection<T>): List<T> = coroutineScope {
         daos.map { async { it.edit(list) } }.mapNotNull { it.await() }.flatten()
     }
 
@@ -23,7 +23,7 @@ open class AsyncDao<T : Any>(vararg individualDaos: IDao<out T>) : IDao<T> {
         daos.map { async { it.edit(t) } }.mapNotNull { it.await() }.first()
     }
 
-    override suspend fun delete(list: List<T>): List<T> = coroutineScope {
+    override suspend fun delete(list: Collection<T>): List<T> = coroutineScope {
         daos.map { async { it.delete(list) } }.mapNotNull { it.await() }.flatten()
     }
 
@@ -31,7 +31,7 @@ open class AsyncDao<T : Any>(vararg individualDaos: IDao<out T>) : IDao<T> {
         daos.map { async { it.delete(t) } }.mapNotNull { it.await() }.first()
     }
 
-    override suspend fun wipe(list: List<T>): List<T> = coroutineScope {
+    override suspend fun wipe(list: Collection<T>): List<T> = coroutineScope {
         daos.map { async { it.wipe(list) } }.mapNotNull { it.await() }.flatten()
     }
 
@@ -39,7 +39,7 @@ open class AsyncDao<T : Any>(vararg individualDaos: IDao<out T>) : IDao<T> {
         daos.map { async { it.wipe(t) } }.mapNotNull { it.await() }.first()
     }
 
-    override suspend fun load(ids: List<Any>): List<T> = coroutineScope {
+    override suspend fun load(ids: Collection<Any>): List<T> = coroutineScope {
         daos.map { async { it.load(ids) } }.mapNotNull { it.await() }.flatten()
     }
 

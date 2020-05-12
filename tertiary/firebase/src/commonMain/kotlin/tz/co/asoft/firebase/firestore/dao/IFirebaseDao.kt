@@ -31,37 +31,37 @@ interface IFirebaseDao<T : Entity> : IDao<T> {
 
     fun docRef(id: String) = collection.doc(id)
 
-    override suspend fun create(list: List<T>): List<T> = batch.run {
+    override suspend fun create(list: Collection<T>): List<T> = batch.run {
         list.forEach {
             val doc = if (it.uid.isNotBlank()) collection.doc(it.uid) else collection.doc()
             put(doc, it.apply { uid = doc.id }, serializer)
         }
         submit()
-        list
+        list.toList()
     }
 
     override suspend fun create(t: T): T = create(listOf(t)).first()
 
-    override suspend fun edit(list: List<T>): List<T> = batch.run {
+    override suspend fun edit(list: Collection<T>): List<T> = batch.run {
         list.forEach { put(collection.doc(it.uid), it, serializer) }
         submit()
-        list
+        list.toList()
     }
 
     override suspend fun edit(t: T): T = edit(listOf(t)).first()
 
-    override suspend fun wipe(list: List<T>): List<T> = batch.run {
+    override suspend fun wipe(list: Collection<T>): List<T> = batch.run {
         list.forEach { delete(docRef(it.uid)) }
         submit()
-        return list
+        return list.toList()
     }
 
     override suspend fun delete(t: T) = wipe(t)
 
     override suspend fun wipe(t: T): T = wipe(listOf(t)).first()
 
-    override suspend fun load(ids: List<Any>): List<T> = coroutineScope {
-        val users = ids.map { async { docRef(it.toString()).fetch().toObject(serializer) } }
+    override suspend fun load(ids: Collection<Any>): List<T> = coroutineScope {
+        val users = ids.toSet().map { async { docRef(it.toString()).fetch().toObject(serializer) } }
         users.mapNotNull { it.await() }
     }
 

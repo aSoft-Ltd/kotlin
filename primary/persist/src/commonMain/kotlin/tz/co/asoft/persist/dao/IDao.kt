@@ -7,14 +7,14 @@ import tz.co.asoft.persist.result.catching
 
 interface IDao<T : Any> {
 
-    suspend fun create(list: List<T>): List<T> = coroutineScope {
+    suspend fun create(list: Collection<T>): List<T> = coroutineScope {
         list.map { async { create(it) } }.mapNotNull { it.await() }
     }
 
     @Deprecated("Use createFlowing instead")
-    suspend fun createCatching(list: List<T>) = catching { create(list) }
+    suspend fun createCatching(list: Collection<T>) = catching { create(list) }
 
-    fun createFlowing(list: List<T>) = flow { emit(create(list)) }
+    fun createFlowing(list: Collection<T>) = flow { emit(create(list)) }
 
     suspend fun create(t: T): T
 
@@ -23,14 +23,14 @@ interface IDao<T : Any> {
 
     fun createFlowing(t: T) = flow { emit(create(t)) }
 
-    suspend fun edit(list: List<T>): List<T> = coroutineScope {
+    suspend fun edit(list: Collection<T>): List<T> = coroutineScope {
         list.map { async { edit(it) } }.mapNotNull { it.await() }
     }
 
     @Deprecated("Use editFlowing")
-    suspend fun editCatching(list: List<T>) = catching { edit(list) }
+    suspend fun editCatching(list: Collection<T>) = catching { edit(list) }
 
-    fun editFlowing(list: List<T>) = flow { emit(edit(list)) }
+    fun editFlowing(list: Collection<T>) = flow { emit(edit(list)) }
 
     suspend fun edit(t: T): T
 
@@ -39,14 +39,14 @@ interface IDao<T : Any> {
 
     fun editFlowing(t: T) = flow { emit(edit(t)) }
 
-    suspend fun delete(list: List<T>): List<T> = coroutineScope {
+    suspend fun delete(list: Collection<T>): List<T> = coroutineScope {
         list.map { async { delete(it) } }.mapNotNull { it.await() }
     }
 
     @Deprecated("use deleteFlowing")
-    suspend fun deleteCatching(list: List<T>) = catching { delete(list) }
+    suspend fun deleteCatching(list: Collection<T>) = catching { delete(list) }
 
-    fun deleteFlowing(list: List<T>) = flow { emit(delete(list)) }
+    fun deleteFlowing(list: Collection<T>) = flow { emit(delete(list)) }
 
     suspend fun delete(t: T): T
 
@@ -55,14 +55,14 @@ interface IDao<T : Any> {
 
     fun deleteFlowing(t: T) = flow { emit(delete(t)) }
 
-    suspend fun wipe(list: List<T>): List<T> = coroutineScope {
+    suspend fun wipe(list: Collection<T>): List<T> = coroutineScope {
         list.map { async { wipe(it) } }.mapNotNull { it.await() }
     }
 
     @Deprecated("use wipeFlowing")
-    suspend fun wipeCatching(list: List<T>) = catching { wipe(list) }
+    suspend fun wipeCatching(list: Collection<T>) = catching { wipe(list) }
 
-    fun wipeFlowing(list: List<T>) = flow { emit(wipe(list)) }
+    fun wipeFlowing(list: Collection<T>) = flow { emit(wipe(list)) }
 
     suspend fun wipe(t: T): T
 
@@ -71,14 +71,14 @@ interface IDao<T : Any> {
 
     fun wipeFlowing(t: T) = flow { emit(wipe(t)) }
 
-    suspend fun load(ids: List<Any>): List<T> = coroutineScope {
-        ids.map { async { load(it.toString()) } }.mapNotNull { it.await() }
+    suspend fun load(ids: Collection<Any>): List<T> = coroutineScope {
+        ids.toSet().map { async { load(it.toString()) } }.mapNotNull { it.await() }
     }
 
     @Deprecated(" use loadFlowing")
-    suspend fun loadCatching(ids: List<Any>) = catching { load(ids) }
+    suspend fun loadCatching(ids: Collection<Any>) = catching { load(ids) }
 
-    fun loadFlowing(ids: List<Any>) = flow { emit(load(ids)) }
+    fun loadFlowing(ids: Collection<Any>) = flow { emit(load(ids)) }
 
     suspend fun load(id: Number): T? = load(id.toString())
 

@@ -20,7 +20,7 @@ class DaoTest {
 
     class TheDao : Cache<Fruit>() {
         val q = 9
-        override suspend fun create(list: List<Fruit>): List<Fruit> {
+        override suspend fun create(list: Collection<Fruit>): List<Fruit> {
             println("Adding Mango")
             return super.create(list)
         }

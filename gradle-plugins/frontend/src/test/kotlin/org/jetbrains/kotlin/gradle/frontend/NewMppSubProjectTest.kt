@@ -268,6 +268,7 @@ kotlinFrontend {
     npm {
 //        dependency("is-number","7.0.0")
 //        devDependency("karma")
+          webpackDependencies()
     }
 
     sourceMaps = false

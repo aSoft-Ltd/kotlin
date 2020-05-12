@@ -30,11 +30,8 @@ open class GeneratePackagesJsonTask : DefaultTask() {
     val unpackResults: List<File>
         get() = project.tasks.filterIsInstance<UnpackGradleDependenciesTask>().map { it.resultFile }
 
-    @InputDirectory
-    @Optional
-    val configPartsDir = project.projectDir.resolve("package.json.d").apply {
-        mkdirsOrFail()
-    }
+    val configPartsDir: File?
+        get() = project.projectDir.resolve("package.json.d")
 
     //    @get:Input
     private val npm = project.extensions.getByType(NpmExtension::class.java)
@@ -57,8 +54,11 @@ open class GeneratePackagesJsonTask : DefaultTask() {
     @get:Input
     val moduleNames: List<String> by lazy {
         project.tasks.withType(KotlinJsCompile::class.java)
-                .filter { !it.name.contains("test", ignoreCase = true) }
-                .mapNotNull { it.kotlinOptions.outputFile?.substringAfterLast('/')?.substringAfterLast('\\')?.removeSuffix(".js") }
+            .filter { !it.name.contains("test", ignoreCase = true) }
+            .mapNotNull {
+                it.kotlinOptions.outputFile?.substringAfterLast('/')?.substringAfterLast('\\')
+                    ?.removeSuffix(".js")
+            }
     }
 
     //    @OutputFile
@@ -91,12 +91,13 @@ open class GeneratePackagesJsonTask : DefaultTask() {
         }
 
     init {
-        if (configPartsDir.exists()) {
+        if (configPartsDir?.exists()==true) {
             (inputs as TaskInputs).dir(configPartsDir)
         }
-        val packgJson = project.convention.findPlugin(JavaPluginConvention::class.java)?.sourceSets?.let { sourceSets ->
-            sourceSets.findByName("main")?.output?.resourcesDir?.resolve("package.json")
-        }
+        val packgJson =
+            project.convention.findPlugin(JavaPluginConvention::class.java)?.sourceSets?.let { sourceSets ->
+                sourceSets.findByName("main")?.output?.resourcesDir?.resolve("package.json")
+            }
         buildPackageJsonFile = if (packgJson?.isSame(packageJsonFile) == true) {
             packageJsonFile
         } else packgJson
@@ -117,13 +118,21 @@ open class GeneratePackagesJsonTask : DefaultTask() {
     fun generate() {
         logger.info("Configuring npm")
 
-        val dependencies = npm.dependencies + (project.tasks.filterIsInstance<UnpackGradleDependenciesTask>().map { task ->
-            task.resultNames?.map { Dependency(it.name, it.semver, Dependency.RuntimeScope) }
-                    ?: task.resultFile.readLinesOrEmpty()
+        val dependencies =
+            npm.dependencies + (project.tasks.filterIsInstance<UnpackGradleDependenciesTask>()
+                .map { task ->
+                    task.resultNames?.map {
+                        Dependency(
+                            it.name,
+                            it.semver,
+                            Dependency.RuntimeScope
+                        )
+                    }
+                        ?: task.resultFile.readLinesOrEmpty()
                             .map { it.split("/", limit = 4).map(String::trim) }
                             .filter { it.size == 4 }
                             .map { Dependency(it[0], it[2], Dependency.RuntimeScope) }
-        }).flatten() + toolsDependencies.filter { it.scope == Dependency.RuntimeScope }
+                }).flatten() + toolsDependencies.filter { it.scope == Dependency.RuntimeScope }
 
         val devDependencies = mutableListOf(*npm.developmentDependencies.toTypedArray())
 
@@ -132,24 +141,28 @@ open class GeneratePackagesJsonTask : DefaultTask() {
         })
 
         if (logger.isDebugEnabled) {
-            logger.debug(dependencies.joinToString(prefix = "Dependencies:\n", separator = "\n") { "${it.name}: ${it.versionOrUri}" })
+            logger.debug(
+                dependencies.joinToString(
+                    prefix = "Dependencies:\n",
+                    separator = "\n"
+                ) { "${it.name}: ${it.versionOrUri}" })
         }
 
         val packagesJson: Map<*, *> = mapOf(
-                "name" to (moduleNames.singleOrNull() ?: project.name ?: "noname"),
-                "version" to (toSemver(project.version.toString())),
-                "description" to "simple description",
-                "main" to (moduleNames.singleOrNull()),
-                "dependencies" to dependencies.associateBy({ it.name }, { it.versionOrUri }),
-                "devDependencies" to devDependencies.associateBy({ it.name }, { it.versionOrUri })
+            "name" to (moduleNames.singleOrNull() ?: project.name ?: "noname"),
+            "version" to (toSemver(project.version.toString())),
+            "description" to "simple description",
+            "main" to (moduleNames.singleOrNull()),
+            "dependencies" to dependencies.associateBy({ it.name }, { it.versionOrUri }),
+            "devDependencies" to devDependencies.associateBy({ it.name }, { it.versionOrUri })
         )
 
         val number = "^\\d+".toRegex()
-        val allIncluded = configPartsDir.listFiles()
-                .orEmpty()
-                .filter { it.isFile && it.canRead() }
-                .sortedBy { number.find(it.nameWithoutExtension)?.value?.toInt() ?: 0 }
-                .map { LinkedHashMap(JsonSlurper().parse(it) as Map<*, *>) }
+        val allIncluded = configPartsDir?.listFiles()
+            .orEmpty()
+            .filter { it.isFile && it.canRead() }
+            .sortedBy { number.find(it.nameWithoutExtension)?.value?.toInt() ?: 0 }
+            .map { LinkedHashMap(JsonSlurper().parse(it) as Map<*, *>) }
 
         val resultJson = allIncluded.fold(packagesJson, ::mergeMaps)
         listOf(packageJsonFile, buildPackageJsonFile, globalPackageJsonFile).mapNotNull {
@@ -157,11 +170,13 @@ open class GeneratePackagesJsonTask : DefaultTask() {
         }.toSet().forEach {
             File(it).writeText(JsonBuilder(resultJson).toPrettyString())
         }
-        npmrcFile.writeText("""
+        npmrcFile.writeText(
+            """
         progress=false
         package-lock=false
         # cache-min=3600
-        """.trimIndent())
+        """.trimIndent()
+        )
 
         npmrcFile.resolveSibling("package-lock.json").delete()
     }

@@ -1,15 +1,14 @@
 package tz.co.asoft.ui.react.composites.framework.applications
 
-import tz.co.asoft.ui.theme.main
-import tz.co.asoft.ui.react.composites.framework.applications.Application.Props
-import tz.co.asoft.ui.react.composites.framework.applications.Application.State
 import kotlinx.css.*
 import kotlinx.css.properties.s
 import kotlinx.css.properties.transition
 import kotlinx.html.id
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.HTMLDivElement
-import react.*
+import react.RBuilder
+import react.RState
+import react.ReactElement
 import react.router.dom.RouteResultHistory
 import react.router.dom.RouteResultProps
 import react.router.dom.route
@@ -17,16 +16,18 @@ import styled.css
 import styled.styledDiv
 import styled.styledImg
 import styled.styledSection
+import tz.co.asoft.component.Component
 import tz.co.asoft.ui.module.Module
 import tz.co.asoft.ui.module.ModuleProps
-import tz.co.asoft.ui.module.ScopedRComponent
+import tz.co.asoft.ui.react.composites.framework.applications.Application.Props
 import tz.co.asoft.ui.react.icons.reacticons.faBars
 import tz.co.asoft.ui.react.tools.onDesktop
 import tz.co.asoft.ui.react.tools.onMobile
 import tz.co.asoft.ui.react.tools.onPaper
+import tz.co.asoft.ui.theme.main
 import kotlin.browser.document
 
-class Application : ScopedRComponent<Props, State>() {
+class Application : Component<Props, RState>() {
     class Props : ModuleProps() {
         var onDrawerOpen = {}
         var onLogout = {}
@@ -35,8 +36,6 @@ class Application : ScopedRComponent<Props, State>() {
         var userPhoto = ""
         var onRouteResultHistory: (RouteResultHistory) -> Unit = { }
     }
-
-    class State : RState
 
     private val APP_BAR_ID = "app-bar"
 
@@ -164,7 +163,8 @@ class Application : ScopedRComponent<Props, State>() {
             routeProps = it
 
             setTitle = { title ->
-                (document.getElementById(APP_BAR_ID).unsafeCast<HTMLDivElement?>())?.innerText = title
+                (document.getElementById(APP_BAR_ID).unsafeCast<HTMLDivElement?>())?.innerText =
+                    title
             }
 
             setTheme = props.setTheme
@@ -175,8 +175,12 @@ class Application : ScopedRComponent<Props, State>() {
     private fun RBuilder.loadModule(module: Module) {
         val mods = module.sections.toMutableList()
         mods.add(0, module.mainSection)
-        mods.filter { it.show() }.forEach { section ->
-            route("/dashboard${section.route}", true, true) { routeProps: RouteResultProps<ModuleProps> ->
+        mods.forEach { section ->
+            route(
+                "/dashboard${section.route}",
+                true,
+                true
+            ) { routeProps: RouteResultProps<ModuleProps> ->
                 props.onRouteResultHistory(routeProps.history)
                 section.toComponent()(routeProps)
             }

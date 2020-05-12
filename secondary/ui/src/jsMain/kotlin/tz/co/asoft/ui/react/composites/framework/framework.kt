@@ -1,5 +1,6 @@
 package tz.co.asoft.ui.react.composites.framework
 
+import kotlinx.coroutines.launch
 import tz.co.asoft.ui.theme.Theme
 import kotlinx.css.*
 import kotlinx.css.properties.s
@@ -10,6 +11,7 @@ import react.router.dom.hashRouter
 import styled.css
 import styled.styledDiv
 import styled.styledSection
+import tz.co.asoft.component.Component
 //import tz.co.asoft.auth.User
 import tz.co.asoft.ui.module.Module
 import tz.co.asoft.ui.module.Page
@@ -24,15 +26,20 @@ import tz.co.asoft.ui.react.tools.onPaper
 import kotlin.browser.window
 import kotlin.reflect.KClass
 
-class FrameworkComponent(p: Props) : RComponent<Props, State>(p) {
+class FrameworkComponent(p: Props) : Component<Props, State>(p) {
     private var history: RouteResultHistory? = null
+
+    sealed class DashboardState {
+        object Hide : DashboardState()
+        class Show(val modules: List<Module>) : DashboardState()
+    }
 
     class Props : RProps {
         var themes = arrayOf<Theme>()
         var footer = "Footer"
         var title = "Title"
         var onSignOut = {}
-        var showDashboard = false
+        var dashboardState: DashboardState = DashboardState.Hide
         var modules = arrayOf<Module>()
         var pages = arrayOf<Page>()
         lateinit var website: KClass<*>
@@ -44,18 +51,29 @@ class FrameworkComponent(p: Props) : RComponent<Props, State>(p) {
         var selectedSection = props.modules[0].mainSection
         var drawerOpen = false
         var hasError = false
+        var dashboardState = props.dashboardState
     }
 
     init {
         state = State(p)
     }
 
-    private fun logout() = setState {
+    private fun logout() {
+        setState { dashboardState = DashboardState.Hide }
         history?.push("/")
         props.onSignOut()
     }
 
-    private fun login() = setState {
+    private fun login() = launch {
+        val modules = mutableListOf<Module>()
+        props.modules.forEach { mod ->
+            if (mod.sections.any { it.show() }) {
+                modules.add(mod)
+            }
+        }
+        setState {
+            dashboardState = DashboardState.Show(modules)
+        }
         history?.push("/dashboard/")
     }
 
@@ -66,15 +84,14 @@ class FrameworkComponent(p: Props) : RComponent<Props, State>(p) {
         }
     }
 
-    private fun RBuilder.navPane() = child(NavPane::class) {
+    private fun RBuilder.navPane(modules: List<Module>) = child(NavPane::class) {
         attrs {
             title = props.title
-//            user = props.user!!
             theme = state.theme
             selectedSection = state.selectedSection
             footer = props.footer
-            modules = props.modules
         }
+        attrs.modules = modules.toTypedArray()
         attrs.onCloseDrawer = {
             setState {
                 drawerOpen = false
@@ -88,12 +105,10 @@ class FrameworkComponent(p: Props) : RComponent<Props, State>(p) {
         }
     }
 
-    private fun RBuilder.application() = child(Application::class) {
+    private fun RBuilder.application(modules: List<Module>) = child(Application::class) {
         attrs {
             theme = state.theme
             title = state.title
-//            user = props.user!!
-            modules = props.modules
             themes = props.themes
             setTheme = {
                 window.setTimeout({
@@ -108,6 +123,8 @@ class FrameworkComponent(p: Props) : RComponent<Props, State>(p) {
             }
         }
 
+        attrs.modules = modules.toTypedArray()
+
         attrs.onDrawerOpen = {
             setState {
                 drawerOpen = true
@@ -119,7 +136,7 @@ class FrameworkComponent(p: Props) : RComponent<Props, State>(p) {
         }
     }
 
-    private fun RBuilder.navigationSide() = styledSection {
+    private fun RBuilder.navigationSide(modules: List<Module>) = styledSection {
         css {
             height = 100.pct
             onDesktop {
@@ -140,10 +157,10 @@ class FrameworkComponent(p: Props) : RComponent<Props, State>(p) {
                 display = Display.none
             }
         }
-        navPane()
+        navPane(modules)
     }
 
-    private fun RBuilder.applicationSide() = styledSection {
+    private fun RBuilder.applicationSide(modules: List<Module>) = styledSection {
         css {
             height = 100.pct
             onDesktop {
@@ -157,31 +174,32 @@ class FrameworkComponent(p: Props) : RComponent<Props, State>(p) {
                 width = 100.pct
             }
         }
-        application()
+        application(modules)
     }
 
-    private fun RBuilder.dashboardSection() = styledSection {
+    private fun RBuilder.dashboardSection(modules: List<Module>) = styledSection {
         css {
             display = Display.flex
             height = 100.vh
             width = 100.pct
         }
-        navigationSide()
-        applicationSide()
+        navigationSide(modules)
+        applicationSide(modules)
     }
 
-    private fun RBuilder.anonymousPage() = child(props.website.unsafeCast<KClass<RComponent<Website.Props, RState>>>()) {
-        attrs.theme = state.theme
-        attrs.footer = props.footer
-        attrs.pages = props.pages
-        attrs.onLogin = { prop ->
-            history = prop!!.history
-            login()
+    private fun RBuilder.anonymousPage() =
+        child(props.website.unsafeCast<KClass<RComponent<Website.Props, RState>>>()) {
+            attrs.theme = state.theme
+            attrs.footer = props.footer
+            attrs.pages = props.pages
+            attrs.onLogin = { prop ->
+                history = prop!!.history
+                login()
+            }
+            attrs.onRouteResultHistory = {
+                history = it
+            }
         }
-        attrs.onRouteResultHistory = {
-            history = it
-        }
-    }
 
     override fun RBuilder.render(): dynamic {
         if (state.hasError) {
@@ -190,10 +208,9 @@ class FrameworkComponent(p: Props) : RComponent<Props, State>(p) {
             }
         }
         return hashRouter {
-            if (!props.showDashboard) {
-                anonymousPage()
-            } else {
-                dashboardSection()
+            when (val db = state.dashboardState) {
+                DashboardState.Hide -> anonymousPage()
+                is DashboardState.Show -> dashboardSection(db.modules)
             }
         }
     }

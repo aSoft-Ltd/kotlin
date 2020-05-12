@@ -70,16 +70,15 @@ class NavPane : RComponent<Props, State>() {
         }
 
         props.modules.forEach { module ->
-            if (module.sections.any { it.show() })
-                navMenu(module) {
-                    attrs {
-                        theme = props.theme
-                        onClick = {
-                            props.onMenuItemClicked(it)
-                        }
-                        selectedSection = props.selectedSection
+            navMenu(module) {
+                attrs {
+                    theme = props.theme
+                    onClick = {
+                        props.onMenuItemClicked(it)
                     }
+                    selectedSection = props.selectedSection
                 }
+            }
         }
     }
 

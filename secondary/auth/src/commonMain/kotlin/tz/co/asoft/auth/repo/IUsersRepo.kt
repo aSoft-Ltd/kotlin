@@ -11,8 +11,4 @@ interface IUsersRepo : ITwinRepo<User>, IUsersDao {
     suspend fun loadLocalUser(): User?
 
     suspend fun deleteLocal()
-
-    suspend fun userWithEmailExists(emails: List<String>) = false
-
-    suspend fun userWithPhoneExists(phones: List<String>) = false
 }

@@ -15,7 +15,7 @@ open class UserAccount : Neo4JEntity {
     override var id: Long? = null
     override var uid = ""
     var name = ""
-    var permits = listOf<String>()
+    var permits = mutableListOf<String>()
 
     fun ref() = UserAccountRef().also {
         it.uid = uid

@@ -23,34 +23,34 @@ open class Neo4JDao<T : Neo4JEntity>(
 
     open val depth = 10
 
-    override suspend fun create(list: List<T>) = withContext(Dispatchers.IO) {
+    override suspend fun create(list: Collection<T>) = withContext(Dispatchers.IO) {
         session.save(list, depth)
         val noIds = list.filter { it.uid.isBlank() }.map { it.apply { uid = id.toString() } }
         if (noIds.isNotEmpty()) session.save(noIds, depth)
         session.clear()
-        list
+        list.toList()
     }
 
     override suspend fun create(t: T) = create(listOf(t)).first()
 
-    override suspend fun edit(list: List<T>) = create(list)
+    override suspend fun edit(list: Collection<T>) = create(list)
 
     override suspend fun edit(t: T) = edit(listOf(t)).first()
 
-    override suspend fun wipe(list: List<T>) = withContext(Dispatchers.IO) {
+    override suspend fun wipe(list: Collection<T>) = withContext(Dispatchers.IO) {
         session.delete(list)
         session.clear()
-        list
+        list.toList()
     }
 
     override suspend fun wipe(t: T) = wipe(listOf(t)).first()
 
-    override suspend fun delete(list: List<T>) = wipe(list)
+    override suspend fun delete(list: Collection<T>) = wipe(list)
 
     override suspend fun delete(t: T) = delete(listOf(t)).first()
 
-    override suspend fun load(ids: List<Any>): List<T> = coroutineScope {
-        ids.map { async { load(it.toString()) } }.mapNotNull { it.await() }
+    override suspend fun load(ids: Collection<Any>): List<T> = coroutineScope {
+        ids.toSet().map { async { load(it.toString()) } }.mapNotNull { it.await() }
     }
 
     override suspend fun load(id: String): T? = withContext(Dispatchers.IO) {

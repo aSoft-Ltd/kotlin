@@ -1,5 +1,7 @@
 package tz.co.asoft.firebase.auth.dao
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import tz.co.asoft.auth.User
 import tz.co.asoft.auth.UserAccount
 import tz.co.asoft.auth.dao.IUsersDao
@@ -15,7 +17,8 @@ import tz.co.asoft.io.File
 import tz.co.asoft.persist.tools.Cause
 import tz.co.asoft.phone.Phone
 
-class UsersFirebaseDao(firestore: FirebaseFirestore, private val storage: FirebaseStorage) : FirebaseDao<User>(firestore, "users", User.serializer()), IUsersDao {
+class UsersFirebaseDao(firestore: FirebaseFirestore, private val storage: FirebaseStorage) :
+    FirebaseDao<User>(firestore, "users", User.serializer()), IUsersDao {
     private suspend fun load(method: String, key: String, pwd: String): User? {
         val qs = collection.where("${method}s", "array-contains", key).fetch()
         val user = qs.documents.getOrNull(0)?.toObject(serializer) ?: throw Cause("User not found")
@@ -38,7 +41,22 @@ class UsersFirebaseDao(firestore: FirebaseFirestore, private val storage: Fireba
         return all().filter { a -> a.accounts.map { it.uid }.contains(ua.uid) }
     }
 
-    override suspend fun delete(list: List<User>): List<User> {
+    private suspend fun userWithMethodExists(method: String, list: List<String>) = coroutineScope {
+        list.map {
+            async {
+                val query = collection.where("${method}s", "array-contains", it)
+                query.fetch().documents
+            }
+        }.map { it.await() }.flatten().isNotEmpty()
+    }
+
+    override suspend fun userWithEmailExists(emails: List<String>) =
+        userWithMethodExists("email", emails)
+
+    override suspend fun userWithPhoneExists(phones: List<String>) =
+        userWithMethodExists("phone", phones)
+
+    override suspend fun delete(list: Collection<User>): List<User> {
         list.forEach { it.status = User.Status.Deleted.name }
         return edit(list)
     }

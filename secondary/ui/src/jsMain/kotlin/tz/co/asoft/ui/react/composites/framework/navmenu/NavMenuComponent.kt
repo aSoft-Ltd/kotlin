@@ -33,7 +33,7 @@ class NavMenuComponent : RComponent<Props, State>() {
     private val menus: List<Module.Section>
         get() {
             state.isExpanded = state.isExpanded && module.isSelected()
-            return module.sections.filter { it.isMenu && it.show() }
+            return module.sections.filter { it.isMenu }
         }
 
     private fun Module.isSelected(): Boolean {
@@ -175,11 +175,12 @@ class NavMenuComponent : RComponent<Props, State>() {
     }
 }
 
-fun RBuilder.navMenu(module: Module, handler: RHandler<Props> = {}) = child(NavMenuComponent::class) {
-    attrs.module = module
-    attrs {
-        theme = Theme()
-        onClick = {}
+fun RBuilder.navMenu(module: Module, handler: RHandler<Props> = {}) =
+    child(NavMenuComponent::class) {
+        attrs.module = module
+        attrs {
+            theme = Theme()
+            onClick = {}
+        }
+        handler()
     }
-    handler()
-}

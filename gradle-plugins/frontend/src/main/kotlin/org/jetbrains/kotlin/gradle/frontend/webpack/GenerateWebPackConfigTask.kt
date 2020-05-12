@@ -16,14 +16,10 @@ import java.util.ArrayDeque
  * @author Sergey Mashkov
  */
 open class GenerateWebPackConfigTask : DefaultTask() {
-    @get:Internal
-    val configsDir: File
-        get() = project.file("$projectDirectory/webpack.config.d").apply {
-            mkdirsOrFail()
-        }
-
     @Input
     val projectDirectory: String = project.projectDir.absolutePath
+
+    private val configsDir: File? = project.file("$projectDirectory/webpack.config.d")
 
     @get:Input
     val contextDir by lazy { kotlinOutput(project).parentFile.absolutePath!! }
@@ -59,7 +55,9 @@ open class GenerateWebPackConfigTask : DefaultTask() {
     }
 
     init {
-        (inputs as TaskInputs).dir(configsDir).optional()
+        if (configsDir?.exists() == true) {
+            (inputs as TaskInputs).dir(configsDir).optional()
+        }
 
         onlyIf {
             bundles.size == 1 && bundles.single().webpackConfigFile == null
@@ -244,9 +242,9 @@ open class GenerateWebPackConfigTask : DefaultTask() {
             out.appendln()
 
             val p = "^\\d+".toRegex()
-            configsDir?.listFiles()?.sortedBy {
+            configsDir?.listFiles().orEmpty().sortedBy {
                 p.find(it.nameWithoutExtension)?.value?.toInt() ?: 0
-            }?.forEach {
+            }.forEach {
                 out.appendln("// from file ${it.path}")
                 it.reader().use {
                     it.copyTo(out)
@@ -262,7 +260,7 @@ open class GenerateWebPackConfigTask : DefaultTask() {
         outputFile.javaClass.getMethod("getOutputFile")
             ?.let { return project.file(it.invoke(outputFile)) }
 
-        throw IllegalStateException("Unable to locate kotlin2js output file")
+        throw IllegalStateException("Unable to locate kotlin js output file")
     }
 
     companion object {
