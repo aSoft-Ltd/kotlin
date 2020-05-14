@@ -15,7 +15,6 @@ import kotlin.test.assertEquals
 
 class DeploymentExtensionJsTest {
     val projectDir = TemporaryFolder()
-    val kotlinVersion = "1.3.72"
     val gradleVersion = "6.1.1"
     lateinit var runner: GradleRunner
 
@@ -26,16 +25,13 @@ class DeploymentExtensionJsTest {
 
         projectDir.root.resolveFile("src/jsMain/kotlin/index.kt").makeParentsAndWriteText(
             """
+            @JsModule("platform.environment.json")
+            @JsNonModule
+            internal external val platformEnvironment: Any
+            
             fun main() {
                 println("This works")
-            }
-        """.trimIndent()
-        )
-
-        projectDir.root.resolveFile("src/jsMain/kotlin/index.kt").makeParentsAndWriteText(
-            """
-            fun main() {
-                println("This works")
+                console.log(platformEnvironment)
             }
         """.trimIndent()
         )
@@ -64,7 +60,9 @@ class DeploymentExtensionJsTest {
             }
             
             kotlin {
-                js()
+                js() {
+                    useCommonJs()
+                }
                 sourceSets {
                     val jsMain by getting {
                         dependencies {
@@ -72,10 +70,6 @@ class DeploymentExtensionJsTest {
                         }
                     }
                 }
-            }
-            
-            npm {
-                webpackDependencies()
             }
             
             kotlinFrontend {
@@ -140,34 +134,44 @@ class DeploymentExtensionJsTest {
     }
 
     @Test
-    fun `has environmentJsonDebug task`() {
-        runner.withArguments(":environmentJsonDebug").build().apply {
+    fun `has environmentJsonJsDebug task`() {
+        runner.withArguments(":environmentJsonJsDebug").build().apply {
             println(output)
-            assertEquals(TaskOutcome.SUCCESS, task(":environmentJsonDebug")?.outcome)
+            assertEquals(TaskOutcome.SUCCESS, task(":environmentJsonJsDebug")?.outcome)
         }
     }
 
     @Test
-    fun `has bundleDebug task`() {
-        runner.withArguments(":bundleDebug").build().apply {
-            println(output)
-            assertEquals(TaskOutcome.SUCCESS, task(":bundleDebug")?.outcome)
+    fun `can deploy separately`() {
+        arrayOf(":deployJsDebug", ":deployJsStaging").forEach { task ->
+            runner.withArguments(task).build().apply {
+                println(output)
+                assertEquals(TaskOutcome.SUCCESS, task(task)?.outcome)
+            }
         }
     }
 
     @Test
-    fun `has bundleStaging task`() {
-        runner.withArguments(":bundleStaging", "--stacktrace").build().apply {
+    fun `has bundleJsDebug task`() {
+        runner.withArguments(":bundleJsDebug").build().apply {
             println(output)
-            assertEquals(TaskOutcome.SUCCESS, task(":bundleStaging")?.outcome)
+            assertEquals(TaskOutcome.SUCCESS, task(":bundleJsDebug")?.outcome)
+        }
+    }
+
+    @Test
+    fun `has bundleJsStaging task`() {
+        runner.withArguments(":bundleJsStaging", "--stacktrace").build().apply {
+            println(output)
+            assertEquals(TaskOutcome.SUCCESS, task(":bundleJsStaging")?.outcome)
         }
     }
 
     @Test
     fun `has run task`() {
-        runner.withArguments(":runDebug").build().apply {
+        runner.withArguments(":runJsDebug").build().apply {
             println(output)
-            assertEquals(TaskOutcome.SUCCESS, task(":runDebug")?.outcome)
+            assertEquals(TaskOutcome.SUCCESS, task(":runJsDebug")?.outcome)
         }
     }
 

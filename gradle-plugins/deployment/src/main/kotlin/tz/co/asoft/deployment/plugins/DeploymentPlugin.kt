@@ -15,8 +15,8 @@ open class DeploymentPlugin : Plugin<Project> {
         tasks.create("targets").apply {
             doFirst {
                 println("= = = = = = Deployment Targets = = = = = =")
-                extension.targets.forEach { println(it) }
-                println("Total: ${extension.targets.size} Targets")
+                extension.deployments.forEach { println(it) }
+                println("Total: ${extension.deployments.size} Targets")
             }
         }
     }

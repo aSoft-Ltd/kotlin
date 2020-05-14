@@ -33,3 +33,21 @@ kotlin.sourceSets {
         }
     }
 }
+
+tasks.create("comps") {
+    doFirst {
+        kotlin.targets.onEach { target ->
+            target.compilations.all {
+                println("${target.name}-$name")
+            }
+        }
+    }
+}
+
+tasks.create("jars") {
+    doFirst {
+        kotlin.targets.onEach { target ->
+            target.compilations.getByName("name").compileKotlinTask
+        }
+    }
+}

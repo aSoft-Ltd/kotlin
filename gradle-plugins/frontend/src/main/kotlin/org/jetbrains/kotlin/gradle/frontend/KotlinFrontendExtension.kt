@@ -4,6 +4,7 @@ import groovy.lang.*
 import org.gradle.api.*
 import org.gradle.api.tasks.*
 import org.jetbrains.kotlin.gradle.frontend.config.*
+import org.jetbrains.kotlin.gradle.frontend.npm.NpmExtension
 import org.jetbrains.kotlin.gradle.frontend.rollup.*
 import org.jetbrains.kotlin.gradle.frontend.util.delegateClosureOf
 import org.jetbrains.kotlin.gradle.frontend.webpack.*
@@ -100,8 +101,12 @@ open class KotlinFrontendExtension(val project: Project) : GroovyObjectSupport()
         _ext[name] = value
     }
 
-    fun webpack(configure: WebPackExtension.() -> Unit = {}) =
+    fun webpack(configure: WebPackExtension.() -> Unit = {}) {
+        val npm = project.extensions.getByType(NpmExtension::class.java)
+        npm.webpackDependencies()
         bundle("webpack", delegateClosureOf(configure))
+    }
+
 
     @Suppress("unused") // groovy magic method - don't change name/signature
     fun methodMissing(name: String, args: Any?): Any? {

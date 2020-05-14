@@ -14,45 +14,53 @@ open class WebPackBundleTask : DefaultTask() {
 
     private val config by lazy {
         project.frontendExtension.bundles().filterIsInstance<WebPackExtension>().singleOrNull()
-                ?: throw GradleException("Only one webpack bundle is supported")
+            ?: throw GradleException("Only one webpack bundle is supported")
     }
 
     @get:InputFile
     val webPackConfigFile by lazy {
         config.webpackConfigFile?.let { project.file(it) }
-                ?: project.buildDir.resolve("webpack.config.js")
+            ?: project.buildDir.resolve("webpack.config.js")
     }
 
     @get:OutputDirectory
-    val bundleDir by lazy { GenerateWebPackConfigTask.handleFile(project, project.frontendExtension.bundlesDirectory) }
+    val bundleDir by lazy {
+        GenerateWebPackConfigTask.handleFile(
+            project,
+            project.frontendExtension.bundlesDirectory
+        )
+    }
 
     @get:InputFile
     val sourceFile by lazy { kotlinOutput(project) }
+
+    @get:InputDirectory
+    val resources by lazy { project.file("build/resources/main") }
 
     @TaskAction
     fun buildBundle() {
         @Suppress("UNCHECKED_CAST")
         val webpackVersion = npm.nodeModulesDir.resolve("webpack/package.json")
-                .let { JsonSlurper().parse(it) as Map<String, Any?> }["version"]
-                ?.let { it as String }
+            .let { JsonSlurper().parse(it) as Map<String, Any?> }["version"]
+            ?.let { it as String }
 
         val nodePath = nodePath(project.rootProject, "node").first().absolutePath
         val webpackPath = npm.nodeModulesDir.resolve("webpack/bin/webpack.js").absolutePath
         val configFile = webPackConfigFile.absolutePath
         val processBuilderCommands = arrayListOf(
-                nodePath,
-                webpackPath,
-                "--config", configFile
+            nodePath,
+            webpackPath,
+            "--config", configFile
         )
         val webpackMajorVersion = webpackVersion
-                ?.split('.')
-                ?.firstOrNull()
-                ?.toInt()
+            ?.split('.')
+            ?.firstOrNull()
+            ?.toInt()
         if (webpackMajorVersion != null && webpackMajorVersion >= 4) {
             processBuilderCommands.addAll(arrayOf("--mode", config.mode))
         }
         ProcessBuilder(processBuilderCommands)
-                .directory(project.rootProject.buildDir)
-                .startWithRedirectOnFail(project.rootProject, processBuilderCommands.joinToString(" "))
+            .directory(project.rootProject.buildDir)
+            .startWithRedirectOnFail(project.rootProject, processBuilderCommands.joinToString(" "))
     }
 }

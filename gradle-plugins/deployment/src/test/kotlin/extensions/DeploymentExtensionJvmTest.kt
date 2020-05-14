@@ -8,14 +8,10 @@ import tz.co.asoft.deployment.extensions.DeploymentExtension
 import tz.co.asoft.deployment.tools.resolveDir
 import tz.co.asoft.deployment.tools.resolveFile
 import java.io.File
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.*
 
 class DeploymentExtensionJvmTest {
     val projectDir = TemporaryFolder()
-    val kotlinVersion = "1.3.72"
     val gradleVersion = "6.1.1"
     lateinit var runner: GradleRunner
 
@@ -29,6 +25,12 @@ class DeploymentExtensionJvmTest {
             fun main() {
                 println("This works")
             }
+        """.trimIndent()
+        )
+
+        projectDir.root.resolveFile("src/paidMain/resources/index.txt").makeParentsAndWriteText(
+            """
+                resources test
         """.trimIndent()
         )
 
@@ -48,11 +50,24 @@ class DeploymentExtensionJvmTest {
             }
             kotlin {
                 jvm()
+                jvm("paid")
+                jvm("free")
                 sourceSets {
-                    val jvmMain by getting {
+                    val allJvm by creating {
                         dependencies {
                             implementation(kotlin("stdlib"))
                         }
+                    }
+                    val jvmMain by getting {
+                        dependsOn(allJvm)
+                    }
+                    
+                    val paidMain by getting {
+                        dependsOn(jvmMain)
+                    }
+                    
+                    val freeMain by getting {
+                        dependsOn(jvmMain)
                     }
                 }
             }
@@ -86,42 +101,82 @@ class DeploymentExtensionJvmTest {
     }
 
     @Test
-    fun `has environmentJsonDebug task`() {
-        runner.withArguments(":environmentJsonDebug").build().apply {
+    fun `has environmentJsonJvmDebug task`() {
+        runner.withArguments(":environmentJsonJvmDebug").build().apply {
             println(output)
-            assertEquals(TaskOutcome.SUCCESS, task(":environmentJsonDebug")?.outcome)
+            assertEquals(TaskOutcome.SUCCESS, task(":environmentJsonJvmDebug")?.outcome)
         }
     }
 
     @Test
-    fun `has fatJarDebug task`() {
-        runner.withArguments(":fatJarDebug").build().apply {
+    fun `has environmentJsonPaidDebug task`() {
+        runner.withArguments(":environmentJsonPaidDebug").build().apply {
             println(output)
-            assertEquals(TaskOutcome.SUCCESS, task(":fatJarDebug")?.outcome)
+            assertEquals(TaskOutcome.SUCCESS, task(":environmentJsonPaidDebug")?.outcome)
         }
     }
 
     @Test
-    fun `has fatJarStaging task`() {
-        runner.withArguments(":fatJarStaging").build().apply {
+    fun `has fatJarJvmDebug task`() {
+        runner.withArguments(":fatJarJvmDebug").build().apply {
             println(output)
-            assertEquals(TaskOutcome.SUCCESS, task(":fatJarStaging")?.outcome)
+            assertEquals(TaskOutcome.SUCCESS, task(":fatJarJvmDebug")?.outcome)
         }
     }
 
     @Test
-    fun `runDebug task passess`() {
-        runner.withArguments(":runDebug").build().apply {
+    fun `has fatJarJvmStaging task`() {
+        runner.withArguments(":fatJarJvmStaging").build().apply {
             println(output)
-            assertEquals(TaskOutcome.SUCCESS, task(":runDebug")?.outcome)
+            assertEquals(TaskOutcome.SUCCESS, task(":fatJarJvmStaging")?.outcome)
         }
     }
 
     @Test
-    fun `runStaging task passess`() {
-        runner.withArguments(":runStaging").build().apply {
+    fun `runJvmDebug task passess`() {
+        runner.withArguments(":runJvmDebug").build().apply {
             println(output)
-            assertEquals(TaskOutcome.SUCCESS, task(":runStaging")?.outcome)
+            assertEquals(TaskOutcome.SUCCESS, task(":runJvmDebug")?.outcome)
+        }
+    }
+
+    @Test
+    fun `runJvmStaging task passess`() {
+        runner.withArguments(":runJvmStaging").build().apply {
+            println(output)
+            assertEquals(TaskOutcome.SUCCESS, task(":runJvmStaging")?.outcome)
+        }
+    }
+
+    @Test
+    fun `has fatJarPaidStaging task`() {
+        runner.withArguments(":fatJarPaidStaging").build().apply {
+            println(output)
+            assertEquals(TaskOutcome.SUCCESS, task(":fatJarPaidStaging")?.outcome)
+        }
+    }
+
+    @Test
+    fun `has paidJar task`() {
+        runner.withArguments(":paidJar").build().apply {
+            println(output)
+            assertEquals(TaskOutcome.SUCCESS, task(":paidJar")?.outcome)
+        }
+    }
+
+    @Test
+    fun `runPaidStaging task passess`() {
+        runner.withArguments(":runPaidStaging").build().apply {
+            println(output)
+            assertEquals(TaskOutcome.SUCCESS, task(":runPaidStaging")?.outcome)
+        }
+    }
+
+    @Test
+    fun `runFreeStaging task passess`() {
+        runner.withArguments(":runFreeStaging").build().apply {
+            println(output)
+            assertEquals(TaskOutcome.SUCCESS, task(":runFreeStaging")?.outcome)
         }
     }
 

@@ -1,5 +1,10 @@
 package tz.co.asoft.deployment.tools
 
-import tz.co.asoft.deployment.target.Target
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import tz.co.asoft.deployment.target.Deployment
 
-val Target.envTaskName get() = "environmentJson${name.capitalize()}"
+fun Deployment.envTaskName(target: KotlinTarget): String {
+    return "environmentJson${nameEnd(target)}"
+}
+
+fun Deployment.nameEnd(target: KotlinTarget) = "${target.name.capitalize()}${name.capitalize()}"
