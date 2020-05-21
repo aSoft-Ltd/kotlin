@@ -1,8 +1,6 @@
 package tz.co.asoft.storage
 
-import tz.co.asoft.platform.core.Ctx
-
-expect class Storage(ctx: Ctx, name: String) {
+interface IStorage {
     val name: String
     fun get(key: String): String?
     fun set(key: String, value: String)

@@ -5,7 +5,7 @@ import tz.co.asoft.firebase.firestore.batch.WriteBatch
 import tz.co.asoft.firebase.firestore.collection.CollectionReference
 import tz.co.asoft.firebase.firestore.document.DocumentReference
 
-@JsModule("firebase/firestore")
+@JsModule("firebase/firestore/memory")
 external val firestoreLib: dynamic
 
 actual external class FirebaseFirestore {

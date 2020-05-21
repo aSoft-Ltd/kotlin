@@ -1,13 +1,12 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-
 plugins {
-    `asoft-lib`
+    id("asoft-lib")
 }
 
 kotlin.sourceSets {
     val commonMain by getting {
         dependencies {
             implementation(kotlin("stdlib-common"))
+            api(project(":primary:platform"))
             api(project(":secondary:auth"))
         }
     }
@@ -37,6 +36,7 @@ kotlin.sourceSets {
     val jsMain by getting {
         dependencies {
             implementation(kotlin("stdlib-js"))
+            // old working "firebase", "5.11.1"
         }
     }
 }

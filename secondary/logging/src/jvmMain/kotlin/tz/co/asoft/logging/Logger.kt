@@ -59,9 +59,11 @@ actual open class Logger actual constructor(
         log.send()
     }
 
-    actual fun obj(vararg o: Any?) = o.forEach {
-        val log = Log(Log.Level.INFO.name, it.toString(), origin)
-        println(log.toString())
+    actual fun obj(vararg o: Any?) {
+        for (it in o) {
+            val log = Log(Log.Level.INFO.name, it.toString(), origin)
+            println(log.toString())
+        }
     }
 
     actual fun obj(o: Any?) {

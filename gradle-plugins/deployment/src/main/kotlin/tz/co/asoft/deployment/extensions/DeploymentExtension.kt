@@ -22,7 +22,11 @@ open class DeploymentExtension(val project: Project) {
 
     fun deploy(vararg deployments: Deployment) {
         this.deployments.addAll(deployments)
-        project.kotlinExt?.targets?.forEach { createTasks(it, deployments) }
+        project.kotlinExt?.targets?.filter {
+            !it.name.contains("metadata", ignoreCase = true)
+        }?.forEach {
+            createTasks(it, deployments)
+        }
     }
 
     private fun createTasks(target: KotlinTarget, deployments: Array<out Deployment>) {
@@ -68,6 +72,7 @@ open class DeploymentExtension(val project: Project) {
 
         project.tasks.create("installRun$ne", Exec::class.java).apply {
             group = "run"
+            dependsOn("stop")
             dependsOn(env)
             dependsOn(install)
             commandLine("adb", "shell", "monkey", "-p", variant.applicationId + " 1")

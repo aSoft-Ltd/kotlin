@@ -1,5 +1,5 @@
 plugins {
-    `asoft-lib`
+    id("asoft-lib")
 }
 
 kotlin.sourceSets {
@@ -31,5 +31,11 @@ kotlin.sourceSets {
         dependencies {
             implementation(kotlin("stdlib-js"))
         }
+    }
+}
+
+tasks.create("configs") {
+    doFirst {
+        configurations.all { println(name) }
     }
 }

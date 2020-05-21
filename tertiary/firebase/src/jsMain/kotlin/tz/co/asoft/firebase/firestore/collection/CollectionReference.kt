@@ -7,6 +7,7 @@ import tz.co.asoft.firebase.firestore.FirebaseFirestore
 import tz.co.asoft.firebase.firestore.document.DocumentReference
 import tz.co.asoft.firebase.firestore.event.Listener
 import tz.co.asoft.firebase.firestore.query.Query
+import tz.co.asoft.firebase.firestore.serializer.json
 import tz.co.asoft.firebase.firestore.snapshot.QueryDocumentSnapshot
 import tz.co.asoft.firebase.firestore.snapshot.QuerySnapshot
 import kotlin.js.Promise
@@ -49,21 +50,22 @@ actual suspend fun CollectionReference.forEachAsync(action: (QueryDocumentSnapsh
     get().await().forEach(action)
 }
 
+@Deprecated("Use CollectionReference.put()")
 actual suspend fun <T> CollectionReference.add(
     data: T,
     serializer: KSerializer<T>,
     then: suspend (DocumentReference) -> Unit
 ) {
-    val json = Json.nonstrict.stringify(serializer, data)
-    then(add(JSON.parse(json)).await())
+    val jsonString = json.stringify(serializer, data)
+    then(add(JSON.parse(jsonString)).await())
 }
 
 actual suspend fun <T : Any> CollectionReference.put(
     data: T,
     serializer: KSerializer<T>
 ): DocumentReference {
-    val json = Json.nonstrict.stringify(serializer, data)
-    return add(JSON.parse(json)).await()
+    val jsonString = json.stringify(serializer, data)
+    return add(JSON.parse(jsonString)).await()
 }
 
 actual fun CollectionReference.addListener(listener: (QuerySnapshot) -> Unit) {

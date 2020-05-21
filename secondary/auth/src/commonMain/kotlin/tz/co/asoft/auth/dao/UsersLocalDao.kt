@@ -2,11 +2,9 @@ package tz.co.asoft.auth.dao
 
 import kotlinx.serialization.json.Json
 import tz.co.asoft.auth.User
-import tz.co.asoft.storage.Storage
-import tz.co.asoft.platform.core.Ctx
+import tz.co.asoft.storage.IStorage
 
-open class UsersLocalDao(ctx: Ctx, name: String) : IUsersLocalDao {
-    private val db = Storage(ctx, name)
+open class UsersLocalDao(private val db: IStorage) : IUsersLocalDao {
     private val serializer = User.serializer()
 
     override var data: MutableMap<String, User>? = mutableMapOf()

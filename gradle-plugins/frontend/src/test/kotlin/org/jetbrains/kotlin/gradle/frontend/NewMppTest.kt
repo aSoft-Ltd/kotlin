@@ -4,7 +4,6 @@ import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.jetbrains.kotlin.gradle.frontend.util.mkdirsOrFail
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -32,7 +31,9 @@ class NewMppTest {
     @get:Rule
     val failedRule = object : TestWatcher() {
         override fun failed(e: Throwable?, description: Description?) {
-            val dst = File("build/tests/${testName.methodName.replace("[", "-").replace("]", "")}").apply { mkdirsOrFail() }
+            val dst = File(
+                "build/tests/${testName.methodName.replace("[", "-").replace("]", "")}"
+            ).apply { mkdirsOrFail() }
             projectDir.root.copyRecursively(dst, true) { file, copyError ->
                 System.err.println("Failed to copy $file due to ${copyError.message}")
                 OnErrorAction.SKIP
@@ -66,8 +67,11 @@ class NewMppTest {
         buildGradleFile = projectDir.root.resolve("build.gradle")
         settingsGradleFile = projectDir.root.resolve("settings.gradle")
 
-        projectDir.root.resolve("src/commonMain/kotlin/sample/Sample.kt").makeParentsAndWriteText("expect fun f(): Int")
-        projectDir.root.resolve("src/commonTest/kotlin/sample/SampleTests.kt").makeParentsAndWriteText("""
+        projectDir.root.resolve("src/commonMain/kotlin/sample/Sample.kt")
+            .makeParentsAndWriteText("expect fun f(): Int")
+        projectDir.root.resolve("src/commonTest/kotlin/sample/SampleTests.kt")
+            .makeParentsAndWriteText(
+                """
 import kotlin.test.*
 
 class SampleTests {
@@ -77,10 +81,12 @@ class SampleTests {
     }
 }
                 """
-        )
+            )
 
-        projectDir.root.resolve("src/jsMain/kotlin/sample/SampleJs.kt").makeParentsAndWriteText("actual fun f(): Int = 1")
-        projectDir.root.resolve("src/jsTest/kotlin/sample/SampleTestsJs.kt").makeParentsAndWriteText(
+        projectDir.root.resolve("src/jsMain/kotlin/sample/SampleJs.kt")
+            .makeParentsAndWriteText("actual fun f(): Int = 1")
+        projectDir.root.resolve("src/jsTest/kotlin/sample/SampleTestsJs.kt")
+            .makeParentsAndWriteText(
                 """
 import kotlin.test.*
 
@@ -90,10 +96,27 @@ class SampleTestsJs {
         assertTrue(f() == 1)
     }
 }
-                """)
+                """
+            )
 
-        projectDir.root.resolve("src/jvmMain/kotlin/sample/SampleJvm.kt").makeParentsAndWriteText("actual fun f(): Int = 2")
-        projectDir.root.resolve("src/jvmTest/kotlin/sample/SampleTestsJvm.kt").makeParentsAndWriteText(
+        projectDir.root.resolve("src/jvmMain/kotlin/sample/SampleJvm.kt")
+            .makeParentsAndWriteText("actual fun f(): Int = 2")
+        projectDir.root.resolve("src/jsMain/kotlin/sample/index.kt").makeParentsAndWriteText(
+            """
+            fun main() { console.log("does work") }
+        """.trimIndent()
+        )
+        projectDir.root.resolve("src/jsMain/resources/index.html").makeParentsAndWriteText(
+            """
+                <html>
+                    <head>Sample Test</head>
+                    <body><h1>works</h1></body>
+                    <script src="main.bundle.js"></script>
+                </html>
+            """.trimIndent()
+        )
+        projectDir.root.resolve("src/jvmTest/kotlin/sample/SampleTestsJvm.kt")
+            .makeParentsAndWriteText(
                 """
 import kotlin.test.*
 
@@ -104,18 +127,18 @@ class SampleTestsJvm {
     }
 }
                 """
-        )
+            )
 
         buildGradleFile.parentFile.mkdirsOrFail()
         settingsGradleFile.parentFile.mkdirsOrFail()
 
         runner = GradleRunner.create()
-                .withProjectDir(projectDir.root)
-                .withPluginClasspath()
-                .withGradleVersion(gradleVersion)
+            .withProjectDir(projectDir.root)
+            .withPluginClasspath()
+            .withGradleVersion(gradleVersion)
 
         settingsGradleFile.writeText(
-                """
+            """
 pluginManagement {
     resolutionStrategy {
         eachPlugin {
@@ -147,7 +170,7 @@ rootProject.name = 'new-mpp'
     @Test
     fun testSimple() {
         buildGradleFile.writeText(
-                """
+            """
 plugins {
     id 'kotlin-multiplatform' version '$kotlinVersion'
     id 'tz.co.asoft.frontend'
@@ -234,13 +257,13 @@ kotlinFrontend {
             println(output)
         }
 
-        println("Running run")
+        println("Running Run")
         runner.withArguments("run").build().apply {
             assertEquals(TaskOutcome.SUCCESS, task(":run")?.outcome)
             println(output)
         }
 
-        println("Running stop")
+        println("Running Stop")
         runner.withArguments("stop").build().apply {
             assertEquals(TaskOutcome.SUCCESS, task(":stop")?.outcome)
             println(output)

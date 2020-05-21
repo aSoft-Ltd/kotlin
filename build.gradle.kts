@@ -5,7 +5,7 @@ allprojects {
         maven(url = "https://dl.bintray.com/kotlin/kotlin-js-wrappers")
     }
     group = "tz.co.asoft"
-    version = "0.0.14"
+    version = "0.0.15"
 }
 
 listOf("primary", "secondary", "tertiary", "gradle-plugins").forEach { group ->

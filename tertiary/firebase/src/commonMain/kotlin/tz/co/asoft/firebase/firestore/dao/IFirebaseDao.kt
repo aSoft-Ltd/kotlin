@@ -61,8 +61,10 @@ interface IFirebaseDao<T : Entity> : IDao<T> {
     override suspend fun wipe(t: T): T = wipe(listOf(t)).first()
 
     override suspend fun load(ids: Collection<Any>): List<T> = coroutineScope {
-        val users = ids.toSet().map { async { docRef(it.toString()).fetch().toObject(serializer) } }
-        users.mapNotNull { it.await() }
+        val users = ids.toSet().filter {
+            it.toString().isNotBlank()
+        }.map { async { docRef(it.toString()).fetch().toObject(serializer) } }
+        users.map { it.await() }
     }
 
     override suspend fun load(id: String): T? = load(listOf(id)).firstOrNull()

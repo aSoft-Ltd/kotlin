@@ -6,7 +6,10 @@ import tz.co.asoft.persist.repo.IRepo
 import tz.co.asoft.persist.tools.Cause
 import android.util.Log as ALog
 
-actual open class Logger actual constructor(protected actual val source: String, protected actual val repo: IRepo<Log>?) {
+actual open class Logger actual constructor(
+    protected actual val source: String,
+    protected actual val repo: IRepo<Log>?
+) {
     actual var tag = ""
 
     private val origin get() = if (tag.isEmpty()) source else "$source/$tag"
@@ -54,7 +57,7 @@ actual open class Logger actual constructor(protected actual val source: String,
     }
 
     actual fun obj(vararg o: Any?) {
-        o.forEach {
+        for (it in o) {
             ALog.i(source, it.toString())
         }
     }

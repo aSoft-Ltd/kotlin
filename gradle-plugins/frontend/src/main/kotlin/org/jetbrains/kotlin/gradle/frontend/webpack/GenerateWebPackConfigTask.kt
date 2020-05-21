@@ -172,6 +172,7 @@ open class GenerateWebPackConfigTask : DefaultTask() {
             ),
             "devServer" to mapOf(
                 "port" to bundle.port,
+                "host" to "0.0.0.0",
                 "contentBase" to contentBase
             ),
             "module" to mapOf(

@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-
 plugins {
-    `asoft-lib`
+    id("asoft-lib")
 }
 
 android {

@@ -1,5 +1,5 @@
 plugins {
-    `asoft-lib`
+    id("asoft-lib")
 }
 
 kotlin.sourceSets {

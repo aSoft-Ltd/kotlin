@@ -19,12 +19,6 @@ kotlin {
     }
 
     js {
-        compilations.all {
-            kotlinOptions {
-                metaInfo = true
-                sourceMap = true
-                moduleKind = "commonjs"
-            }
-        }
+        useCommonJs()
     }
 }

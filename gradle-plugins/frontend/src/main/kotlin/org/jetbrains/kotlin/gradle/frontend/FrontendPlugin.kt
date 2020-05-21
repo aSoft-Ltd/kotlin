@@ -27,7 +27,10 @@ import java.io.File
 class FrontendPlugin : Plugin<Project> {
     val bundlers = mapOf("webpack" to WebPackBundler, "rollup" to RollupBundler)
 
-    private fun withKotlinPlugin(project: Project, block: (kotlin2js: Task, testKotlin2js: Task) -> Unit) {
+    private fun withKotlinPlugin(
+        project: Project,
+        block: (kotlin2js: Task, testKotlin2js: Task) -> Unit
+    ) {
         var fired = false
 
         fun callBlock() {
@@ -56,12 +59,16 @@ class FrontendPlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project) {
-        project.plugins.apply("java")
+//        project.plugins.apply("java")
         withKotlinPlugin(project) { kotlin2js, testKotlin2js ->
             testKotlin2js.dependsOn(kotlin2js)
         }
 
-        val frontend = project.extensions.create("kotlinFrontend", KotlinFrontendExtension::class.java, project)
+        val frontend = project.extensions.create(
+            "kotlinFrontend",
+            KotlinFrontendExtension::class.java,
+            project
+        )
 
         val packages = project.tasks.create("packages").apply {
             group = "build"
@@ -82,7 +89,8 @@ class FrontendPlugin : Plugin<Project> {
 
         val run = project.task("run").apply {
             group = "run"
-            description = "Runs dev-server in background and bundles all if required (possibly in-memory)"
+            description =
+                "Runs dev-server in background and bundles all if required (possibly in-memory)"
         }
         val stop = project.task("stop").apply {
             group = "run"
@@ -93,28 +101,24 @@ class FrontendPlugin : Plugin<Project> {
 
         withKotlinPlugin(project) { kotlin2js, _ ->
             project.afterEvaluate { project ->
-                // TODO this need to be done in kotlin plugin itself
-                (kotlin2js as KotlinJsCompile).kotlinOptions.outputFile?.let { output ->
-                    project.convention.findPlugin(JavaPluginConvention::class.java)
-                            ?.sourceSets
-                            ?.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
-                            ?.output
-                            ?.dir(File(output).parentFile)
-                }
-
                 if (!configured) {
                     configured = true
                     if (frontend.sourceMaps) {
-                        val kotlinVersion = project.plugins.findPlugin(Kotlin2JsPluginWrapper::class.java)?.kotlinPluginVersion
+                        val kotlinVersion =
+                            project.plugins.findPlugin(Kotlin2JsPluginWrapper::class.java)?.kotlinPluginVersion
 
                         if (kotlinVersion != null && compareVersions(kotlinVersion, "1.1.4") < 0) {
-                            project.tasks.withType(KotlinJsCompile::class.java).toList().mapNotNull { compileTask ->
-                                val task = project.tasks.create(compileTask.name + "RelativizeSMAP", RelativizeSourceMapTask::class.java) { task ->
-                                    task.compileTask = compileTask
-                                }
+                            project.tasks.withType(KotlinJsCompile::class.java).toList()
+                                .mapNotNull { compileTask ->
+                                    val task = project.tasks.create(
+                                        compileTask.name + "RelativizeSMAP",
+                                        RelativizeSourceMapTask::class.java
+                                    ) { task ->
+                                        task.compileTask = compileTask
+                                    }
 
-                                task.dependsOn(compileTask)
-                            }
+                                    task.dependsOn(compileTask)
+                                }
                         } else {
                             project.tasks.withType(KotlinJsCompile::class.java).forEach { task ->
                                 if (!task.kotlinOptions.sourceMap) {
@@ -126,13 +130,16 @@ class FrontendPlugin : Plugin<Project> {
 
                     for ((id, bundles) in frontend.bundles().groupBy { it.bundlerId }) {
                         val bundler = frontend.bundlers[id]
-                                ?: throw GradleException("Bundler $id is not supported (or not plugged-in), required for bundles: ${bundles.map { it.bundleName }}")
+                            ?: throw GradleException("Bundler $id is not supported (or not plugged-in), required for bundles: ${bundles.map { it.bundleName }}")
 
                         bundler.apply(project, packageManager, packages, bundle, run, stop)
                     }
 
                     if (frontend.downloadNodeJsVersion.isNotBlank()) {
-                        val downloadTask = project.tasks.create("nodejs-download", NodeJsDownloadTask::class.java) { task ->
+                        val downloadTask = project.tasks.create(
+                            "nodejs-download",
+                            NodeJsDownloadTask::class.java
+                        ) { task ->
                             task.version = frontend.downloadNodeJsVersion
                             if (frontend.nodeJsMirror.isNotBlank()) {
                                 task.mirror = frontend.nodeJsMirror
@@ -154,7 +161,8 @@ class FrontendPlugin : Plugin<Project> {
             testKotlin2js.dependsOn(packages)
 
             project.afterEvaluate {
-                val compileTask = project.tasks.findByName(kotlin2js.name + "RelativizeSMAP") ?: kotlin2js
+                val compileTask =
+                    project.tasks.findByName(kotlin2js.name + "RelativizeSMAP") ?: kotlin2js
 
                 bundle.dependsOn(compileTask)
                 run.dependsOn(packages, compileTask)
@@ -176,8 +184,8 @@ class FrontendPlugin : Plugin<Project> {
             // but since 2019.1 "idea.active" present in task execution too.
             // So let's check Idea version
             val majorIdeaVersion = System.getProperty("idea.version")
-                    ?.split(".")
-                    ?.getOrNull(0)
+                ?.split(".")
+                ?.getOrNull(0)
             val isBeforeIdea2019 = majorIdeaVersion == null || majorIdeaVersion.toInt() < 2019
 
             isBeforeIdea2019 && System.getProperty("idea.active")?.toBoolean() == true
@@ -233,10 +241,13 @@ class FrontendPlugin : Plugin<Project> {
     }
 
     private fun compareVersions(a: List<Int>, b: List<Int>): Int {
-        return (0 until maxOf(a.size, b.size)).map { idx -> a.getOrElse(idx) { 0 }.compareTo(b.getOrElse(idx) { 0 }) }
-                .firstOrNull { it != 0 } ?: 0
+        return (0 until maxOf(a.size, b.size)).map { idx ->
+                a.getOrElse(idx) { 0 }.compareTo(b.getOrElse(idx) { 0 })
+            }
+            .firstOrNull { it != 0 } ?: 0
     }
 
-    private fun versionToList(v: String) = v.split("[._\\-\\s]+".toRegex()).mapNotNull { it.toIntOrNull() }
+    private fun versionToList(v: String) =
+        v.split("[._\\-\\s]+".toRegex()).mapNotNull { it.toIntOrNull() }
 }
 

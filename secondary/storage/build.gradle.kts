@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-
 plugins {
-    `asoft-lib`
+    id("asoft-lib")
 }
 
 android {
@@ -14,7 +12,6 @@ kotlin.sourceSets {
     val commonMain by getting {
         dependencies {
             implementation(kotlin("stdlib-common"))
-            api(project(":primary:platform"))
         }
     }
 

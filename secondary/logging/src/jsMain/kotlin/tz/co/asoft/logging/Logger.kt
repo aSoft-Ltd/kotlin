@@ -66,7 +66,7 @@ actual open class Logger actual constructor(
     }
 
     fun dir(o: Any) = console.dir(o)
-
+    
     private fun Log.send() = GlobalScope.launch {
         repo?.create(this@send)
     }

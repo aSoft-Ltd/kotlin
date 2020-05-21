@@ -33,6 +33,7 @@ actual suspend fun CollectionReference.forEachAsync(action: (QueryDocumentSnapsh
     get().await().forEach(action)
 }
 
+@Deprecated("Use CollectionReference.put()")
 actual suspend fun <T> CollectionReference.add(
     data: T,
     serializer: KSerializer<T>,
