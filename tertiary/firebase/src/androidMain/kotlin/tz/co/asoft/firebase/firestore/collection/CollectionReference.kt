@@ -5,7 +5,10 @@ import tz.co.asoft.firebase.firestore.document.DocumentReference
 import tz.co.asoft.firebase.firestore.snapshot.QueryDocumentSnapshot
 import tz.co.asoft.firebase.firestore.tools.await
 import kotlinx.serialization.KSerializer
+import tz.co.asoft.firebase.firestore.serializer.json
 import tz.co.asoft.firebase.firestore.snapshot.QuerySnapshot
+import tz.co.asoft.platform.env.toJsonObject
+import tz.co.asoft.platform.env.toMap
 
 actual typealias CollectionReference = com.google.firebase.firestore.CollectionReference
 
@@ -42,7 +45,13 @@ actual suspend fun <T> CollectionReference.add(
     then(add(data as Any).await())
 }
 
-actual suspend fun <T : Any> CollectionReference.put(data: T, serializer: KSerializer<T>) = add(data).await()
+actual suspend fun <T : Any> CollectionReference.put(
+    data: T,
+    serializer: KSerializer<T>
+): DocumentReference {
+    val map = json.stringify(serializer, data).toJsonObject().toMap()
+    return add(map).await()
+}
 
 actual fun CollectionReference.addListener(listener: (QuerySnapshot) -> Unit) {
     addSnapshotListener { qs, _ -> qs?.let { listener(it) } }

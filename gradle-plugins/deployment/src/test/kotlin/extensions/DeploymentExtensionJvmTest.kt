@@ -36,6 +36,8 @@ class DeploymentExtensionJvmTest {
 
         projectDir.root.resolveFile("build.gradle.kts").makeParentsAndWriteText(
             """
+            import tz.co.asoft.deployment.tools.*
+            
             plugins{
                 kotlin("multiplatform")
                 id("tz.co.asoft.deployment")
@@ -49,9 +51,15 @@ class DeploymentExtensionJvmTest {
                 mavenCentral()
             }
             kotlin {
-                jvm()
-                jvm("paid")
-                jvm("free")
+                jvm() {
+                    mainClassName = "IndexKt"
+                }
+                jvm("paid"){
+                    mainClassName = "IndexKt"
+                }
+                jvm("free"){
+                    mainClassName = "IndexKt"
+                }
                 sourceSets {
                     val allJvm by creating {
                         dependencies {

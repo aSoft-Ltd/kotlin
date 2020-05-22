@@ -18,6 +18,8 @@ import tz.co.asoft.deployment.tools.*
 open class DeploymentExtension(val project: Project) {
     val deployments = mutableListOf<Deployment>()
 
+    val targetMainClassNames = mutableMapOf<KotlinJvmTarget, String>()
+
     fun creating(vararg values: Pair<String, Any>) = TargetDeligate(values.toMap().toMutableMap())
 
     fun deploy(vararg deployments: Deployment) {
@@ -95,7 +97,7 @@ open class DeploymentExtension(val project: Project) {
             it.dependsOn(env)
             it.with(jar)
             it.doFirst { _ ->
-                it.manifest { it.attributes["Main-Class"] = deployment.values["Main-Class"] }
+                it.manifest { it.attributes["Main-Class"] = target.mainClassName }
                 val compile = project.configurations.getByName("${target.name}RuntimeClasspath")
                 it.from(compile.map { if (it.isDirectory) it else project.zipTree(it) })
             }

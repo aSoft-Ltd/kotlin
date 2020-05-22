@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.0.16 -
+### Deployment
+#### Added
+- Every kotlin jvm target is an output with a main class attribute
+
+### Firebase
+#### Fixed
+- CollectionReference.put() for android
+
 ## 0.0.15 - 2020/05/22
 ### Storage
 #### Changed
