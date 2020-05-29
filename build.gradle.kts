@@ -8,7 +8,7 @@ allprojects {
     version = "0.0.16-alpha-01"
 }
 
-listOf("primary", "secondary", "tertiary", "gradle-plugins").forEach { group ->
+listOf("primary", "secondary", "tertiary", "gradle-plugins", "ui").forEach { group ->
     project.tasks.create("upload-$group") {
         project.file(group).listFiles().orEmpty().forEach { project ->
             dependsOn(":$group:${project.name}:bintrayUpload")

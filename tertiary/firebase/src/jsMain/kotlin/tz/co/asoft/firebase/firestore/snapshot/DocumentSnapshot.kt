@@ -6,7 +6,7 @@ actual open external class DocumentSnapshot {
     fun get(fieldPath: String): Any?
 }
 
-actual fun DocumentSnapshot.toJson(): String = JSON.stringify(data())
+actual fun DocumentSnapshot.toJson(): String? = data()?.let { JSON.stringify(it) }
 
 actual fun DocumentSnapshot.get(fieldPath: String): Any? = get(fieldPath)
 actual fun DocumentSnapshot.data(): Map<String, Any>? = data()

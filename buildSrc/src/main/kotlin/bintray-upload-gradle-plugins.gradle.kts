@@ -5,5 +5,5 @@ plugins {
 
 bintray {
     configureBintray()
-    setPublications("kotlinMultiplatform", "metadata", "androidRelease", "jvm", "js")
+    setPublications("pluginMaven","${project.name}PluginMarkerMaven")
 }

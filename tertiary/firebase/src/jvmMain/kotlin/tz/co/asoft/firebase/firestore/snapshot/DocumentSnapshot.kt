@@ -19,6 +19,6 @@ actual fun DocumentSnapshot.data(): Map<String, Any>? {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 }
 
-actual fun DocumentSnapshot.toJson(): String {
+actual fun DocumentSnapshot.toJson(): String? {
     TODO("Not yet implemented")
 }

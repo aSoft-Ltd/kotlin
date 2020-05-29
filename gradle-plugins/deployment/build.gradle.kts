@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm")
     id("java")
     id("java-gradle-plugin")
-    id("bintray-upload")
+    id("bintray-upload-gradle-plugins")
 }
 
 dependencies {

@@ -8,7 +8,7 @@ import kotlinx.serialization.json.Json
 
 actual typealias DocumentSnapshot = com.google.firebase.firestore.DocumentSnapshot
 
-actual fun DocumentSnapshot.toJson(): String = Gson().toJson(data)
+actual fun DocumentSnapshot.toJson(): String? = data()?.let { Gson().toJson(it) }
 
 actual fun DocumentSnapshot.get(fieldPath: String): Any? = get(fieldPath)
 actual fun DocumentSnapshot.data(): Map<String, Any>? = data

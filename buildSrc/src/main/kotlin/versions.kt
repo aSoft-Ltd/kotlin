@@ -15,7 +15,7 @@ object versions {
     }
 
     object android {
-        const val build_tools = "3.6.0"
+        const val build_tools = "4.0.0"
     }
 
     object google {

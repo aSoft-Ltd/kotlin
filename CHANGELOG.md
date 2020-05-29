@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 ## 0.0.16 -
+### Rect Icons
+#### Added
+- Created wrappers for react-icons
+
 ### Deployment
 #### Added
 - Every kotlin jvm target is an output with a main class attribute

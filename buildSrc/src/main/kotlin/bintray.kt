@@ -1,13 +1,13 @@
+import com.jfrog.bintray.gradle.BintrayExtension
 import com.jfrog.bintray.gradle.tasks.BintrayUploadTask
+import org.gradle.api.Project
+import org.gradle.api.publish.PublishingExtension
+import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.internal.artifact.FileBasedMavenArtifact
+import org.gradle.kotlin.dsl.getByType
 import java.util.*
 
-plugins {
-    id("maven-publish")
-    id("com.jfrog.bintray")
-}
-
-bintray {
+fun BintrayExtension.configureBintray() {
     val props = Properties().apply {
         load(project.rootProject.file("local.properties").inputStream())
     }
@@ -15,7 +15,6 @@ bintray {
     key = props["bintray.key"] as String
     project.addModuleJson()
     publish = true
-    setPublications("pluginMaven","${project.name}PluginMarkerMaven")
     pkg = PackageConfig().apply {
         repo = "kotlin"
         name = project.name
@@ -29,15 +28,7 @@ bintray {
     }
 }
 
-tasks.create("publications") {
-    doLast {
-        publishing.publications.forEach {
-            println(it.name)
-        }
-    }
-}
-
-fun Project.addModuleJson() = tasks.withType<BintrayUploadTask> {
+private fun Project.addModuleJson() = tasks.withType(BintrayUploadTask::class.java) {
     doFirst {
         project.extensions.getByType<PublishingExtension>().publications
             .filterIsInstance<MavenPublication>()
