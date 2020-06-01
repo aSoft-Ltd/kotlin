@@ -29,5 +29,5 @@ jobs:
     - name: Upload to Bintray
       env:
         BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-        BINTRAY_KEY: ${{ sectrest.BINTRAY_KEY }}
+        BINTRAY_KEY: ${{ sectrets.BINTRAY_KEY }}
       run: ./gradlew bintrayUpload
