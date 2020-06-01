@@ -28,8 +28,28 @@ jobs:
         run: chmod +x gradlew
       - name: Check Gradle
         run: ./gradlew --version
-      - name: Upload to Bintray
+      - name: Upload Gradle Plugins to Bintray
         env:
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-        run: ./gradlew bintrayUpload
+        run: ./gradlew upload-gradle-plugins
+      - name: Upload Primary Libs to Bintray
+        env:
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+        run: ./gradlew upload-primary
+      - name: Upload Secondary Libs to Bintray
+        env:
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+        run: ./gradlew upload-secondary
+      - name: Upload Tertiary Libs to Bintray
+        env:
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+        run: ./gradlew upload-tertiary
+      - name: Upload UI Libs to Bintray
+        env:
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+        run: ./gradlew upload-ui
