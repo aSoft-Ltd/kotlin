@@ -12,18 +12,11 @@ kotlin.sourceSets {
         }
     }
 
-    val jvmCommonMain by creating {
-        dependsOn(commonMain)
+    val androidMain by getting {
         dependencies {
             implementation(kotlin("stdlib"))
             api(kotlin("test"))
             api(kotlin("test-junit"))
-        }
-    }
-
-    val androidMain by getting {
-        dependsOn(jvmCommonMain)
-        dependencies {
             api("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinx.coroutines}")
             api("androidx.test.espresso:espresso-core:${versions.androidx.espresso}")
             api("androidx.test:runner:${versions.androidx.test_runner}")
@@ -32,8 +25,10 @@ kotlin.sourceSets {
     }
 
     val jvmMain by getting {
-        dependsOn(jvmCommonMain)
         dependencies {
+            implementation(kotlin("stdlib"))
+            api(kotlin("test"))
+            api(kotlin("test-junit"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx.coroutines}")
             api("org.seleniumhq.selenium:selenium-java:${versions.selenium}")
         }
