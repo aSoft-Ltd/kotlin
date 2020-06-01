@@ -9,7 +9,7 @@ object versions {
 
     object kotlinx {
         const val atomicfu = "0.14.2"
-        const val coroutines = "1.3.5"
+        const val coroutines = "1.3.7"
         const val serialization = "0.20.0"
         const val html = "0.7.1"
     }
