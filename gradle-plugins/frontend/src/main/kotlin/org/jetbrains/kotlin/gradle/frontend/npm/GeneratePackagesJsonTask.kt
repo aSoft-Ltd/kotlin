@@ -30,7 +30,7 @@ open class GeneratePackagesJsonTask : DefaultTask() {
     val unpackResults: List<File>
         get() = project.tasks.filterIsInstance<UnpackGradleDependenciesTask>().map { it.resultFile }
 
-    val configPartsDir: File?
+    private val configPartsDir: File?
         get() = project.projectDir.resolve("package.json.d")
 
     //    @get:Input
@@ -91,7 +91,7 @@ open class GeneratePackagesJsonTask : DefaultTask() {
         }
 
     init {
-        if (configPartsDir?.exists()==true) {
+        if (configPartsDir?.exists() == true) {
             (inputs as TaskInputs).dir(configPartsDir)
         }
         val packgJson =

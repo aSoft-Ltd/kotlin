@@ -14,7 +14,6 @@ import org.junit.runners.Parameterized.Parameters
 import java.net.URL
 import kotlin.test.*
 
-@Ignore
 @RunWith(Parameterized::class)
 class SimpleFrontendProjectTest(gradleVersion: String, kotlinVersion: String) : AbstractFrontendTest(gradleVersion, kotlinVersion) {
     @Test

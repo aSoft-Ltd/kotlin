@@ -59,7 +59,7 @@ class FrontendPlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project) {
-//        project.plugins.apply("java")
+        project.plugins.apply("java")
         withKotlinPlugin(project) { kotlin2js, testKotlin2js ->
             testKotlin2js.dependsOn(kotlin2js)
         }
