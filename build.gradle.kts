@@ -18,6 +18,6 @@ listOf("primary", "secondary", "tertiary", "gradle-plugins", "ui").forEach { gro
 
 tasks.create("hello") {
     doFirst {
-        println("Hello World")
+        println("Hello World!!")
     }
 }
