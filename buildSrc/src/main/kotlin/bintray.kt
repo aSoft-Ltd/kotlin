@@ -11,8 +11,8 @@ fun BintrayExtension.configureBintray() {
     val props = Properties().apply {
         load(project.rootProject.file("local.properties").inputStream())
     }
-    user = props["bintray.user"] as String
-    key = props["bintray.key"] as String
+    user = (props["BINTRAY_USER"] as? String) ?: System.getenv("BINTRAY_USER")
+    key = (props["BINTRAY_KEY"] as? String) ?: System.getenv("BINTRAY_KEY")
     project.addModuleJson()
     publish = true
     pkg = PackageConfig().apply {
