@@ -8,11 +8,11 @@ import org.gradle.kotlin.dsl.getByType
 import java.util.*
 
 fun BintrayExtension.configureBintray() {
-    val props = Properties().apply {
-        load(project.rootProject.file("local.properties").inputStream())
-    }
-    user = (props["BINTRAY_USER"] as? String) ?: System.getenv("BINTRAY_USER")
-    key = (props["BINTRAY_KEY"] as? String) ?: System.getenv("BINTRAY_KEY")
+    val props = project.rootProject.file("local.properties").takeIf {
+        it.exists()
+    }?.let { Properties().apply { load(it.inputStream()) } }
+    user = props?.getProperty("BINTRAY_USER") ?: System.getenv("BINTRAY_USER")
+    key = props?.getProperty("BINTRAY_KEY") ?: System.getenv("BINTRAY_KEY")
     project.addModuleJson()
     publish = true
     pkg = PackageConfig().apply {
