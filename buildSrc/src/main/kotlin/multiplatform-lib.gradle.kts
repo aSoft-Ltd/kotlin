@@ -2,7 +2,6 @@ plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
     id("android-target")
-    id("bintray-upload-multiplatform")
 }
 
 kotlin {

@@ -30,26 +30,26 @@ jobs:
         run: ./gradlew --version
       - name: Upload Gradle Plugins to Bintray
         env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         run: ./gradlew upload-gradle-plugins
       - name: Upload Primary Libs to Bintray
         env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         run: ./gradlew upload-primary
       - name: Upload Secondary Libs to Bintray
         env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         run: ./gradlew upload-secondary
       - name: Upload Tertiary Libs to Bintray
         env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         run: ./gradlew upload-tertiary
       - name: Upload UI Libs to Bintray
         env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         run: ./gradlew upload-ui

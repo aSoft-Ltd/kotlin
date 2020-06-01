@@ -9,3 +9,14 @@ kotlin.sourceSets {
         }
     }
 }
+
+publishing {
+    repositories {
+        maven("https://maven.jetbrains.space/asofttz/kotlin") {
+            credentials {
+                username = "andylamax"
+                password = "andymamson"
+            }
+        }
+    }
+}

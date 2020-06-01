@@ -44,10 +44,13 @@ tasks.create("comps") {
     }
 }
 
-tasks.create("jars") {
-    doFirst {
-        kotlin.targets.onEach { target ->
-            target.compilations.getByName("name").compileKotlinTask
+publishing {
+    repositories {
+        maven("https://maven.jetbrains.space/asofttz/kotlin") {
+            credentials {
+                username = "andylamax"
+                password = "andymamson"
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 plugins {
     kotlin("js")
-    id("bintray-upload-js")
+    id("space-maven")
 }
 
 kotlin {
