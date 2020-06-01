@@ -74,7 +74,6 @@ open class DeploymentExtension(val project: Project) {
 
         project.tasks.create("installRun$ne", Exec::class.java).apply {
             group = "run"
-            dependsOn("stop")
             dependsOn(env)
             dependsOn(install)
             commandLine("adb", "shell", "monkey", "-p", variant.applicationId + " 1")
@@ -126,6 +125,7 @@ open class DeploymentExtension(val project: Project) {
 
         project.tasks.create("run$ne").apply {
             group = "run"
+            dependsOn("stop")
             dependsOn(env)
             finalizedBy(project.tasks.getByName("run"))
         }
