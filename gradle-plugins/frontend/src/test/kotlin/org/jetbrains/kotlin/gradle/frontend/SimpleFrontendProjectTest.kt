@@ -532,19 +532,7 @@ class SimpleFrontendProjectTest(gradleVersion: String, kotlinVersion: String) : 
         @JvmStatic
         @Parameters(name = "gradle {0}, kotlin {1}")
         fun versions() = listOf(
-                arrayOf("3.5", "1.1.61"),
-                arrayOf("4.1", "1.1.61"),
-                arrayOf("4.2.1", "1.1.61"),
-                arrayOf("4.3.1", "1.1.61"),
-                arrayOf("4.3.1", "1.2.31"),
-                arrayOf("4.4.1", "1.2.21"),
-                arrayOf("4.4.1", "1.2.31"),
-                arrayOf("4.5", "1.2.31"),
-                arrayOf("4.5", "1.2.41"),
-                arrayOf("4.6", "1.2.51"),
-                arrayOf("4.7", "1.2.51"),
-                arrayOf("4.8", "1.2.51"),
-                arrayOf("4.9", "1.2.51")
+                arrayOf("6.4.1", "1.3.72")
         )
     }
 }

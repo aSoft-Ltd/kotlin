@@ -5,7 +5,7 @@ import java.io.*
 import java.util.*
 
 class BuildScriptBuilder {
-    var kotlinVersion = "1.0.6"
+    var kotlinVersion = "1.3.72"
 
     val scriptClassPath = ArrayList<Any>()
     val compileDependencies = ArrayList<String>()
@@ -30,7 +30,7 @@ class BuildScriptBuilder {
         else if (kotlinVersion.startsWith("1.1.") || kotlinVersion.startsWith("1.2.") || kotlinVersion.startsWith("1.3."))
             compileDependencies += "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion"
         else
-            throw IllegalArgumentException("Only 1.0, 1.1 and 1.2 kotlin supported")
+            throw IllegalArgumentException("Only 1.0, 1.1, 1.2 and 1.3 kotlin supported")
     }
 
     fun build(body: Builder.() -> Unit = {}): String {
