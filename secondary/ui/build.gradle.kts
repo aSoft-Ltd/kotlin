@@ -42,7 +42,6 @@ kotlin.sourceSets {
             implementation(kotlin("stdlib"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx.coroutines}")
             api("no.tornado:tornadofx:${versions.tornadofx}")
-            api("org.openjfx:javafx-base:${versions.javafx}")
         }
     }
 

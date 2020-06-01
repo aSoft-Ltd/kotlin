@@ -3,7 +3,6 @@ object versions {
     const val selenium = "4.0.0-alpha-4"
     const val ktor = "1.3.2"
     const val neo4j = "3.2.9"
-    const val javafx = "14.0.1"
     const val tornadofx = "1.7.19"
     const val gson = "2.8.5"
     const val coil = "0.8.0"
