@@ -27,7 +27,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Debuging The Failing tasks
-        run: ./gradlew :primary:email:generateDebugResValues :primary:test:generateDebugResValues
+        run: ./gradlew clean :primary:email:generateDebugResValues :primary:test:generateDebugResValues --stacktrace
       - name: Gradle Clean Build
         run: ./gradlew clean build
       - name: Upload Gradle Plugins to Space
