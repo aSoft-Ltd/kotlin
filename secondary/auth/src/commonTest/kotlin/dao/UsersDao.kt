@@ -27,4 +27,8 @@ class UsersDao : Cache<User>(), IUsersDao {
     override suspend fun loadUsers(ua: UserAccount) = all().filter { u ->
         u.accounts.map { it.uid }.contains(ua.uid)
     }
+
+    override suspend fun userWithEmailExists(emails: List<String>): Boolean = false
+
+    override suspend fun userWithPhoneExists(phones: List<String>): Boolean = false
 }

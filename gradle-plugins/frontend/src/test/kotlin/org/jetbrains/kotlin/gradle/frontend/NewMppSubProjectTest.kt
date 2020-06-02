@@ -2,26 +2,24 @@ package org.jetbrains.kotlin.gradle.frontend
 
 import net.rubygrapefruit.platform.Native
 import net.rubygrapefruit.platform.ProcessLauncher
-import org.gradle.api.Project
-import org.gradle.api.internal.project.DefaultProject
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import org.jetbrains.kotlin.gradle.frontend.util.*
+import org.jetbrains.kotlin.gradle.frontend.util.DummyExecutor
+import org.jetbrains.kotlin.gradle.frontend.util.OutputStreamWithBuffer
+import org.jetbrains.kotlin.gradle.frontend.util.ProcessHandler
+import org.jetbrains.kotlin.gradle.frontend.util.mkdirsOrFail
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import org.junit.rules.TestName
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
-import sun.java2d.loops.ProcessPath
 import java.io.File
-import java.net.URL
 import java.util.concurrent.Executor
+import kotlin.test.Ignore
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-
 
 class NewMppSubProjectTest {
     private val gradleVersion: String = "6.1.1"

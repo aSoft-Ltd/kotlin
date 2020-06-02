@@ -8,7 +8,7 @@ import org.junit.rules.*
 import org.junit.runner.*
 import java.io.*
 
-abstract class AbstractFrontendTest(val gradleVersion: String, val kotlinVersion: String) {
+abstract class  AbstractFrontendTest(val gradleVersion: String, val kotlinVersion: String) {
     protected val port = 8098
     protected val builder = BuildScriptBuilder()
 

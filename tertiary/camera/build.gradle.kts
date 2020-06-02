@@ -13,7 +13,7 @@ kotlin.sourceSets {
         dependencies {
             implementation(kotlin("stdlib-common"))
             api(project(":primary:klock"))
-            api(project(":secondary:ui-lib"))
+            api(project(":secondary:ui"))
         }
     }
 
