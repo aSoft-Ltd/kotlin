@@ -10,7 +10,7 @@ allprojects {
 
 val groups = listOf("primary", "secondary", "tertiary", "gradle-plugins", "ui-libs")
 
-val sensitives = listOf("camera", "ui")
+val sensitives = listOf("camera", "ui", "test")
 
 groups.forEach { group ->
     project.tasks.create("upload-$group") {
@@ -42,6 +42,7 @@ subprojects {
 }
 
 tasks.create("publish-sensitives") {
+    dependsOn(":primary:test:publish")
     dependsOn(":secondary:ui:publish")
     dependsOn(":tertiary:camera:publish")
 }
