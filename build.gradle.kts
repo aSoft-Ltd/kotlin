@@ -19,9 +19,17 @@ groups.forEach { group ->
 }
 
 subprojects {
-    if (name != "ui" && !groups.contains(name)) {
+    if (!groups.contains(name)) {
         afterEvaluate {
-            val jarTasks = tasks.filter { it.name.contains("jar", true) }
+            val jarTasks = tasks.filter {
+                it.name.contains("jar", true)
+            }.mapNotNull {
+                if (it.name == "jvmJar" && listOf("ui", "camera").contains(it.project.name)) {
+                    null
+                } else {
+                    it
+                }
+            }
             tasks.create("sensitive-build") {
                 dependsOn(jarTasks)
             }
