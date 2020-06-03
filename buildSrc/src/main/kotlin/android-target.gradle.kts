@@ -4,6 +4,9 @@ plugins {
 
 android {
     compileSdkVersion(28)
+    buildFeatures {
+        buildConfig = false
+    }
     defaultConfig {
         minSdkVersion(1)
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
