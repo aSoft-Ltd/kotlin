@@ -1,9 +1,13 @@
 package tz.co.asoft.deployment.tools
 
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import tz.co.asoft.deployment.extensions.DeploymentExtension
+
+val Project.isPureAndroid get() = plugins.hasPlugin("org.jetbrains.kotlin.android")
+val Project.androidTarget get() = (project.extensions.getByName("kotlin") as KotlinAndroidProjectExtension).target
 
 val Project.kotlinExt get() = extensions.findByType(KotlinMultiplatformExtension::class.java)
 

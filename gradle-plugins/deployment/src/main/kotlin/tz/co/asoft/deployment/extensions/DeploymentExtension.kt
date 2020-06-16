@@ -29,6 +29,11 @@ open class DeploymentExtension(val project: Project) {
         }?.forEach {
             createTasks(it, deployments)
         }
+
+        if (project.isPureAndroid) {
+            val target = project.androidTarget
+            createTasks(target, deployments)
+        }
     }
 
     private fun createTasks(target: KotlinTarget, deployments: Array<out Deployment>) {
