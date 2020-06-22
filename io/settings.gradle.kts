@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+includeBuild("../build-src")
+include(":klock")
+project(":klock").projectDir = File("../klock")
