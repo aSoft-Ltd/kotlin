@@ -26,6 +26,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./email
 
   publish-klock:
@@ -47,6 +50,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./klock
 
   publish-io:
@@ -68,6 +74,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./io
 
   publish-krypto:
@@ -89,6 +98,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./krypto
 
   publish-persist:
@@ -110,6 +122,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./persist
 
   publish-phone:
@@ -131,6 +146,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./phone
 
   publish-platform:
@@ -152,6 +170,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./platform
 
   publish-rx:
@@ -173,6 +194,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./rx
 
   publish-frontend:
@@ -194,6 +218,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./frontend
 
   publish-deployment:
@@ -215,6 +242,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./deployment
 
   publish-money:
@@ -236,6 +266,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./money
 
   publish-storage:
@@ -257,6 +290,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./storage
 
   publish-email-gateway:
@@ -278,6 +314,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./email-gateway
 
   publish-sms-gateway:
@@ -299,6 +338,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./sms-gateway
 
   publish-logging:
@@ -320,6 +362,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./logging
 
   publish-neo4j:
@@ -341,6 +386,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./neo4j
 
   publish-geo:
@@ -362,6 +410,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./geo
 
   publish-http:
@@ -383,6 +434,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./http
 
   publish-auth:
@@ -404,6 +458,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./auth
 
   publish-firebase:
@@ -425,6 +482,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./firebase
 
   publish-places:
@@ -446,6 +506,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./places
 
   publish-send-grid:
@@ -467,6 +530,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./send-grid
 
   publish-siltech:
@@ -488,6 +554,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./siltech
 
   publish-icons:
@@ -509,4 +578,7 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew publish
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./icons
