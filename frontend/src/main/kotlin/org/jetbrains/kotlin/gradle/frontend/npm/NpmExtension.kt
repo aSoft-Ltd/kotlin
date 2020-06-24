@@ -39,15 +39,46 @@ open class NpmExtension(val project: Project) {
     }
 
     fun webpackDependencies() {
-        devDependency("file-loader")
-        devDependency("style-loader")
-        devDependency("css-loader")
-        devDependency("less")
-        devDependency("less-loader")
-        devDependency("babel-loader", "8")
+        dependency("react", "^16.13.1")
+        dependency("react-dom", "^16.13.1")
+        dependency("styled-components", "^5.1.0")
+        dependency("inline-style-prefixer", "^6.0.0")
+        dependency("react-router-dom", "^5.1.2")
+        dependency("text-encoding", "^0.7.0")
 
-        devDependency("@babel/core")
-        devDependency("@babel/preset-env")
-        devDependency("@babel/preset-react")
+        dependency("core-js", "^3.0.0")
+
+        dependency("firebase", "^7.14.1")
+        dependency("react-responsive-carousel", "^3.2.7")
+        dependency("react-event-timeline", "^1.5.4")
+
+        dependency("echarts", "^4.7.0")
+        dependency("simplebar-react", "^2.2.0")
+        dependency("echarts-for-react", "^2.0.16")
+
+        dependency("react-tabs", "^3.1.0")
+        dependency("react-table", "6.10.3")
+        dependency("react-draft-wysiwyg", "^1.14.5")
+        dependency("draft-js", "0.11.5")
+        dependency("draft-js-export-html", "^1.4.1")
+        dependency("react-icons", "^3.10.0")
+        dependency("abort-controller", "^3.0.0")
+
+        dependency("@react-google-maps/api", "^1.9.2")
+
+        devDependency("file-loader", "^6.0.0")
+        devDependency("style-loader", "^1.2.1")
+        devDependency("css-loader", "^3.5.3")
+        devDependency("less", "^3.11.1")
+        devDependency("less-loader", "^6.1.0")
+        devDependency("babel-loader", "^8.1.0")
+
+        devDependency("@babel/core", "^7.9.6")
+        devDependency("@babel/preset-env", "^7.9.6")
+        devDependency("@babel/preset-react", "^7.9.4")
+
+        devDependency("webpack", "^4.43.0")
+        devDependency("webpack-cli", "^3.3.11")
+        devDependency("webpack-dev-server", "^3.11.0")
     }
 }
