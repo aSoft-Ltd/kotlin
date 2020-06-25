@@ -1,3 +1,4 @@
+@file:JvmName("StorageReferenceAndroid")
 package tz.co.asoft.firebase.storage
 
 import android.net.Uri

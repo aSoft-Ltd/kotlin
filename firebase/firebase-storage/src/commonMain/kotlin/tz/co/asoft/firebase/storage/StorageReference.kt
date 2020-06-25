@@ -1,8 +1,11 @@
+@file:JvmName("StorageReferenceCommon")
+
 package tz.co.asoft.firebase.storage
 
 import tz.co.asoft.io.File
 import tz.co.asoft.io.FileRef
 import tz.co.asoft.io.name
+import kotlin.jvm.JvmName
 
 expect class StorageReference
 
