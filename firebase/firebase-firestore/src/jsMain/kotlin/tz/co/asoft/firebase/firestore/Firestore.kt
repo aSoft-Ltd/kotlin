@@ -6,7 +6,7 @@ import tz.co.asoft.firebase.firestore.collection.CollectionReference
 import tz.co.asoft.firebase.firestore.document.DocumentReference
 
 @JsModule("firebase/firestore/memory")
-external val firestoreLib: dynamic
+private external val firestoreLib: dynamic
 
 actual external class FirebaseFirestore {
     val app: FirebaseApp
@@ -34,7 +34,7 @@ actual fun FirebaseApp.firestore(): FirebaseFirestore {
     if (firestoreLib.isImported != true) {
         firestoreLib.isImported = true
     }
-    return unsafeCast<dynamic>().firestore() as FirebaseFirestore
+    return unsafeCast<dynamic>().firestore()
 }
 
 actual fun FirebaseFirestore.batch(): WriteBatch = batch()

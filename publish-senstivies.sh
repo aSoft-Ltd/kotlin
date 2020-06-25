@@ -1,8 +1,8 @@
 cd ./ui
-./gradlew publish
+./gradlew :publish
 
 cd ../camera
-./gradlew publish
+./gradlew :publish
 
 cd ../test
-./gradlew publish
+./gradlew :publish

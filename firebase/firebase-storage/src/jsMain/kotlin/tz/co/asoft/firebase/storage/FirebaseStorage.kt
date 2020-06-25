@@ -3,7 +3,7 @@ package tz.co.asoft.firebase.storage
 import tz.co.asoft.firebase.core.FirebaseApp
 
 @JsModule("firebase/storage")
-external val storageLib: dynamic
+private external val storageLib: dynamic
 
 actual external class FirebaseStorage {
     val app: FirebaseApp
@@ -14,7 +14,7 @@ actual fun FirebaseApp.storage(): FirebaseStorage {
     if (storageLib.isImported != true) {
         storageLib.isImported = true
     }
-    return this.unsafeCast<dynamic>().storage() as FirebaseStorage
+    return this.unsafeCast<dynamic>().storage()
 }
 
 actual val FirebaseStorage.app: FirebaseApp get() = app

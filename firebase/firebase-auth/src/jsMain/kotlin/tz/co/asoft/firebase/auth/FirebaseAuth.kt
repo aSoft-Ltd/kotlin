@@ -5,7 +5,7 @@ import kotlinx.coroutines.await
 import kotlin.js.Promise
 
 @JsModule("firebase/auth")
-external val authLib: dynamic
+private external val authLib: dynamic
 
 actual external class FirebaseAuth {
     val app: FirebaseApp
@@ -17,12 +17,20 @@ actual external class FirebaseAuth {
 
 actual val FirebaseAuth.app: FirebaseApp get() = app
 actual val FirebaseAuth.currentUser get() = currentUser
-actual suspend fun FirebaseAuth.createUserWithEmailAndPassword(email: String, password: String, then: (AuthResult) -> Unit) {
+actual suspend fun FirebaseAuth.createUserWithEmailAndPassword(
+    email: String,
+    password: String,
+    then: (AuthResult) -> Unit
+) {
     val res = createUserWithEmailAndPassword(email, password).await()
     then(res)
 }
 
-actual suspend fun FirebaseAuth.signInWithEmailAndPassword(email: String, password: String, then: (AuthResult) -> Unit) {
+actual suspend fun FirebaseAuth.signInWithEmailAndPassword(
+    email: String,
+    password: String,
+    then: (AuthResult) -> Unit
+) {
     val res = signInWithEmailAndPassword(email, password).await()
     then(res)
 }
@@ -35,7 +43,7 @@ actual fun FirebaseApp.auth(): FirebaseAuth {
     if (authLib.isImported != true) {
         authLib.isImported = true
     }
-    return auth()
+    return unsafeCast<dynamic>().auth()
 }
 
 actual suspend fun FirebaseAuth.makeUserWithEmailAndPassword(email: String, password: String): AuthResult {
