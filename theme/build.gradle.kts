@@ -10,10 +10,17 @@ kotlin.sourceSets {
         }
     }
 
+    val commonTest by getting {
+        dependencies {
+            api(asoft("test"))
+        }
+    }
+
     val androidMain by getting {
         dependencies {
             api(kotlin("stdlib"))
 //            api("androidx.appcompat:appcompat:${versions.androidx.appcompat}")
+            api("androidx.ui:ui-material:${versions.androidx.ui}")
             api("androidx.lifecycle:lifecycle-extensions:${versions.androidx.lifecycle}")
             api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinx.serialization}")
         }

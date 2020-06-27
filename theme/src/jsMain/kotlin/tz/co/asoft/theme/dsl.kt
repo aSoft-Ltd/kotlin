@@ -1,6 +1,7 @@
 package tz.co.asoft.theme
 
 import kotlinx.css.*
+import kotlin.js.json
 
 val Theme.primaryColor get() = Color(color.primary)
 val Theme.primaryVariantColor get() = Color(color.primaryVariant)
