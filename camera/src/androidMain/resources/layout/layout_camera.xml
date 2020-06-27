@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+>
+    <TextureView
+        android:id="@+id/view_finder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    />
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/icon_cross"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="10dp"
+    />
+
+    <ImageView
+        android:id="@+id/capture"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/icon_camera"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+    />
+
+    <include
+        android:id="@+id/preview"
+        android:visibility="invisible"
+        layout="@layout/layout_preview"
+    />
+</RelativeLayout>

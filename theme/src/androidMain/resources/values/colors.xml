@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    val DarkTheme = Theme(-->
+    <!--    name = "Dark Theme",-->
+    <!--    primary = "#1f3d4c",-->
+    <!--    primaryVariant = "#455A64",-->
+    <!--    onPrimary = "#DADADA",-->
+    <!--    secondary = "#12AC97",-->
+    <!--    secondaryVariant = "#007C69",-->
+    <!--    onSecondary = "#121212",-->
+    <!--    background = "#080808",-->
+    <!--    backgroundVariant = "#121212",-->
+    <!--    onBackground = "#FFFFFF",-->
+    <!--    surface = "#17181a",-->
+    <!--    onSurface = "#FFFFFF",-->
+    <!--    error = "#A82D2D",-->
+    <!--    onError = "#121212"-->
+    <!--    )-->
+    <color name="theme_dark_primary">#1F3D4C</color>
+    <color name="theme_dark_primary_variant">#455A64</color>
+    <color name="theme_dark_background">#080808</color>
+
+    <!--    name = "Aqua Green",-->
+    <!--    primary = "#0E9B8A",-->
+    <!--    primaryVariant = "#006C5D",-->
+    <!--    onPrimary = "#DADADA",-->
+    <!--    secondary = "#12AC97",-->
+    <!--    secondaryVariant = "#007C69",-->
+    <!--    onSecondary = "#121212",-->
+    <!--    background = "#F5F5F5",-->
+    <!--    backgroundVariant = "#F5F5F5",-->
+    <!--    onBackground = "#121212",-->
+    <!--    surface = "#FFFFFF",-->
+    <!--    onSurface = "#DADADA",-->
+    <!--    error = "#A82D2D",-->
+    <!--    onError = "#121212"-->
+    <color name="theme_aqua_green_primary">#0E9B8A</color>
+    <color name="theme_aqua_green_primary_variant">#006C5D</color>
+    <color name="theme_aqua_green_background">#F5F5F5</color>
+</resources>
