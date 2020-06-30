@@ -50,16 +50,6 @@ actual suspend fun CollectionReference.forEachAsync(action: (QueryDocumentSnapsh
     get().await().forEach(action)
 }
 
-@Deprecated("Use CollectionReference.put()")
-actual suspend fun <T> CollectionReference.add(
-    data: T,
-    serializer: KSerializer<T>,
-    then: suspend (DocumentReference) -> Unit
-) {
-    val jsonString = json.stringify(serializer, data)
-    then(add(JSON.parse(jsonString)).await())
-}
-
 actual suspend fun <T : Any> CollectionReference.put(
     data: T,
     serializer: KSerializer<T>

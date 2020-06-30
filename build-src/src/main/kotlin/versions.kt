@@ -6,7 +6,7 @@ object versions {
     val tornadofx = "1.7.19"
     val gson = "2.8.5"
     val coil = "0.8.0"
-    val asoft = "0.1.0-dev-09"
+    val asoft = "0.1.0-dev-10"
 
     object kotlinx {
         val atomicfu = "0.14.2"
@@ -24,6 +24,9 @@ object versions {
     }
 
     object androidx {
+        val ui = "0.1.0-dev14"
+        val recyclerview = "1.0.0"
+        val constraint = "1.1.2"
         val lifecycle = "2.2.0"
         val fragment = "1.2.2"
         val appcompat = "1.1.0"

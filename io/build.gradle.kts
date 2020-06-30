@@ -17,7 +17,6 @@ kotlin.sourceSets {
             implementation(kotlin("stdlib"))
             api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinx.serialization}")
             api("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinx.coroutines}")
-            api("androidx.appcompat:appcompat:${versions.androidx.appcompat}")
         }
     }
 
