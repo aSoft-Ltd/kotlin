@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import tz.co.asoft.camera.R
 import tz.co.asoft.component.HComponent
 import tz.co.asoft.gallery.Gallery.*
-import tz.co.asoft.io.Document
 import tz.co.asoft.io.FileRef
 import tz.co.asoft.ui.ViewHolder
 

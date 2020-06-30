@@ -8,16 +8,16 @@ import tz.co.asoft.email.Email
 import tz.co.asoft.io.File
 import tz.co.asoft.phone.Phone
 
-class UsersRepo(override val remoteDao: IUsersDao, override val localDao: IUsersLocalDao) : IUsersRepo {
+class UsersRepo(override val remoteDao: IUsersDao, override val localDao: IUsersLocalDao) :
+    IUsersRepo {
 
-    override suspend fun load(email: Email, pwd: String) = remoteDao.load(email, pwd)?.also { localDao.create(it) }
+    override suspend fun load(email: Email, pwd: String) =
+        remoteDao.load(email, pwd)?.also { localDao.create(it) }
 
-    override suspend fun load(phone: Phone, pwd: String) = remoteDao.load(phone, pwd)?.also { localDao.create(it) }
+    override suspend fun load(phone: Phone, pwd: String) =
+        remoteDao.load(phone, pwd)?.also { localDao.create(it) }
 
-    override suspend fun uploadPhoto(user: User, photo: File) = remoteDao.uploadPhoto(user, photo).also {
-        localDao.delete()
-        localDao.create(it)
-    }
+    override suspend fun uploadPhoto(user: User, photo: File) = remoteDao.uploadPhoto(user, photo)
 
     override suspend fun loadUsers(ua: UserAccount): List<User> = all().filter { user ->
         user.accounts.map { it.uid }.contains(ua.uid)

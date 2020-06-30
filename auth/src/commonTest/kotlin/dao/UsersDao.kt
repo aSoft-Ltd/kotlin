@@ -5,11 +5,16 @@ import tz.co.asoft.auth.UserAccount
 import tz.co.asoft.auth.dao.IUsersDao
 import tz.co.asoft.email.Email
 import tz.co.asoft.io.File
+import tz.co.asoft.io.FileRef
+import tz.co.asoft.io.name
 import tz.co.asoft.persist.dao.Cache
 import tz.co.asoft.phone.Phone
 
 class UsersDao : Cache<User>(), IUsersDao {
-    override suspend fun uploadPhoto(user: User, photo: File) = user
+    override suspend fun uploadPhoto(user: User, photo: File) = FileRef(
+        name = photo.name,
+        url = "file://${photo.name}"
+    )
 
     override suspend fun create(t: User): User {
         t.uid = all().size.toString()

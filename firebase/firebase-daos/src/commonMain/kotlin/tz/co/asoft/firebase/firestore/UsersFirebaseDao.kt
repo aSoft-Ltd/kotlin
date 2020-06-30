@@ -12,6 +12,8 @@ import tz.co.asoft.firebase.firestore.snapshot.documents
 import tz.co.asoft.firebase.firestore.snapshot.toObject
 import tz.co.asoft.firebase.storage.*
 import tz.co.asoft.io.File
+import tz.co.asoft.io.FileRef
+import tz.co.asoft.io.ext
 import tz.co.asoft.persist.tools.Cause
 import tz.co.asoft.phone.Phone
 
@@ -61,9 +63,12 @@ class UsersFirebaseDao(
 
     override suspend fun delete(t: User): User = delete(listOf(t)).first()
 
-    override suspend fun uploadPhoto(user: User, photo: File): User {
+    override suspend fun uploadPhoto(user: User, photo: File): FileRef {
         val ref = storage.ref("user_profile_photos/${user.uid}")
         ref.upload(photo).await()
-        return user.copy(photoUrl = ref.downloadUrl() ?: throw Cause("Failed to Upload Photo"))
+        return FileRef(
+            name = "${user.name}_profile_photo" + photo.ext,
+            url = ref.downloadUrl() ?: throw Cause("Failed to Upload Photo")
+        )
     }
 }

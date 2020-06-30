@@ -1,26 +1,25 @@
 package tz.co.asoft.theme
 
 import kotlinx.css.*
-import kotlin.js.json
 
-val Theme.primaryColor get() = Color(color.primary)
-val Theme.primaryVariantColor get() = Color(color.primaryVariant)
-val Theme.onPrimaryColor get() = Color(color.onPrimary)
-val Theme.secondaryColor get() = Color(color.secondary)
-val Theme.secondaryVariantColor get() = Color(color.secondaryVariant)
-val Theme.onSecondaryColor get() = Color(color.onSecondary)
-val Theme.backgroundColor get() = Color(color.background)
-val Theme.onBackgroundColor get() = Color(color.onBackground)
-val Theme.backgroundVariantColor get() = Color(color.backgroundVariant)
-val Theme.onBackgroundVariantColor get() = Color(color.onBackgroundVariant)
-val Theme.surfaceColor get() = Color(color.surface)
-val Theme.onSurfaceColor get() = Color(color.onSurface)
-val Theme.errorColor get() = Color(color.error)
-val Theme.onErrorColor get() = Color(color.onError)
+val Theme.primaryColor get() = Color(color.primary.toHexString())
+val Theme.primaryVariantColor get() = Color(color.primaryVariant.toHexString())
+val Theme.onPrimaryColor get() = Color(color.onPrimary.toHexString())
+val Theme.secondaryColor get() = Color(color.secondary.toHexString())
+val Theme.secondaryVariantColor get() = Color(color.secondaryVariant.toHexString())
+val Theme.onSecondaryColor get() = Color(color.onSecondary.toHexString())
+val Theme.backgroundColor get() = Color(color.background.toHexString())
+val Theme.onBackgroundColor get() = Color(color.onBackground.toHexString())
+val Theme.backgroundVariantColor get() = Color(color.backgroundVariant.toHexString())
+val Theme.onBackgroundVariantColor get() = Color(color.onBackgroundVariant.toHexString())
+val Theme.surfaceColor get() = Color(color.surface.toHexString())
+val Theme.onSurfaceColor get() = Color(color.onSurface.toHexString())
+val Theme.errorColor get() = Color(color.error.toHexString())
+val Theme.onErrorColor get() = Color(color.onError.toHexString())
 
 val TextStyle.clazz: RuleSet
     get() = {
-        fontSize = this@clazz.fontSize.rem
+        fontSize = this@clazz.fontSize
     }
 
 val Theme.dropdown_clazz: RuleSet

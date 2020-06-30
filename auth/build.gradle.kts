@@ -9,10 +9,10 @@ kotlin.sourceSets {
             api(project(":klock"))
             api(project(":krypto"))
             api(project(":persist"))
-            api(project(":rx"))
             api(project(":phone"))
             api(project(":email"))
             api(project(":io"))
+            api(project(":tools"))
             api(project(":neo4j"))
             api(project(":storage"))
         }

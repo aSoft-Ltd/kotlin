@@ -22,13 +22,6 @@ actual fun CollectionReference.doc(documentPath: String?): DocumentReference {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 }
 
-actual suspend fun <T> CollectionReference.add(
-    data: T,
-    serializer: KSerializer<T>,
-    then: suspend (DocumentReference) -> Unit
-) {
-}
-
 actual suspend fun CollectionReference.forEachAsync(action: (QueryDocumentSnapshot) -> Unit) {
 }
 

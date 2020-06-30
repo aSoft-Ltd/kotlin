@@ -28,6 +28,9 @@ kotlin.sourceSets {
             implementation(kotlin("stdlib"))
             api("androidx.camera:camera-core:${versions.androidx.camerax}")
             api("androidx.camera:camera-camera2:${versions.androidx.camerax}")
+            api("androidx.constraintlayout:constraintlayout:${versions.androidx.constraint}")
+            api("androidx.recyclerview:recyclerview-selection:${versions.androidx.recyclerview}")
+            api("androidx.recyclerview:recyclerview:${versions.androidx.recyclerview}")
             api("io.coil-kt:coil:${versions.coil}") {
                 exclude(group = "androidx.appcompat")
             }
