@@ -2,17 +2,13 @@ package tz.co.asoft.enterprise.dialog
 
 import kotlinx.css.*
 import kotlinx.html.js.onClickFunction
-import react.RBuilder
-import react.RHandler
-import react.RProps
-import react.RState
+import react.*
 import styled.css
 import styled.styledDiv
-import tz.co.asoft.components.Component
 import tz.co.asoft.tools.onDesktop
 import tz.co.asoft.tools.onMobile
 
-class Dialog : Component<Dialog.Props, RState>() {
+class Dialog : RComponent<Dialog.Props, RState>() {
     class Props(
         val desktopWidth: LinearDimension,
         val mobileWidth: LinearDimension,

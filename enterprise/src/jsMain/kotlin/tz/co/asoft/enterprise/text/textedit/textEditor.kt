@@ -4,7 +4,6 @@ import kotlinx.css.*
 import react.*
 import styled.css
 import styled.styledDiv
-import tz.co.asoft.components.Component
 import tz.co.asoft.enterprise.text.textedit.TextEditor.Props
 import tz.co.asoft.enterprise.text.textedit.TextEditor.State
 import tz.co.asoft.theme.ThemeConsumer
@@ -22,7 +21,7 @@ external interface TextEditorState {
 fun TextEditorState.toJson() = convertToRaw(getCurrentContent())
 fun TextEditorState.toHtml() = stateToHTML(getCurrentContent())
 
-class TextEditor : Component<Props, State>() {
+class TextEditor : RComponent<Props, State>() {
     class Props : RProps {
         var css: CSSBuilder.() -> Unit = {}
         var editorState: TextEditorState? = null
