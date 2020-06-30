@@ -5,7 +5,6 @@ import react.RBuilder
 import react.RHandler
 import react.RProviderProps
 import react.createContext
-import tz.co.asoft.theme.default.themes.AquaGreenTheme
 
 val currentTheme = MutableStateFlow(AquaGreenTheme)
 

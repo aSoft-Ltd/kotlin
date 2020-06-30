@@ -13,9 +13,8 @@ kotlin.sourceSets {
         dependencies {
             implementation(kotlin("stdlib-common"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.kotlinx.coroutines}")
-            api(asoft("icons"))
+            api(project(":icons"))
             api(project(":tools"))
-            api(project(":components"))
             api(project(":theme"))
         }
     }
