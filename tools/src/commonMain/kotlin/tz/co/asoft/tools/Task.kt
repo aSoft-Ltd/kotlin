@@ -69,3 +69,6 @@ suspend fun <T> FlowCollector<Task<T>>.emit(cause: Throwable) = emit(Task.Failed
 suspend fun <T> FlowCollector<Task<T>>.emit(data: T) = emit(Task.Completed(data))
 
 suspend fun <T> Flow<T>.collectTo(ui: MutableStateFlow<T>) = collect { ui.value = it }
+
+suspend fun <T> Flow<Task<T>>.complete(): T = (toList().last() as? Task.Completed<T>)?.data
+    ?: throw Exception("FlowTask didn't complete with data")

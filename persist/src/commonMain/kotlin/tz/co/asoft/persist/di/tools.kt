@@ -2,14 +2,6 @@ package tz.co.asoft.persist.di
 
 import kotlinx.atomicfu.AtomicRef
 
-//
-//fun <T> AtomicRef<MutableList<T>>.add(t: T) {
-//    value = mutableListOf<T>().apply {
-//        addAll(value)
-//        add(t)
-//    }
-//}
-
 fun <K, V> AtomicRef<MutableMap<K, V>>.add(k: K, v: V) {
     value = mutableMapOf<K, V>().apply {
         putAll(value)

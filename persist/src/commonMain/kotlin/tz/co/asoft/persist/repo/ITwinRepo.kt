@@ -1,14 +1,11 @@
 package tz.co.asoft.persist.repo
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
-import tz.co.asoft.persist.dao.ICache
+import kotlinx.coroutines.flow.toList
 import tz.co.asoft.persist.dao.IDao
 import tz.co.asoft.persist.model.Entity
-import tz.co.asoft.persist.result.Result
-import tz.co.asoft.persist.tools.Cause
 
 interface ITwinRepo<T : Entity> : IRepo<T> {
     val remoteDao: IDao<T>
@@ -22,40 +19,47 @@ interface ITwinRepo<T : Entity> : IRepo<T> {
 
     override suspend fun wipe(t: T) = remoteDao.wipe(t).also { localDao.wipe(t) }
 
-    @Deprecated("Try using loadFlowing")
-    override suspend fun load(id: String): T? {
-        val localRes = localDao.load(id)
-        return if (localRes != null) {
-            GlobalScope.launch { remoteDao.load(id)?.also { localDao.create(it) } }
-            localRes
-        } else {
-            remoteDao.load(id)?.also { localDao.create(it) }
+    fun loadFlowing(id: String) = flow {
+        coroutineScope {
+            val local = async { localDao.load(id) }
+            val remote = async { remoteDao.load(id) }
+            local.await()?.let { emit(it) }
+            remote.await().let {
+                emit(it)
+                if (it != null) localDao.create(it)
+            }
         }
     }
 
-    override fun loadFlowing(id: String) = flow {
-        localDao.load(id)?.let { emit(it) }
-
-        remoteDao.load(id).let {
-            emit(it)
-            if (it != null) localDao.create(it)
+    fun loadFlowing(ids: Collection<Any>) = flow {
+        coroutineScope {
+            val local = async { localDao.load(ids) }
+            val remote = async { remoteDao.load(ids) }
+            emit(local.await())
+            emit(remote.await())
         }
     }
 
-    override fun loadFlowing(ids: Collection<Any>) = flow {
-        emit(localDao.load(ids))
-        emit(remoteDao.load(ids))
-    }
+    override suspend fun load(id: String) = loadFlowing(id).toList().last()
+
+    override suspend fun allDeleted() = remoteDao.allDeleted()
 
     override suspend fun all() = localDao.all().apply {
         remoteDao.all().let { localDao.create(it) }
     }
 
-    override fun allFlowing() = flow {
-        if (localDao.all().isNotEmpty()) emit(localDao.all())
-        remoteDao.all().let {
-            emit(it)
-            localDao.create(it)
+    fun allFlowing() = flow {
+        coroutineScope {
+            val local = async { localDao.all() }
+            val remote = async { remoteDao.all() }
+            val localRes = local.await()
+            if (localRes.isNotEmpty()) {
+                emit(localRes)
+            }
+            remote.await().let {
+                emit(it)
+                localDao.create(it)
+            }
         }
     }
 }

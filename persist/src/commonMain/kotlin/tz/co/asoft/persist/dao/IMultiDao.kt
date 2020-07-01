@@ -2,12 +2,11 @@ package tz.co.asoft.persist.dao
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tz.co.asoft.persist.model.Entity
 import kotlin.reflect.KClass
 
-interface IMultiDao<T : Any> : IDao<T> {
-    val daos: MutableMap<KClass<out T>, IDao<T>>
-
-    //    private val T.dao: IDao<T>? get() = daos.keys.firstOrNull { this.isInstanceOf(it) }?.let { daos[it] }
+interface IMultiDao<T : Entity> : IDao<T> {
+    val daos: Map<KClass<out T>, IDao<T>>
     private val T.dao: IDao<T>
         get() = daos.keys.first { it.isInstance(this) }.let { daos[it]!! }
 
@@ -20,7 +19,15 @@ interface IMultiDao<T : Any> : IDao<T> {
         daos.values.map { async { it.load(id) } }.mapNotNull { it.await() }.firstOrNull()
     }
 
-    override suspend fun all(): List<T> = loadAllByType().values.flatten()
+    override suspend fun all() = loadAllByType().values.flatten()
+
+    override suspend fun allDeleted() = loadAllDeletedByType().values.flatten()
+
+    suspend fun loadAllDeletedByType(): Map<KClass<out T>, List<T>> = coroutineScope {
+        daos.mapValues { (_, dao) -> async { dao.allDeleted() } }.mapValues { (_, defs) ->
+            defs.await()
+        }
+    }
 
     suspend fun loadAllByType(): Map<KClass<out T>, List<T>> = coroutineScope {
         daos.mapValues { (_, dao) -> async { dao.all() } }.mapValues { (_, defs) ->
@@ -29,4 +36,6 @@ interface IMultiDao<T : Any> : IDao<T> {
     }
 
     suspend fun <E : T> loadAll(clazz: KClass<E>): List<E> = daos[clazz]?.all() as List<E>
+
+    suspend fun <E : T> loadAllDeleted(clazz: KClass<E>): List<E> = daos[clazz]?.allDeleted() as List<E>
 }

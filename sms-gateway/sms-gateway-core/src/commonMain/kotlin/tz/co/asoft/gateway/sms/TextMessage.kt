@@ -4,14 +4,14 @@ import kotlinx.serialization.Serializable
 import tz.co.asoft.persist.model.Entity
 
 @Serializable
-open class TextMessage(
+data class TextMessage(
+    override var uid: String = "",
     val sender: String,
     val recipients: List<String>,
     val type: String = Type.Text.name,
-    val body: String
+    val body: String,
+    override var deleted: Boolean = false
 ) : Entity {
-    override var uid: String = ""
-
     enum class Type {
         Text,
         Flash,

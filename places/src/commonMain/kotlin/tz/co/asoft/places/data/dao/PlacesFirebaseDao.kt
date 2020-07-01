@@ -8,7 +8,6 @@ import tz.co.asoft.firebase.firestore.query.where
 import tz.co.asoft.firebase.firestore.snapshot.documents
 import tz.co.asoft.firebase.firestore.snapshot.forEach
 import tz.co.asoft.firebase.firestore.snapshot.toObject
-import tz.co.asoft.persist.tools.Cause
 import tz.co.asoft.places.country.Country
 import tz.co.asoft.places.disctrict.District
 import tz.co.asoft.places.region.Region
@@ -26,10 +25,11 @@ class PlacesFirebaseDao(override val firestore: FirebaseFirestore) : IPlacesDao 
 
     override suspend fun loadRegionsInCountryWithCode(code: String): Array<Region> {
         val country = loadCountryByCode(code)
-                ?: throw Cause("Couldn't load country with code $code")
-        return firestore.collection("countries/${country.name}/regions").fetch().documents.mapNotNull {
-            it.toObject(Region.serializer())?.apply { countryName = country.name ?: "" }
-        }.toTypedArray()
+            ?: throw Exception("Couldn't load country with code $code")
+        return firestore.collection("countries/${country.name}/regions")
+            .fetch().documents.mapNotNull {
+                it.toObject(Region.serializer())?.apply { countryName = country.name ?: "" }
+            }.toTypedArray()
     }
 
     override suspend fun loadDistrictsIn(countryCode: String, regionName: String): Array<District> {
@@ -56,7 +56,11 @@ class PlacesFirebaseDao(override val firestore: FirebaseFirestore) : IPlacesDao 
         return districts
     }
 
-    override suspend fun loadWardsIn(countryCode: String, regionName: String, districtName: String): Array<Ward> {
+    override suspend fun loadWardsIn(
+        countryCode: String,
+        regionName: String,
+        districtName: String
+    ): Array<Ward> {
         var wards = arrayOf<Ward>()
         val district = loadDistrictsIn(countryCode, regionName).firstOrNull {
             it.name == districtName
@@ -66,7 +70,7 @@ class PlacesFirebaseDao(override val firestore: FirebaseFirestore) : IPlacesDao 
                 return district.wards.toTypedArray()
             }
             val path =
-                    "countries/${district.countryName}/regions/${district.regionName}/districts/${district.name}/wards"
+                "countries/${district.countryName}/regions/${district.regionName}/districts/${district.name}/wards"
             firestore.collection(path).get { qs ->
                 qs.forEach { doc ->
                     val ward = doc.toObject(Ward.serializer())?.also { w ->
@@ -83,10 +87,10 @@ class PlacesFirebaseDao(override val firestore: FirebaseFirestore) : IPlacesDao 
     }
 
     override suspend fun loadStreetsIn(
-            countryCode: String,
-            regionName: String,
-            districtName: String,
-            wardName: String
+        countryCode: String,
+        regionName: String,
+        districtName: String,
+        wardName: String
     ): Array<Street> {
         var streets = arrayOf<Street>()
         val ward = loadWardsIn(countryCode, regionName, districtName).firstOrNull {
@@ -98,7 +102,7 @@ class PlacesFirebaseDao(override val firestore: FirebaseFirestore) : IPlacesDao 
                 return ward.streets.toTypedArray()
             }
             val path =
-                    "countries/${ward.countryName}/regions/${ward.regionName}/districts/${ward.districtName}/wards/${ward.name}/streets"
+                "countries/${ward.countryName}/regions/${ward.regionName}/districts/${ward.districtName}/wards/${ward.name}/streets"
             firestore.collection(path).get { qs ->
                 qs.forEach { doc ->
                     val street = doc.toObject(Street.serializer()) ?: return@forEach

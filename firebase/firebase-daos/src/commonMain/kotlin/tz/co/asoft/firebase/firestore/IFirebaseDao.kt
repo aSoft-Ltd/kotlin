@@ -8,11 +8,15 @@ import tz.co.asoft.firebase.firestore.batch.submit
 import tz.co.asoft.firebase.firestore.collection.doc
 import tz.co.asoft.firebase.firestore.document.fetch
 import tz.co.asoft.firebase.firestore.document.id
+import tz.co.asoft.firebase.firestore.query.equals
 import tz.co.asoft.firebase.firestore.query.fetch
+import tz.co.asoft.firebase.firestore.query.isGreaterThanOrEqualTo
+import tz.co.asoft.firebase.firestore.query.where
 import tz.co.asoft.firebase.firestore.snapshot.toObject
 import tz.co.asoft.firebase.firestore.snapshot.toObjects
 import tz.co.asoft.persist.dao.IDao
 import tz.co.asoft.persist.model.Entity
+import kotlin.reflect.KProperty
 
 interface IFirebaseDao<T : Entity> : IDao<T> {
 
@@ -53,8 +57,6 @@ interface IFirebaseDao<T : Entity> : IDao<T> {
         return list.toList()
     }
 
-    override suspend fun delete(t: T) = wipe(t)
-
     override suspend fun wipe(t: T): T = wipe(listOf(t)).first()
 
     override suspend fun load(ids: Collection<Any>): List<T> = coroutineScope {
@@ -69,5 +71,11 @@ interface IFirebaseDao<T : Entity> : IDao<T> {
 
     override suspend fun load(id: String): T? = load(listOf(id)).firstOrNull()
 
-    override suspend fun all(): List<T> = collection.fetch().toObjects(serializer)
+    override suspend fun all() = collection.where(
+        "deleted" equals false
+    ).fetch().toObjects(serializer)
+
+    override suspend fun allDeleted() = collection.where(
+        "deleted" equals true
+    ).fetch().toObjects(serializer)
 }
