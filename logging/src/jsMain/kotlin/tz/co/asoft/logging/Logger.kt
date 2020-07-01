@@ -3,7 +3,6 @@ package tz.co.asoft.logging
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import tz.co.asoft.persist.repo.IRepo
-import tz.co.asoft.persist.tools.Cause
 
 actual open class Logger actual constructor(
     protected actual val source: String,
@@ -19,25 +18,25 @@ actual open class Logger actual constructor(
         log.send()
     }
 
-    actual fun e(msg: String, c: Cause?) {
+    actual fun e(msg: String, c: Exception?) {
         val log = Log(Log.Level.ERROR.name, msg, origin)
         console.error("$log")
         log.send()
     }
 
-    actual fun e(c: Cause?) {
+    actual fun e(c: Exception?) {
         val log = Log(Log.Level.ERROR.name, c?.message ?: "No Message", origin)
         console.error("$log")
         log.send()
     }
 
-    actual fun f(msg: String, c: Cause?) {
+    actual fun f(msg: String, c: Exception?) {
         val log = Log(Log.Level.FAILURE.name, msg, origin)
         console.error("$log")
         log.send()
     }
 
-    actual fun f(c: Cause?) {
+    actual fun f(c: Exception?) {
         val log = Log(Log.Level.FAILURE.name, c?.message ?: "No Message", origin)
         console.error("$log")
         log.send()

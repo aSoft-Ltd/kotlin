@@ -8,12 +8,13 @@ import tz.co.asoft.klock.asFormatedDate
 import tz.co.asoft.persist.model.Entity
 
 @Serializable
-open class Log(
+data class Log(
     var level: String = Level.DEBUG.name,
     var msg: String = "",
     var source: String = "anonymous"
 ) : Entity {
     override var uid = ""
+    override var deleted = false
 
     var time = DateTime.nowUnixLong()
 
