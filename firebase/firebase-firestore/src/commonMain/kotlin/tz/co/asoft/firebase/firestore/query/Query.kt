@@ -5,6 +5,8 @@ package tz.co.asoft.firebase.firestore.query
 import tz.co.asoft.firebase.firestore.snapshot.QuerySnapshot
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
+import kotlin.properties.ObservableProperty
+import kotlin.reflect.KProperty
 
 expect open class Query
 

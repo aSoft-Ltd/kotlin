@@ -16,8 +16,6 @@ interface ICache<T : Entity> : IDao<T> {
 
     override suspend fun edit(t: T) = create(t)
 
-    override suspend fun delete(t: T): T = wipe(t)
-
     override suspend fun wipe(t: T) = data?.remove(t.uid) ?: t
 
     override suspend fun load(id: String) = data?.get(id)
@@ -25,4 +23,6 @@ interface ICache<T : Entity> : IDao<T> {
     override suspend fun load(ids: Collection<Any>) = ids.mapNotNull { data?.get(it) }
 
     override suspend fun all(): List<T> = data?.values?.toList() ?: listOf()
+
+    override suspend fun allDeleted(): List<T> = all().filter { it.deleted }
 }

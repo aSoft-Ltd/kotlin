@@ -9,11 +9,17 @@ repositories {
     google()
     jcenter()
     mavenCentral()
+    maven("https://maven.jetbrains.space/asofttz/kotlin") {
+        credentials {
+            username = System.getenv("SPACE_USERNAME")
+            password = System.getenv("SPACE_PASSWORD")
+        }
+    }
 }
 
 object versions {
     const val kotlin = "1.3.72"
-    const val asoft = "0.1.0-dev-10"
+    const val asoft = "0.1.0-dev-11"
 
     object android {
         const val build_tools = "4.0.0" //"4.0.0"

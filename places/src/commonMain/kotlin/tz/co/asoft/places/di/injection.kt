@@ -5,11 +5,9 @@ import tz.co.asoft.firebase.core.*
 import tz.co.asoft.firebase.firestore.firestore
 import tz.co.asoft.persist.di.dao
 import tz.co.asoft.persist.di.repo
-import tz.co.asoft.persist.tools.Cause
 import tz.co.asoft.places.data.dao.PlacesFirebaseDao
 import tz.co.asoft.places.data.repo.PlacesRepo
 import tz.co.asoft.places.data.viewmodel.TZPlacesViewModel
-import tz.co.asoft.platform.core.Ctx
 
 object injection {
     val firebaseOptions = FirebaseOptionsBuilder().apply {
@@ -27,8 +25,8 @@ object injection {
         app.value = a
     }
 
-    fun app(): FirebaseApp = app.value
-        ?: throw Cause("Make sure you called Places.Init while the app has started")
+    fun app(): FirebaseApp =
+        app.value ?: throw Exception("Make sure you called Places.Init while the app has started")
 
     private object dao {
         fun places() = dao { PlacesFirebaseDao(app().firestore()) }

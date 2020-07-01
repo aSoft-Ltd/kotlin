@@ -12,9 +12,9 @@ import tz.co.asoft.persist.dao.IDao
 import kotlin.reflect.KClass
 
 open class Neo4JDao<T : Neo4JEntity>(
-        private val clazz: KClass<T>,
-        config: Configuration,
-        vararg clazzes: KClass<*>
+    config: Configuration,
+    private val clazz: KClass<T>,
+    vararg clazzes: KClass<*>
 ) : IDao<T> {
 
     open val session by lazy {
@@ -45,10 +45,6 @@ open class Neo4JDao<T : Neo4JEntity>(
 
     override suspend fun wipe(t: T) = wipe(listOf(t)).first()
 
-    override suspend fun delete(list: Collection<T>) = wipe(list)
-
-    override suspend fun delete(t: T) = delete(listOf(t)).first()
-
     override suspend fun load(ids: Collection<Any>): List<T> = coroutineScope {
         ids.toSet().map { async { load(it.toString()) } }.mapNotNull { it.await() }
     }
@@ -61,6 +57,12 @@ open class Neo4JDao<T : Neo4JEntity>(
     override suspend fun load(id: Number) = load(id.toString())
 
     override suspend fun all(): List<T> = withContext(Dispatchers.IO) {
-        session.loadAll(clazz.java, depth).toList().apply { session.clear() }
+        val filter = Filter("delete", ComparisonOperator.EQUALS, false)
+        session.loadAll(clazz.java, filter, depth).toList().apply { session.clear() }
+    }
+
+    override suspend fun allDeleted(): List<T> = withContext(Dispatchers.IO) {
+        val filter = Filter("delete", ComparisonOperator.EQUALS, true)
+        session.loadAll(clazz.java, filter, depth).toList().apply { session.clear() }
     }
 }

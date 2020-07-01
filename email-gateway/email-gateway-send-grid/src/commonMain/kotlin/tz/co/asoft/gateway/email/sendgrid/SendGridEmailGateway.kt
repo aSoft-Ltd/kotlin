@@ -57,7 +57,12 @@ class SendGridEmailGateway(
             contentType(ContentType.Application.Json)
             this.body = content(sender, receivers, subject, body, "text/html")
         }
-        val email = EmailMessage(sender, receivers.map { it.value }, subject, body)
+        val email = EmailMessage(
+            sender = sender,
+            recipients = receivers.map { it.value },
+            subject = subject,
+            body = body
+        )
         return repo.create(email)
     }
 }

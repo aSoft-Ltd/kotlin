@@ -2,8 +2,9 @@ package tz.co.asoft.persist.dao
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tz.co.asoft.persist.model.Entity
 
-open class AsyncDao<T : Any>(vararg individualDaos: IDao<out T>) : IDao<T> {
+open class AsyncDao<T : Entity>(vararg individualDaos: IDao<out T>) : IDao<T> {
 
     private val daos: List<IDao<T>> = individualDaos.map { it as IDao<T> }
 
@@ -49,5 +50,9 @@ open class AsyncDao<T : Any>(vararg individualDaos: IDao<out T>) : IDao<T> {
 
     override suspend fun all(): List<T> = coroutineScope {
         daos.map { async { it.all() } }.map { it.await() }.flatten()
+    }
+
+    override suspend fun allDeleted(): List<T> {
+        TODO("Not yet implemented")
     }
 }

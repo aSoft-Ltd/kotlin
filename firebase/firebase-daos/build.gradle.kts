@@ -6,9 +6,9 @@ kotlin.sourceSets {
     val commonMain by getting {
         dependencies {
             implementation(kotlin("stdlib-common"))
+            api(project(":persist"))
             api(project(":firebase-firestore"))
             api(project(":firebase-storage"))
-            api(project(":auth"))
         }
     }
 
