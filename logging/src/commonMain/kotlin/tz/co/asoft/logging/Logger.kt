@@ -1,17 +1,16 @@
 package tz.co.asoft.logging
 
 import tz.co.asoft.persist.repo.IRepo
-import tz.co.asoft.persist.tools.Cause
 
 expect open class Logger(source: String = "anonymous", repo: IRepo<Log>? = null) {
     protected val source: String
     protected val repo: IRepo<Log>?
     var tag: String
     fun d(msg: String)
-    fun e(msg: String, c: Cause? = null)
-    fun e(c: Cause? = null)
-    fun f(msg: String, c: Cause? = null)
-    fun f(c: Cause? = null)
+    fun e(msg: String, c: Exception? = null)
+    fun e(c: Exception? = null)
+    fun f(msg: String, c: Exception? = null)
+    fun f(c: Exception? = null)
     fun w(msg: String)
     fun i(msg: String)
     fun obj(vararg o: Any?)
