@@ -2,6 +2,7 @@
 
 package tz.co.asoft.firebase.firestore.query
 
+import tz.co.asoft.firebase.firestore.snapshot.DocumentSnapshot
 import tz.co.asoft.firebase.firestore.snapshot.QuerySnapshot
 import tz.co.asoft.firebase.firestore.tools.await
 
@@ -13,7 +14,9 @@ actual suspend fun Query.get(then: suspend (QuerySnapshot) -> Unit) {
     then(get().await())
 }
 
-actual fun Query.limit(limit: Long): Query = limit(limit)
+actual fun Query.limit(limit: Int): Query = limit(limit)
+
+actual fun Query.start(at: DocumentSnapshot) = startAt(at)
 
 actual fun Query.where(fieldPath: String, operator: String, value: Any): Query = when (operator) {
     "<" -> whereLessThan(fieldPath, value)
