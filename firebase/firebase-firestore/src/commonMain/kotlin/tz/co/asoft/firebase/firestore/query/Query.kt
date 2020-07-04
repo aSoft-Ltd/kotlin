@@ -2,6 +2,7 @@
 
 package tz.co.asoft.firebase.firestore.query
 
+import tz.co.asoft.firebase.firestore.snapshot.DocumentSnapshot
 import tz.co.asoft.firebase.firestore.snapshot.QuerySnapshot
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
@@ -12,7 +13,9 @@ expect open class Query
 
 expect fun Query.where(fieldPath: String, operator: String, value: Any): Query
 
-expect fun Query.limit(limit: Long): Query
+expect fun Query.limit(limit: Int): Query
+
+expect fun Query.start(at: DocumentSnapshot): Query
 
 @Deprecated("Use fetch")
 expect suspend fun Query.get(then: suspend (QuerySnapshot) -> Unit)

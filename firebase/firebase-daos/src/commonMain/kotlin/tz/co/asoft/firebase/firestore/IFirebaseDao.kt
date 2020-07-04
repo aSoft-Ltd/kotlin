@@ -8,10 +8,8 @@ import tz.co.asoft.firebase.firestore.batch.submit
 import tz.co.asoft.firebase.firestore.collection.doc
 import tz.co.asoft.firebase.firestore.document.fetch
 import tz.co.asoft.firebase.firestore.document.id
-import tz.co.asoft.firebase.firestore.query.equals
-import tz.co.asoft.firebase.firestore.query.fetch
-import tz.co.asoft.firebase.firestore.query.isGreaterThanOrEqualTo
-import tz.co.asoft.firebase.firestore.query.where
+import tz.co.asoft.firebase.firestore.query.*
+import tz.co.asoft.firebase.firestore.snapshot.documents
 import tz.co.asoft.firebase.firestore.snapshot.toObject
 import tz.co.asoft.firebase.firestore.snapshot.toObjects
 import tz.co.asoft.persist.dao.IDao
@@ -70,6 +68,12 @@ interface IFirebaseDao<T : Entity> : IDao<T> {
     }
 
     override suspend fun load(id: String): T? = load(listOf(id)).firstOrNull()
+
+    override suspend fun paged(pageNumber: Int, pageSize: Int): List<T> {
+        val query = collection.where("deleted" equals false).limit(pageNumber * pageSize)
+        val docs = query.fetch().documents.chunked(pageSize).getOrNull(0)
+        return docs?.mapNotNull { it.toObject(serializer) } ?: listOf()
+    }
 
     override suspend fun all() = collection.where(
         "deleted" equals false
