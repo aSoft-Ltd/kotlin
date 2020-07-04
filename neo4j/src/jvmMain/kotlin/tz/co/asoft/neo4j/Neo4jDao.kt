@@ -64,9 +64,9 @@ open class Neo4JDao<T : Neo4JEntity>(
         session.loadAll(clazz.java, filter, depth).toList().apply { session.clear() }
     }
 
-    override suspend fun paged(pageNumber: Int, pageSize: Int) {
-        val pagination = Pagination(pageNumber,pageSize)
-        session.loadAll(clazz.java,pagination, depth)
+    override suspend fun paged(pageNumber: Int, pageSize: Int) = withContext(Dispatchers.IO) {
+        val pagination = Pagination(pageNumber, pageSize)
+        session.loadAll(clazz.java, pagination, depth).toList().apply { session.clear() }
     }
 
     override suspend fun allDeleted(): List<T> = withContext(Dispatchers.IO) {
