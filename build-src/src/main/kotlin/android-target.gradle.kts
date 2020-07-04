@@ -30,6 +30,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+
+        getByName("debug") {
+            matchingFallbacks = listOf("release")
+        }
     }
 
     lintOptions {

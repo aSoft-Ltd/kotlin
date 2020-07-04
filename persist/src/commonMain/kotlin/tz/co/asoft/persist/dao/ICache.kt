@@ -25,4 +25,6 @@ interface ICache<T : Entity> : IDao<T> {
     override suspend fun all(): List<T> = data?.values?.toList() ?: listOf()
 
     override suspend fun allDeleted(): List<T> = all().filter { it.deleted }
+
+    override suspend fun paged(pageNumber: Int, pageSize: Int): List<T>
 }

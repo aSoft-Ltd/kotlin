@@ -41,4 +41,6 @@ interface IDao<T : Entity> {
     suspend fun all(): List<T>
 
     suspend fun allDeleted(): List<T>
+
+    suspend fun paged(pageNumber: Int = 1, pageSize: Int = 25): List<T>
 }

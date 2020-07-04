@@ -1,2 +1,2 @@
-cd ../test
+cd ./test
 ./gradlew :publish
