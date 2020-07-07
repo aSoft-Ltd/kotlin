@@ -8,9 +8,7 @@ import org.neo4j.ogm.config.Configuration
 import org.neo4j.ogm.cypher.ComparisonOperator
 import org.neo4j.ogm.cypher.Filter
 import org.neo4j.ogm.cypher.query.Pagination
-import org.neo4j.ogm.cypher.query.PagingAndSortingQuery
 import org.neo4j.ogm.session.SessionFactory
-import org.neo4j.ogm.transaction.Transaction
 import tz.co.asoft.persist.dao.IDao
 import kotlin.reflect.KClass
 
@@ -21,7 +19,8 @@ open class Neo4JDao<T : Neo4JEntity>(
 ) : IDao<T> {
 
     open val session by lazy {
-        SessionFactory(config, *clazzes.map { it.java.`package`.name }.toTypedArray()).openSession()
+        val klasses = (clazzes.toSet()+clazz).map { it.java.`package`.name }
+        SessionFactory(config, *klasses.toTypedArray()).openSession()
     }
 
     open val depth = 10

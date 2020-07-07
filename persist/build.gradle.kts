@@ -24,6 +24,7 @@ kotlin.sourceSets {
             api("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinx.coroutines}")
             api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinx.serialization}")
             api("org.jetbrains.kotlinx:atomicfu:${versions.kotlinx.atomicfu}")
+            api("androidx.paging:paging-runtime-ktx:${versions.androidx.paging}")
         }
     }
 

@@ -34,6 +34,7 @@ object versions {
         val test_runner = "1.2.0"
         val test_rules = "1.2.0"
         val camerax = "1.0.0-alpha05"
+        val paging = "3.0.0-alpha02"
     }
 
     object kotlinjs {
