@@ -42,5 +42,6 @@ interface IDao<T : Entity> {
 
     suspend fun allDeleted(): List<T>
 
+    @Deprecated("Use PagedDao")
     suspend fun paged(pageNumber: Int = 1, pageSize: Int = 25): List<T>
 }

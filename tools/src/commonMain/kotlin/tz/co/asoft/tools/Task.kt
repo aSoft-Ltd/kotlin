@@ -4,7 +4,10 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.map
 
 sealed class Task<T> {
-    class Progress<T>(val pct: Int, val msg: String = "") : Task<T>()
+    class Progress<T>(val pct: Int, val msg: String = "") : Task<T>() {
+        override fun toString() = "$pct%: $msg"
+    }
+
     class Failed<T>(val cause: Throwable) : Task<T>()
     class Completed<T>(val data: T) : Task<T>()
 }
@@ -30,13 +33,13 @@ fun <T> Task<T>.map(from: Int, to: Int): Task<T> = when (this) {
     is Task.Completed -> Task.Completed(data)
 }
 
-fun <T> Task<T>.mapProgress(from: Int, to: Int): Task<T> = when (this) {
+fun <T, S> Task<T>.mapProgress(from: Int, to: Int): Task<S> = when (this) {
     is Task.Progress -> Task.Progress(from + ((to - from) * pct / 100), msg)
     is Task.Failed -> Task.Failed(cause)
     is Task.Completed -> Task.Progress(to)
 }
 
-fun <T> Task<T>.mapProgress(range: IntRange): Task<T> = mapProgress(range.first, range.last)
+fun <T, S> Task<T>.mapProgress(range: IntRange): Task<S> = mapProgress(range.first, range.last)
 
 fun <T, S> Flow<Task<T>>.map(
     from: Int = 0,
@@ -53,9 +56,10 @@ fun <T> Flow<Task<T>>.map(from: Int = 0, to: Int = 100): Flow<Task<T>> = map { i
 
 fun <T, S> Flow<Task<T>>.map(range: IntRange) = map(range.first, range.last)
 
-fun <T> Flow<Task<T>>.mapProgress(from: Int = 0, to: Int = 100) = map { it.mapProgress(from, to) }
+fun <T, S> Flow<Task<T>>.mapProgress(from: Int = 0, to: Int = 100) =
+    map { it.mapProgress<T, S>(from, to) }
 
-fun <T> Flow<Task<T>>.mapProgress(range: IntRange) = map { it.mapProgress(range) }
+fun <T, S> Flow<Task<T>>.mapProgress(range: IntRange) = map { it.mapProgress<T, S>(range) }
 
 fun <T> flowTask(block: suspend FlowCollector<Task<T>>.() -> Unit) = flow(block).catch { emit(it) }
 

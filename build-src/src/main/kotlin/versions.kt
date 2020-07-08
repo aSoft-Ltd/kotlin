@@ -6,7 +6,7 @@ object versions {
     val tornadofx = "1.7.19"
     val gson = "2.8.5"
     val coil = "0.8.0"
-    val asoft = "0.1.0-dev-13"
+    val asoft = "0.1.0-dev-14"
 
     object kotlinx {
         val atomicfu = "0.14.2"
@@ -34,6 +34,7 @@ object versions {
         val test_runner = "1.2.0"
         val test_rules = "1.2.0"
         val camerax = "1.0.0-alpha05"
+        val paging = "3.0.0-alpha02"
     }
 
     object kotlinjs {

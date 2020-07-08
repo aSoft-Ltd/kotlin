@@ -5,10 +5,7 @@
 package tz.co.asoft.enterprise.tables.reacttable
 
 import org.w3c.dom.Node
-import react.Component
-import react.RProps
-import react.RState
-import react.ReactElement
+import react.*
 
 external interface Resize {
     var id: String
@@ -17,7 +14,7 @@ external interface Resize {
 
 external interface Filter {
     var id: String
-    var value: Any
+    var value: String
     var pivotId: String? get() = definedExternally; set(value) = definedExternally
 }
 
@@ -27,7 +24,7 @@ external interface SortingRule {
 }
 
 @JsName("default")
-internal external class ReactTable<D : Any> : Component<TableProps<D>, RState> {
+external class ReactTable<D : Any> : Component<TableProps<D>, RState> {
     override fun render(): dynamic
 }
 
@@ -52,7 +49,7 @@ external interface TableProps<D : Any> : RProps {
     var defaultSorting: Array<SortingRule>
     var showFilters: Boolean
     var defaultFiltering: Array<Filter>
-    var defaultFilterMethod: (filter: Filter, row: Any, column: Any) -> Boolean
+    var defaultFilterMethod: (filter: Filter, rows: Row<D>, column: Column<D>) -> Boolean
     var defaultSortMethod: (a: Any, b: Any, desc: Any) -> Number
     var resizable: Boolean
     var filterable: Boolean
@@ -74,6 +71,11 @@ external interface TableProps<D : Any> : RProps {
     var getTrProps: (state: dynamic, row: Row<D>) -> TrResult
 }
 
+external interface FilterProp {
+    var filter: Filter?
+    var onChange: (String) -> Unit
+}
+
 external interface Column<D : Any> {
     var Header: dynamic
     var accessor: dynamic
@@ -82,7 +84,11 @@ external interface Column<D : Any> {
     var width: Number
     var maxWidth: Number
     var expander: Boolean
-    var columns: Array<Any>
+    var columns: Array<Column<*>>
+    var filterable: Boolean
+    var foldable: Boolean
+    var Filter: (FilterProp) -> ReactElement
+    var filterMethod: (filter: Filter, row: Row<D>, column: Column<D>) -> Boolean
     var pivot: Boolean
     var Cell: (Row<D>) -> ReactElement?
     var style: dynamic

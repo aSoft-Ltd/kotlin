@@ -23,9 +23,6 @@ kotlin.sourceSets {
         dependencies {
             implementation(kotlin("stdlib"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinx.coroutines}")
-            api("androidx.lifecycle:lifecycle-extensions:${versions.androidx.lifecycle}")
-            api("androidx.fragment:fragment:${versions.androidx.fragment}")
-            api("androidx.appcompat:appcompat:${versions.androidx.appcompat}")
         }
     }
 

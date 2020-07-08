@@ -2,6 +2,7 @@ package tz.co.asoft.persist.dao
 
 import tz.co.asoft.persist.model.Entity
 
+@Deprecated("Do not use this")
 interface ICache<T : Entity> : IDao<T> {
     var data: MutableMap<String, T>?
     override suspend fun create(list: Collection<T>): List<T> {

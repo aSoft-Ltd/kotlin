@@ -3,33 +3,31 @@ package tz.co.asoft.enterprise.dropdown
 import kotlinx.css.*
 import kotlinx.css.properties.border
 import kotlinx.css.properties.boxShadow
-import kotlinx.html.SELECT
-import kotlinx.html.js.onChangeFunction
-import org.w3c.dom.HTMLSelectElement
-import react.*
+import react.RBuilder
+import react.RComponent
+import react.RProps
+import react.RState
 import styled.css
 import styled.styledDiv
 import styled.styledOption
 import styled.styledSelect
 import tz.co.asoft.enterprise.dropdown.DropDown.Props
-import tz.co.asoft.enterprise.dropdown.DropDown.State
-import tz.co.asoft.theme.*
-import tz.co.asoft.tools.*
+import tz.co.asoft.theme.ThemeConsumer
+import tz.co.asoft.theme.dropdown_clazz
+import tz.co.asoft.theme.primaryColor
+import tz.co.asoft.tools.onOptionChanged
+import tz.co.asoft.tools.persist
 
-private class DropDown(p: Props) : RComponent<Props, State>(p) {
+private class DropDown(p: Props) : RComponent<Props, RState>(p) {
     class Props(
         val value: String?,
         val options: List<String>,
         val isRequired: Boolean,
         val name: String,
+        val data: Map<String, Any>?,
+        val multipleSelect: Boolean,
         val onChange: ((String) -> Unit)?
     ) : RProps
-
-    class State(var value: String) : RState
-
-    init {
-        state = State(if (p.value?.isNotBlank() == true) p.value else p.options.first())
-    }
 
     override fun RBuilder.render(): dynamic = ThemeConsumer { theme ->
         styledDiv {
@@ -62,19 +60,18 @@ private class DropDown(p: Props) : RComponent<Props, State>(p) {
                     +theme.dropdown_clazz
                 }
 
+                attrs["defaultValue"] = props.value ?: props.options.first()
+                props.data?.forEach { (k, v) -> attrs["data-$k"] = v }
                 attrs {
                     required = props.isRequired
                     onOptionChanged {
                         it.persist()
-                        setState { value = this@onOptionChanged.value }
                         props.onChange?.let {
-                            it(state.value)
+                            it(value)
                         }
                     }
+                    multiple = props.multipleSelect
                     name = props.name
-                    attrs["defaultValue"] = state.value
-                    attrs["data-name"] = props.name
-
                     props.options.forEachIndexed { i, it ->
                         styledOption {
                             attrs {
@@ -97,5 +94,10 @@ fun RBuilder.DropDown(
     options: List<String>,
     isRequired: Boolean = true,
     name: String,
+    data: Map<String, Any>? = null,
+    multipleSelect: Boolean = false,
     onChange: ((String) -> Unit)? = null
-) = child(DropDown::class.js, Props(value, options, isRequired, name, onChange)) {}
+) = child(
+    DropDown::class.js,
+    Props(value, options, isRequired, name, data, multipleSelect, onChange)
+) {}
