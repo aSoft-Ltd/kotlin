@@ -9,6 +9,7 @@ kotlin.sourceSets {
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.kotlinx.coroutines}")
             api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${versions.kotlinx.serialization}")
             api("org.jetbrains.kotlinx:atomicfu-common:${versions.kotlinx.atomicfu}")
+            api(project(":persist"))
         }
     }
 

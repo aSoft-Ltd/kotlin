@@ -14,8 +14,10 @@ inline fun <reified T : Any> single(noinline block: () -> T): T = singletons.get
 @PublishedApi
 internal val caches = atomic(mutableMapOf<KClass<*>, IDao<*>>())
 
+@Deprecated("Do not use this anymore")
 inline fun <reified E : Any, C : ICache<E>> onlyCache(noinline block: () -> C) = caches.getOrPut(E::class, block) as C
 
+@Deprecated("Do not use this anymore")
 inline fun <reified E : Any, C : ICache<E>> cache(noinline block: () -> C) = onlyCache(block)
 
 @PublishedApi
