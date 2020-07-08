@@ -1,33 +1,7 @@
-/*
- * Copyright 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package tz.co.asoft.persist.paging
 
-import tz.co.asoft.persist.paging.LoadState.NotLoading.Companion
 import tz.co.asoft.persist.paging.LoadType.*
 
-/**
- * Callbacks for the presenter/adapter to listen to the state of pagination data.
- *
- * Note that these won't map directly to PageEvents, since PageEvents can cause several adapter
- * events that should all be dispatched to the presentation layer at once - as part of the same
- * frame.
- *
- * @suppress
- */
 interface PresenterCallback {
     fun onChanged(position: Int, count: Int)
     fun onInserted(position: Int, count: Int)
@@ -35,10 +9,6 @@ interface PresenterCallback {
     fun onStateUpdate(loadType: LoadType, fromMediator: Boolean, loadState: LoadState)
 }
 
-/**
- * Presents post-transform paging data as a list, with list update notifications when
- * PageEvents are dispatched.
- */
 internal class PagePresenter<T : Any>(
     insertEvent: PageEvent.Insert<T>
 ) : NullPaddedList<T> {

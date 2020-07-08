@@ -1,19 +1,3 @@
-/*
- * Copyright 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package tz.co.asoft.persist.paging
 
 import tz.co.asoft.persist.paging.LoadType.APPEND
@@ -22,11 +6,6 @@ import tz.co.asoft.persist.paging.LoadType.REFRESH
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-/**
- * Events in the stream from paging fetch logic to UI.
- *
- * Every event sent to the UI is a PageEvent, and will be processed atomically.
- */
 internal sealed class PageEvent<T : Any> {
     data class Insert<T : Any> private constructor(
         val loadType: LoadType,
@@ -126,11 +105,6 @@ internal sealed class PageEvent<T : Any> {
                 combinedLoadStates: CombinedLoadStates
             ) = Insert(APPEND, pages, -1, placeholdersAfter, combinedLoadStates)
 
-            /**
-             * Empty refresh, used to convey initial state.
-             *
-             * Note - has no remote state, so remote state may be added over time
-             */
             val EMPTY_REFRESH_LOCAL = Refresh<Any>(
                 pages = listOf(),
                 placeholdersBefore = 0,
@@ -164,7 +138,7 @@ internal sealed class PageEvent<T : Any> {
     data class LoadStateUpdate<T : Any>(
         val loadType: LoadType,
         val fromMediator: Boolean,
-        val loadState: LoadState // TODO: consider using full state object here
+        val loadState: LoadState
     ) : PageEvent<T>() {
         init {
             require(loadState is LoadState.Loading || loadState is LoadState.Error) {
@@ -236,26 +210,15 @@ internal inline fun <R : Any, T : R, PageStash, Stash> Flow<PageEvent<T>>.scan(
     }
 }
 
-/**
- * Transforms the Flow to an output-equivalent Flow, which does not have empty pages.
- *
- * This can be used before accessing adjacent pages, to ensure adjacent pages have context in
- * them.
- *
- * Note that we don't drop events, since those can contain other important state
- */
 internal fun <T : Any> Flow<PageEvent<T>>.removeEmptyPages(): Flow<PageEvent<T>> = scan(
     createStash = { Unit },
     createPageStash = { page ->
-        // stash contains whether incoming page was empty
         page.data.isEmpty()
     },
     createInsert = { insert, _, _ ->
         if (insert.pages.any { it.data.isEmpty() }) {
-            // filter out empty pages
             insert.transformPages { pages -> pages.filter { it.data.isNotEmpty() } }
         } else {
-            // no empty pages, can safely reuse this page
             insert
         }
     },

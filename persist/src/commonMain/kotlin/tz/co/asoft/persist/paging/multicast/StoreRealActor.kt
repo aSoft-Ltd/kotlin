@@ -15,12 +15,10 @@
  */
 package tz.co.asoft.persist.paging.multicast
 
-import kotlinx.atomicfu.AtomicBoolean
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.SendChannel
-import kotlinx.coroutines.channels.produce
 
 /**
  * Simple actor implementation abstracting away Coroutine.actor since it is deprecated.

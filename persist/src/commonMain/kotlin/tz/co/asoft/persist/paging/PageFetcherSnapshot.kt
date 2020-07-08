@@ -1,22 +1,5 @@
-/*
- * Copyright 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package tz.co.asoft.persist.paging
 
-import kotlinx.atomicfu.AtomicBoolean
 import kotlinx.atomicfu.atomic
 import tz.co.asoft.persist.paging.LoadState.Error
 import tz.co.asoft.persist.paging.LoadState.Loading
@@ -31,8 +14,6 @@ import tz.co.asoft.persist.paging.PagingSource.LoadResult
 import tz.co.asoft.persist.paging.PagingSource.LoadResult.Page
 import tz.co.asoft.persist.paging.PagingSource.LoadResult.Page.Companion.COUNT_UNDEFINED
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
@@ -54,11 +35,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlin.math.absoluteValue
 
-/**
- * Holds a generation of pageable data, a snapshot of data loaded by [PagingSource]. An instance
- * of [PageFetcherSnapshot] and its corresponding [PageFetcherSnapshotState] should be launched
- * within a scope that is cancelled when [PagingSource.invalidate] is called.
- */
 internal class PageFetcherSnapshot<Key : Any, Value : Any>(
     internal val initialKey: Key?,
     internal val pagingSource: PagingSource<Key, Value>,
@@ -75,7 +51,6 @@ internal class PageFetcherSnapshot<Key : Any, Value : Any>(
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private val hintChannel = BroadcastChannel<ViewportHint>(CONFLATED)
     private var lastHint: ViewportHint? = null
 
@@ -89,23 +64,17 @@ internal class PageFetcherSnapshot<Key : Any, Value : Any>(
 
     private val pageEventChannelFlowJob = Job()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     val pageEventFlow: Flow<PageEvent<Value>> = cancelableChannelFlow(pageEventChannelFlowJob) {
         check(pageEventChCollected.compareAndSet(false, true)) {
             "Attempt to collect twice from pageEventFlow, which is an illegal operation. Did you " +
                     "forget to call Flow<PagingData<*>>.cachedIn(coroutineScope)?"
         }
 
-        // Start collection on pageEventCh, which the rest of this class uses to send PageEvents
-        // to this flow.
         launch { pageEventCh.consumeAsFlow().collect { send(it) } }
 
-        // Wrap collection behind a RendezvousChannel to prevent the RetryChannel from buffering
-        // retry signals.
         val retryChannel = Channel<Unit>(Channel.RENDEZVOUS)
         launch { retryFlow.collect { retryChannel.offer(it) } }
 
-        // Start collection on retry signals.
         launch {
             retryChannel.consumeAsFlow()
                 .collect {
@@ -123,8 +92,6 @@ internal class PageFetcherSnapshot<Key : Any, Value : Any>(
                             }
                         )
 
-                        // If retrying REFRESH from PagingSource succeeds, start collection on
-                        // ViewportHints for PREPEND / APPEND loads.
                         if (!fromRemote && loadType == REFRESH) {
                             val newRefreshState = stateLock.withLock {
                                 state.loadStates.get(REFRESH, false)
@@ -147,10 +114,8 @@ internal class PageFetcherSnapshot<Key : Any, Value : Any>(
             }
         }
 
-        // Setup finished, start the initial load even if RemoteMediator throws an error.
         doInitialLoad(this, state)
 
-        // Only start collection on ViewportHints if the initial load succeeded.
         if (stateLock.withLock { state.loadStates.get(REFRESH, false) } !is Error) {
             startConsumingHints()
         }
@@ -178,8 +143,6 @@ internal class PageFetcherSnapshot<Key : Any, Value : Any>(
                 check(viewportHint != null) {
                     "Cannot retry APPEND / PREPEND load on PagingSource without ViewportHint"
                 }
-
-                @OptIn(ExperimentalCoroutinesApi::class)
                 hintChannel.offer(viewportHint)
             }
         }
@@ -187,7 +150,6 @@ internal class PageFetcherSnapshot<Key : Any, Value : Any>(
 
     fun addHint(hint: ViewportHint) {
         lastHint = hint
-        @OptIn(ExperimentalCoroutinesApi::class)
         hintChannel.offer(hint)
     }
 
@@ -208,9 +170,7 @@ internal class PageFetcherSnapshot<Key : Any, Value : Any>(
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     private fun CoroutineScope.startConsumingHints() {
-        // Pseudo-tiling via invalidation on jumps.
         if (config.jumpThreshold != COUNT_UNDEFINED) {
             launch {
                 hintChannel.asFlow()
@@ -244,7 +204,6 @@ internal class PageFetcherSnapshot<Key : Any, Value : Any>(
                         }
                     }
 
-                    @OptIn(FlowPreview::class)
                     val generationalHints = hintChannel.asFlow()
                         // Prevent infinite loop when competing prepend / append cancel each other
                         .drop(if (generationId == 0) 0 else 1)
@@ -281,7 +240,6 @@ internal class PageFetcherSnapshot<Key : Any, Value : Any>(
                         }
                     }
 
-                    @OptIn(FlowPreview::class)
                     val generationalHints = hintChannel.asFlow()
                         // Prevent infinite loop when competing prepend / append cancel each other
                         .drop(if (generationId == 0) 0 else 1)
@@ -309,8 +267,7 @@ internal class PageFetcherSnapshot<Key : Any, Value : Any>(
         loadType = loadType,
         key = key,
         loadSize = if (loadType == REFRESH) config.initialLoadSize else config.pageSize,
-        placeholdersEnabled = config.enablePlaceholders,
-        pageSize = config.pageSize
+        placeholdersEnabled = config.enablePlaceholders
     )
 
     private suspend fun doInitialLoad(

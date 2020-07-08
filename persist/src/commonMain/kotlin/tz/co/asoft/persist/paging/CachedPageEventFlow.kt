@@ -16,22 +16,13 @@
 
 package tz.co.asoft.persist.paging
 
-import kotlinx.atomicfu.AtomicBoolean
 import kotlinx.atomicfu.atomic
 import tz.co.asoft.persist.paging.multicast.Multicaster
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ClosedSendChannelException
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.withIndex
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -95,7 +86,7 @@ internal class CachedPageEventFlow<T : Any>(
             }
         }
         val activeStreamCollection = launch {
-            multicastedSrc.flow.catch { throwable: Throwable ->
+            multicastedSrc.flow.catch {  throwable: Throwable ->
                 // ignore ClosedSendChannelException, possible race condition
                 // watch the following issue to catch a more explicit error
                 // https://github.com/dropbox/Store/issues/45
@@ -220,7 +211,8 @@ internal class FlattenedPageEventStorage<T : Any> {
      * data once we start getting events. This is fine, since downstream needs to handle this
      * anyway - remote state being added after initial, empty, PagingData.
      */
-    private val loadStates = MutableLoadStateCollection(hasRemoteState = false)
+    private val loadStates =
+        MutableLoadStateCollection(hasRemoteState = false)
     fun add(event: PageEvent<T>) {
         when (event) {
             is PageEvent.Insert<T> -> handleInsert(event)
@@ -235,7 +227,7 @@ internal class FlattenedPageEventStorage<T : Any> {
         //  remote and local)
         loadStates.set(
             event.loadType, false,
-            LoadState.NotLoading.Incomplete
+            LoadState.NotLoading.Companion.Incomplete
         )
 
         when (event.loadType) {
@@ -285,7 +277,7 @@ internal class FlattenedPageEventStorage<T : Any> {
         val events = mutableListOf<PageEvent<T>>()
         if (pages.isNotEmpty()) {
             events.add(
-                PageEvent.Insert.Refresh(
+                PageEvent.Insert.Companion.Refresh(
                     pages = pages.toList(),
                     placeholdersBefore = placeholdersBefore,
                     placeholdersAfter = placeholdersAfter,

@@ -1,19 +1,3 @@
-/*
- * Copyright 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package tz.co.asoft.persist.paging
 
 import tz.co.asoft.persist.paging.LoadState.NotLoading
@@ -26,15 +10,11 @@ import tz.co.asoft.persist.paging.PageEvent.Insert.Companion.Refresh
 import tz.co.asoft.persist.paging.PagingConfig.Companion.MAX_SIZE_UNBOUNDED
 import tz.co.asoft.persist.paging.PagingSource.LoadResult.Page
 import tz.co.asoft.persist.paging.PagingSource.LoadResult.Page.Companion.COUNT_UNDEFINED
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.onStart
 
-/**
- * Internal state of [PageFetcherSnapshot] whose updates can be consumed as a [Flow] of [PageEvent].
- */
 internal class PageFetcherSnapshotState<Key : Any, Value : Any>(
     private val config: PagingConfig,
     hasRemoteState: Boolean
@@ -76,21 +56,14 @@ internal class PageFetcherSnapshotState<Key : Any, Value : Any>(
     private val prependLoadIdCh = Channel<Int>(Channel.CONFLATED)
     private val appendLoadIdCh = Channel<Int>(Channel.CONFLATED)
 
-    /**
-     * Cache previous ViewportHint which triggered any failed PagingSource APPEND / PREPEND that
-     * we can later retry. This is so we always trigger loads based on hints, instead of having
-     * two different ways to trigger.
-     */
     internal val failedHintsByLoadType = mutableMapOf<LoadType, ViewportHint>()
     internal val loadStates = MutableLoadStateCollection(hasRemoteState)
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun consumePrependGenerationIdAsFlow(): Flow<Int> {
         return prependLoadIdCh.consumeAsFlow()
             .onStart { prependLoadIdCh.offer(prependLoadId) }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun consumeAppendGenerationIdAsFlow(): Flow<Int> {
         return appendLoadIdCh.consumeAsFlow()
             .onStart { appendLoadIdCh.offer(appendLoadId) }
@@ -131,9 +104,6 @@ internal class PageFetcherSnapshotState<Key : Any, Value : Any>(
         }
     }
 
-    /**
-     * @return true if insert was applied, false otherwise.
-     */
     fun insert(loadId: Int, loadType: LoadType, page: Page<Key, Value>): Boolean {
         when (loadType) {
             REFRESH -> {

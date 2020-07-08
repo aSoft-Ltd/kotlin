@@ -18,42 +18,14 @@ package tz.co.asoft.persist.paging
 
 import tz.co.asoft.persist.paging.PagingSource.LoadResult.Page
 
-/**
- * Snapshot state of Paging system including the loaded [pages], the last accessed [anchorPosition],
- * and the [config] used.
- */
 class PagingState<Key : Any, Value : Any> internal constructor(
-    /**
-     * Loaded pages of data in the list.
-     */
     val pages: List<Page<Key, Value>>,
-    /**
-     * Most recently accessed index in the list, including placeholders.
-     *
-     * `null` if no access in the [PagingData] has been made yet. E.g., if this snapshot was
-     * generated before or during the first load.
-     */
     val anchorPosition: Int?,
-    /**
-     * [PagingConfig] that was given when initializing the [PagingData] stream.
-     */
     val config: PagingConfig,
     private val placeholdersBefore: Int
 ) {
-    /**
-     * Coerces [anchorPosition] to closest loaded value in [pages].
-     *
-     * This function can be called with [anchorPosition] to fetch the loaded item that is closest
-     * to the last accessed index in the list.
-     *
-     * @param anchorPosition Index in the list, including placeholders.
-     *
-     * @return The closest loaded [Value] in [pages] to the provided [anchorPosition]. `null` if
-     * all loaded [pages] are empty.
-     */
     fun closestItemToPosition(anchorPosition: Int): Value? {
         if (pages.all { it.data.isEmpty() }) return null
-
         anchorPositionToPagedIndices(anchorPosition) { pageIndex, index ->
             return when {
                 index < 0 -> pages.first().data.first()
@@ -65,20 +37,8 @@ class PagingState<Key : Any, Value : Any> internal constructor(
         }
     }
 
-    /**
-     * Coerces an index in the list, including placeholders, to closest loaded page in [pages].
-     *
-     * This function can be called with [anchorPosition] to fetch the loaded page that is closest
-     * to the last accessed index in the list.
-     *
-     * @param anchorPosition Index in the list, including placeholders.
-     *
-     * @return The closest loaded [Value] in [pages] to the provided [anchorPosition]. `null` if
-     * all loaded [pages] are empty.
-     */
     fun closestPageToPosition(anchorPosition: Int): Page<Key, Value>? {
         if (pages.all { it.data.isEmpty() }) return null
-
         anchorPositionToPagedIndices(anchorPosition) { pageIndex, index ->
             return when {
                 index < 0 -> pages.first()
@@ -87,22 +47,8 @@ class PagingState<Key : Any, Value : Any> internal constructor(
         }
     }
 
-    /**
-     * @return `true` if all loaded pages are empty or no pages were loaded when this [PagingState]
-     * was created, `false` otherwise.
-     */
     fun isEmpty() = pages.all { it.data.isEmpty() }
-
-    /**
-     * @return The first loaded item in the list or `null` if all loaded pages are empty or no pages
-     * were loaded when this [PagingState] was created.
-     */
     fun firstItemOrNull(): Value? = pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
-
-    /**
-     * @return The last loaded item in the list or `null` if all loaded pages are empty or no pages
-     * were loaded when this [PagingState] was created.
-     */
     fun lastItemOrNull(): Value? = pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()
 
     private inline fun <T> anchorPositionToPagedIndices(

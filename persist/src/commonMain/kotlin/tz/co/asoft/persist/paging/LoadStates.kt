@@ -18,15 +18,9 @@ package tz.co.asoft.persist.paging
 
 import tz.co.asoft.persist.paging.LoadState.NotLoading.Companion.Incomplete
 
-/**
- * Collection of pagination [LoadState]s - refresh, prepend, and append.
- */
 data class LoadStates(
-    /** [LoadState] corresponding to [LoadType.REFRESH] loads. */
     val refresh: LoadState,
-    /** [LoadState] corresponding to [LoadType.PREPEND] loads. */
     val prepend: LoadState,
-    /** [LoadState] corresponding to [LoadType.APPEND] loads. */
     val append: LoadState
 ) {
     init {

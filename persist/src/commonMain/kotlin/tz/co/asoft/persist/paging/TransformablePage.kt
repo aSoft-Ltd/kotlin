@@ -17,34 +17,11 @@
 package tz.co.asoft.persist.paging
 
 internal data class TransformablePage<T : Any>(
-    /**
-     * Index of the original page (pre-transformation) relative to initial load = 0
-     */
     val originalPageOffset: Int,
-
-    /**
-     * Data to present (post-transformation)
-     */
     val data: List<T>,
-
-    /**
-     * Size of the original page (pre-transformation)
-     */
     val originalPageSize: Int,
-
-    /**
-     * Optional lookup table for page indices.
-     *
-     * If provided, this table provides a mapping from presentation index -> original,
-     * pre-transformation index.
-     *
-     * If null, the indices of [data] map directly to their original pre-transformation index.
-     */
     val originalIndices: List<Int>?
 ) {
-    /**
-     * Simple constructor for creating pre-transformation pages, which don't need an index lookup
-     */
     constructor(
         originalPageOffset: Int,
         data: List<T>

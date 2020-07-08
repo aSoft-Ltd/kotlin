@@ -16,19 +16,8 @@
 
 package tz.co.asoft.persist.paging
 
-/**
- * Collection of pagination [LoadState]s for both a [PagingSource], and [RemoteMediator].
- */
 data class CombinedLoadStates(
-    /**
-     * [LoadStates] corresponding to loads from a [PagingSource].
-     */
     val source: LoadStates,
-
-    /**
-     * [LoadStates] corresponding to loads from a [RemoteMediator], or `null` if RemoteMediator
-     * not present.
-     */
     val mediator: LoadStates? = null
 ) {
     val refresh: LoadState = (mediator ?: source).refresh

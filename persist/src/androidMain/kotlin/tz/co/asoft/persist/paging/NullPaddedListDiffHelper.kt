@@ -145,7 +145,12 @@ internal fun <T : Any> NullPaddedList<T>.dispatchDiff(
 
     // apply the diff, with an offset if needed
     if (leadingNew != 0) {
-        diffResult.dispatchUpdatesTo(OffsettingListUpdateCallback(leadingNew, callback))
+        diffResult.dispatchUpdatesTo(
+            OffsettingListUpdateCallback(
+                leadingNew,
+                callback
+            )
+        )
     } else {
         diffResult.dispatchUpdatesTo(callback)
     }

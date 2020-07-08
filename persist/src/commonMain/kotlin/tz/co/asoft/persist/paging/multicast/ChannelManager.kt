@@ -1,19 +1,3 @@
-/*
- * Copyright 2019 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package tz.co.asoft.persist.paging.multicast
 
 import kotlinx.coroutines.CompletableDeferred
@@ -21,37 +5,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.Flow
 
-/**
- * Tracks active downstream channels and dispatches incoming upstream values to each of them in
- * parallel. The upstream is suspended after producing a value until at least one of the downstreams
- * acknowledges receiving it via [Message.Dispatch.Value.delivered].
- *
- * The [ChannelManager] will start the upstream from the given [upstream] [Flow] if there
- * is no active upstream and there's at least one downstream that has not received a value.
- *
- */
 internal class ChannelManager<T>(
-    /**
-     * The scope in which ChannelManager actor runs
-     */
     private val scope: CoroutineScope,
-    /**
-     * The buffer size that is used while the upstream is active
-     */
     private val bufferSize: Int,
-    /**
-     * If true, downstream is never closed by the ChannelManager unless upstream throws an error.
-     * Instead, it is kept open and if a new downstream shows up that causes us to restart the flow,
-     * it will receive values as well.
-     */
     private val piggybackingDownstream: Boolean = false,
-    /**
-     * Called when a value is dispatched
-     */
     private val onEach: suspend (T) -> Unit,
-
     private val keepUpstreamAlive: Boolean = false,
-
     private val upstream: Flow<T>
 ) {
 
@@ -65,35 +24,11 @@ internal class ChannelManager<T>(
 
     private val actor = Actor()
 
-    /**
-     * Actor that does all the work. Any state and functionality should go here.
-     */
     private inner class Actor : StoreRealActor<Message<T>>(scope) {
-
         private val buffer = Buffer<T>(bufferSize)
-
-        /**
-         * The current producer
-         */
         private var producer: SharedFlowProducer<T>? = null
-
-        /**
-         * Tracks whether we've ever dispatched value or error from the current producer.
-         * Reset when producer finishes.
-         */
         private var dispatchedValue: Boolean = false
-
-        /**
-         * The ack for the very last message we've delivered.
-         * When a new downstream comes and buffer is 0, we ack this message so that new downstream
-         * can immediately start receiving values instead of waiting for values that it'll never
-         * receive.
-         */
         private var lastDeliveryAck: CompletableDeferred<Unit>? = null
-
-        /**
-         * List of downstream collectors.
-         */
         private val channels = mutableListOf<ChannelEntry<T>>()
 
         override suspend fun handle(msg: Message<T>) {
@@ -106,12 +41,7 @@ internal class ChannelManager<T>(
             }
         }
 
-        /**
-         * Called when the channel manager is active (e.g. it has downstream collectors and needs a
-         * producer)
-         */
-        private fun newProducer() =
-            SharedFlowProducer(scope, upstream, ::send)
+        private fun newProducer() = SharedFlowProducer(scope, upstream, ::send)
 
         /**
          * We are closing. Do a cleanup on existing channels where we'll close them and also decide
@@ -291,16 +221,9 @@ internal class ChannelManager<T>(
      * Messages accepted by the [ChannelManager].
      */
     sealed class Message<T> {
-        /**
-         * Add a new channel, that means a new downstream subscriber
-         */
         class AddChannel<T>(
             val channel: SendChannel<Dispatch.Value<T>>
         ) : Message<T>()
-
-        /**
-         * Remove a downstream subscriber, that means it completed
-         */
         class RemoveChannel<T>(val channel: SendChannel<Dispatch.Value<T>>) : Message<T>()
 
         sealed class Dispatch<T> : Message<T>() {

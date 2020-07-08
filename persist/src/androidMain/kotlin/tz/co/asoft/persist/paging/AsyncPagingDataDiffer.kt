@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.ListUpdateCallback
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -50,7 +49,8 @@ class AsyncPagingDataDiffer<T : Any> @JvmOverloads constructor(
     @Suppress("ListenerLast") // have to suppress for each, due to defaults / JvmOverloads
     private val workerDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) {
-    internal val callback = object : PresenterCallback {
+    internal val callback = object :
+        PresenterCallback {
         override fun onInserted(position: Int, count: Int) {
             updateCallback.onInserted(position, count)
         }
@@ -252,8 +252,8 @@ class AsyncPagingDataDiffer<T : Any> @JvmOverloads constructor(
         CopyOnWriteArrayList()
 
     internal val combinedLoadStates = MutableLoadStateCollection(
-        hasRemoteState = false
-    )
+            hasRemoteState = false
+        )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val _loadStateCh = ConflatedBroadcastChannel(combinedLoadStates.snapshot())
@@ -267,11 +267,9 @@ class AsyncPagingDataDiffer<T : Any> @JvmOverloads constructor(
      *
      * @sample androidx.paging.samples.loadStateFlowSample
      */
-    @OptIn(FlowPreview::class)
     val loadStateFlow: Flow<CombinedLoadStates> = _loadStateCh.asFlow()
 
     init {
-        @OptIn(ExperimentalCoroutinesApi::class, ExperimentalPagingApi::class)
         addLoadStateListener { _loadStateCh.offer(combinedLoadStates.snapshot()) }
     }
 
