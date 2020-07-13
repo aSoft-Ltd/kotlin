@@ -12,8 +12,6 @@ val EventTarget?.files: Array<File> get() = asDynamic().files
 
 fun <T : Element> EventTarget.to() = unsafeCast<T>()
 
-fun Event.persist(): Unit = asDynamic().persist()
-
 inline fun <T> Event.targetElement(): T where T : Element, T : CommonAttributeGroupFacade {
     return target!!.to()
 }

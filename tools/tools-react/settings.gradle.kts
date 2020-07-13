@@ -5,5 +5,4 @@ pluginManagement {
     }
 }
 
-includeBuild("../build-src")
-includeBuild("../test")
+includeBuild("../../build-src")
