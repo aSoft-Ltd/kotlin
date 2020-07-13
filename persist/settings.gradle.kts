@@ -6,4 +6,5 @@ pluginManagement {
 }
 
 includeBuild("../build-src")
-includeBuild("../test")
+include(":paging-core")
+project(":paging-core").projectDir = File("../paging/paging-core")

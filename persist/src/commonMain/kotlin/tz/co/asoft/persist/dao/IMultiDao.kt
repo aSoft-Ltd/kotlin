@@ -5,6 +5,7 @@ import kotlinx.coroutines.coroutineScope
 import tz.co.asoft.persist.model.Entity
 import kotlin.reflect.KClass
 
+@Deprecated("Think twice before doing this. How will you handle pagination?")
 interface IMultiDao<T : Entity> : IDao<T> {
     val daos: Map<KClass<out T>, IDao<T>>
     private val T.dao: IDao<T>
@@ -37,5 +38,6 @@ interface IMultiDao<T : Entity> : IDao<T> {
 
     suspend fun <E : T> loadAll(clazz: KClass<E>): List<E> = daos[clazz]?.all() as List<E>
 
-    suspend fun <E : T> loadAllDeleted(clazz: KClass<E>): List<E> = daos[clazz]?.allDeleted() as List<E>
+    suspend fun <E : T> loadAllDeleted(clazz: KClass<E>): List<E> =
+        daos[clazz]?.allDeleted() as List<E>
 }
