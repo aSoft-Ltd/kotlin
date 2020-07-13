@@ -57,7 +57,7 @@ internal class FirebasePageLoader<D : Entity>(
 
     override suspend fun firstPage(pageSize: Int): Page<DocumentSnapshot, D> {
         val snaps = loadPage(pageSize, null)
-        val key = snaps.first()
+        val key = snaps.firstOrNull()
         val users = snaps.mapNotNull { it.toObject(serializer) }
         val nextKey = if (users.size < (pageSize + 1)) null else snaps.last()
         return Page(
