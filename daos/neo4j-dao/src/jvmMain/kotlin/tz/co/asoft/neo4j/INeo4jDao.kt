@@ -8,6 +8,7 @@ import org.neo4j.ogm.cypher.ComparisonOperator
 import org.neo4j.ogm.cypher.Filter
 import org.neo4j.ogm.cypher.query.Pagination
 import org.neo4j.ogm.session.Session
+import tz.co.asoft.paging.PageLoader
 import tz.co.asoft.persist.dao.IDao
 import kotlin.reflect.KClass
 
@@ -64,4 +65,7 @@ interface INeo4jDao<T : Neo4JEntity> : IDao<T> {
         val filter = Filter("delete", ComparisonOperator.EQUALS, true)
         session.loadAll(clazz.java, filter, depth).toList().apply { session.clear() }
     }
+
+    override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> =
+        Neo4jPageLoader(session, clazz, depth, predicate)
 }

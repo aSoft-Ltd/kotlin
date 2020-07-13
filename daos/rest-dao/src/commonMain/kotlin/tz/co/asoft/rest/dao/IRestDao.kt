@@ -6,11 +6,14 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.list
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import tz.co.asoft.paging.PageLoader
+import tz.co.asoft.paging.VKey
 import tz.co.asoft.persist.dao.IDao
 import tz.co.asoft.persist.model.Entity
 import tz.co.asoft.result.Result
 import tz.co.asoft.result.Result.Companion.RJson
 import tz.co.asoft.result.respond
+import kotlin.coroutines.AbstractCoroutineContextKey
 
 interface IRestDao<T : Entity> : IDao<T> {
     val client: HttpClient
@@ -95,6 +98,14 @@ interface IRestDao<T : Entity> : IDao<T> {
         return Result.parse(serializer.list, json).respond()
     }
 
+    suspend fun page(pi: PageRequestInfo): List<T> {
+        val json = client.post<String>("$url/$path/page") {
+            appendHeaders()
+            body = RJson.stringify(PageRequestInfo.serializer(), pi)
+        }
+        return Result.parse(serializer.list, json).respond()
+    }
+
     override suspend fun all(): List<T> {
         val json = client.get<String>("$url/$path/all") {
             appendHeaders()
@@ -108,4 +119,7 @@ interface IRestDao<T : Entity> : IDao<T> {
         }
         return Result.parse(serializer.list, json).respond()
     }
+
+    override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> =
+        RestPageLoader(this, predicate)
 }

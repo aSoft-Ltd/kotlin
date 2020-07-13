@@ -24,3 +24,7 @@ actual suspend fun Query.fetch(): QuerySnapshot = TODO()
 actual fun Query.start(at: DocumentSnapshot): Query {
     TODO("Not yet implemented")
 }
+
+actual fun Query.orderedBy(fieldPath: String): Query {
+    TODO("Not yet implemented")
+}

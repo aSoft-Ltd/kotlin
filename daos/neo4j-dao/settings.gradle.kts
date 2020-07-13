@@ -5,8 +5,8 @@ pluginManagement {
     }
 }
 
-includeBuild("../build-src")
+includeBuild("../../build-src")
 include(":persist")
-project(":persist").projectDir = File("../persist")
+project(":persist").projectDir = File("../../persist")
 include(":paging-core")
-project(":paging-core").projectDir = File("../paging/paging-core")
+project(":paging-core").projectDir = File("../../paging/paging-core")

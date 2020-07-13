@@ -12,6 +12,7 @@ import tz.co.asoft.firebase.firestore.query.*
 import tz.co.asoft.firebase.firestore.snapshot.documents
 import tz.co.asoft.firebase.firestore.snapshot.toObject
 import tz.co.asoft.firebase.firestore.snapshot.toObjects
+import tz.co.asoft.paging.PageLoader
 import tz.co.asoft.persist.dao.IDao
 import tz.co.asoft.persist.model.Entity
 import kotlin.reflect.KProperty
@@ -82,4 +83,8 @@ interface IFirebaseDao<T : Entity> : IDao<T> {
     override suspend fun allDeleted() = collection.where(
         "deleted" equals true
     ).fetch().toObjects(serializer)
+
+    override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> = FirebasePageLoader(
+        serializer, collection, predicate
+    )
 }
