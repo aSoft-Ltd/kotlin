@@ -8,14 +8,6 @@ kotlin.sourceSets {
             api(kotlin("stdlib-common"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.kotlinx.coroutines}")
             api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${versions.kotlinx.serialization}")
-            api("org.jetbrains.kotlinx:atomicfu-common:${versions.kotlinx.atomicfu}")
-            api(project(":persist"))
-        }
-    }
-
-    val commonTest by getting {
-        dependencies {
-            api(asoft("test"))
         }
     }
 
@@ -24,7 +16,6 @@ kotlin.sourceSets {
             api(kotlin("stdlib"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinx.coroutines}")
             api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinx.serialization}")
-            api("org.jetbrains.kotlinx:atomicfu:${versions.kotlinx.atomicfu}")
         }
     }
 
@@ -33,7 +24,6 @@ kotlin.sourceSets {
             api(kotlin("stdlib"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx.coroutines}")
             api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinx.serialization}")
-            api("org.jetbrains.kotlinx:atomicfu:${versions.kotlinx.atomicfu}")
         }
     }
 
@@ -42,7 +32,6 @@ kotlin.sourceSets {
             api(kotlin("stdlib-js"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.kotlinx.coroutines}")
             api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${versions.kotlinx.serialization}")
-            api("org.jetbrains.kotlinx:atomicfu-js:${versions.kotlinx.atomicfu}")
         }
     }
 }

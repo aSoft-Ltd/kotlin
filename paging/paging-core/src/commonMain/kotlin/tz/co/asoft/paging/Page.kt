@@ -1,10 +1,13 @@
 package tz.co.asoft.paging
 
-import tz.co.asoft.persist.model.Entity
+import kotlinx.serialization.Serializable
 
-class Page<K : Any, D : Entity>(
-    val data: List<D>,
+@Serializable
+class Page<K, V>(
     val key: K,
-    val prevKey: K?,
-    val nextKey: K?
+    var prev: Page<K, V>?,
+    var next: Page<K, V>?,
+    val data: List<V>,
+    var pageSize: Int,
+    var nextKey: K?
 )
