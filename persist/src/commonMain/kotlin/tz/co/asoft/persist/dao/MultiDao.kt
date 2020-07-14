@@ -3,6 +3,7 @@ package tz.co.asoft.persist.dao
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import tz.co.asoft.paging.PageLoader
 import tz.co.asoft.persist.model.Entity
 import kotlin.reflect.KClass
 
@@ -15,5 +16,9 @@ open class MultiDao<T : Entity>(
         daos.values.map {
             async { it.paged(pageNumber, pageSize) }
         }.awaitAll().flatten()
+    }
+
+    override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> {
+        TODO("No Loader For MultiDao")
     }
 }

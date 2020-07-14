@@ -17,6 +17,8 @@ expect fun Query.limit(limit: Int): Query
 
 expect fun Query.start(at: DocumentSnapshot): Query
 
+expect fun Query.orderedBy(fieldPath: String) : Query
+
 @Deprecated("Use fetch")
 expect suspend fun Query.get(then: suspend (QuerySnapshot) -> Unit)
 

@@ -2,6 +2,7 @@ package tz.co.asoft.persist.dao
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tz.co.asoft.paging.PageLoader
 import tz.co.asoft.persist.model.Entity
 
 interface IDao<T : Entity> {
@@ -42,6 +43,8 @@ interface IDao<T : Entity> {
 
     suspend fun allDeleted(): List<T>
 
-    @Deprecated("Use PagedDao")
+    @Deprecated("Use pageLoader")
     suspend fun paged(pageNumber: Int = 1, pageSize: Int = 25): List<T>
+
+    fun pageLoader(predicate: (T) -> Boolean = { !it.deleted }): PageLoader<*, T>
 }

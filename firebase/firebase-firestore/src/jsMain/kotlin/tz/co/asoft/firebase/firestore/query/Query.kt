@@ -28,3 +28,4 @@ actual fun Query.where(fieldPath: String, operator: String, value: Any): Query =
 actual fun Query.limit(limit: Int): Query = limit(limit)
 
 actual fun Query.start(at: DocumentSnapshot): Query = startAt(at)
+actual fun Query.orderedBy(fieldPath: String): Query = orderBy(fieldPath)

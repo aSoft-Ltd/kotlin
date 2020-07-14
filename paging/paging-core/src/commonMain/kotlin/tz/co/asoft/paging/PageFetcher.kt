@@ -8,119 +8,76 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import tz.co.asoft.paging.dao.Pageable
-import tz.co.asoft.persist.model.Entity
 
-class PageFetcher<K : Any, D : Entity>(
-    val dao: Pageable<K,D>,
-    private val pageSize: Int,
-    private val extraPages: Int
+class PageFetcher<K : Any, D : Any>(
+    private val loader: PageLoader<K, D>,
+    private val pageSize: Int
 ) : CoroutineScope by CoroutineScope(SupervisorJob()) {
-    val state = MutableStateFlow(State.Idle.FromInitiation as State<K, D>)
+    val state = MutableStateFlow<State<K, D>>(State.Idle.FromInitiation())
 
     private var latestDisplayedPage: Page<K, D>? = null
-
-    private val pages = mutableMapOf<K, Page<K, D>>()
 
     private var job: Job? = null
 
     init {
-        loadNext()
+        loadFirst()
     }
 
-    sealed class State<K : Any, D : Entity> {
-        sealed class Loading<K : Any, D : Entity>(val tmp: Page<K, D>?) : State<K, D>() {
-            class Previous<K : Any, D : Entity>(tmp: Page<K, D>?) : Loading<K, D>(tmp)
-            class Next<K : Any, D : Entity>(tmp: Page<K, D>?) : Loading<K, D>(tmp)
-            class Refresh<K : Any, D : Entity>(tmp: Page<K, D>?) : Loading<K, D>(tmp)
+    sealed class State<K : Any, D : Any> {
+        class Loading<K : Any, D : Any> : State<K, D>()
+        sealed class Idle<K : Any, D : Any> : State<K, D>() {
+            class FromInitiation<K : Any, D : Any> : Idle<K, D>()
+            class FromSuccess<K : Any, D : Any>(val page: Page<K, D>) : Idle<K, D>()
+            class FromFailure<K : Any, D : Any>(val cause: Throwable?) : Idle<K, D>()
         }
+    }
 
-        sealed class Idle<K : Any, D : Entity> : State<K, D>() {
-            object FromInitiation : Idle<Any, Entity>()
-            class FromSuccess<K : Any, D : Entity>(val page: Page<K, D>) : Idle<K, D>()
-            class FromFailure<K : Any, D : Entity>(val cause: Throwable?) : Idle<K, D>()
+    private fun loadFirst() {
+        job?.cancel()
+        job = launch {
+            flow<State<K, D>> {
+                emit(State.Loading())
+                val pageNode = loader.firstPage(pageSize)
+                emit(State.Idle.FromSuccess(pageNode))
+                latestDisplayedPage = pageNode
+            }.catch {
+                emit(State.Idle.FromFailure(it.cause))
+            }.collect {
+                state.value = it
+            }
         }
     }
 
     fun loadNext() {
-        if (state.value !is State.Loading.Next<*, *>) {
-            job?.cancel()
-            job = launch {
-                flow {
-                    val nextKey = latestDisplayedPage?.nextKey
-                    emit(State.Loading.Next(pages[nextKey]))
-                    val page = dao.load(PageRequestInfo(nextKey, pageSize))
-                    emit(State.Idle.FromSuccess(page))
-                    latestDisplayedPage = page
-                    page.nextKey?.let { loadNextExtraPages(startingFrom = it) }
-                }.catch {
-                    emit(State.Idle.FromFailure(it.cause))
-                }.collect {
-                    state.value = it
-                }
+        job?.cancel()
+        job = launch {
+            flow<State<K, D>> {
+                val currentPage =
+                    latestDisplayedPage ?: throw Exception("Current page can't be null")
+                emit(State.Loading())
+                val page = loader.nextOf(currentPage)
+                emit(State.Idle.FromSuccess(page))
+                latestDisplayedPage = page
+            }.catch {
+                emit(State.Idle.FromFailure(it.cause))
+            }.collect {
+                state.value = it
             }
-        }
-    }
-
-    private suspend fun loadNextExtraPages(startingFrom: K) {
-        var next: K? = startingFrom
-        var iterations = 0
-        while (next != null && iterations < extraPages) {
-            val nextPage = dao.load(PageRequestInfo(next, pageSize))
-            pages[next] = nextPage
-            next = nextPage.nextKey
-            iterations++
         }
     }
 
     fun loadPrevious() {
-        if (state.value !is State.Loading.Previous<*, *>) {
-            job?.cancel()
-            job = launch {
-                flow {
-                    val prevKey = latestDisplayedPage?.prevKey
-                    emit(State.Loading.Previous(pages[prevKey]))
-                    val page = dao.load(PageRequestInfo(prevKey, pageSize))
-                    emit(State.Idle.FromSuccess(page))
-                    latestDisplayedPage = page
-                    page.prevKey?.let { loadPreviousExtraPages(startingFrom = it) }
-                }.catch {
-                    emit(State.Idle.FromFailure(it.cause))
-                }.collect {
-                    state.value = it
-                }
-            }
-        }
-    }
-
-    private suspend fun loadPreviousExtraPages(startingFrom: K) {
-        var prev: K? = startingFrom
-        var iterations = 0
-        while (prev != null && iterations < extraPages) {
-            val prevPage = dao.load(PageRequestInfo(prev, pageSize))
-            pages[prev] = prevPage
-            prev = prevPage.prevKey
-            iterations++
-        }
-    }
-
-    fun refresh() {
-        if (state.value !is State.Loading.Refresh<*, *>) {
-            job?.cancel()
-            job = launch {
-                flow {
-                    val key = latestDisplayedPage?.key
-                    emit(State.Loading.Previous(pages[key]))
-                    val page = dao.load(PageRequestInfo(key, pageSize))
-                    emit(State.Idle.FromSuccess(page))
-                    page.nextKey?.let { loadNextExtraPages(startingFrom = it) }
-                    page.prevKey?.let { loadPreviousExtraPages(startingFrom = it) }
-                }.catch {
-                    emit(State.Idle.FromFailure(it.cause))
-                }.collect {
-                    state.value = it
-                }
-            }
+        job?.cancel()
+        job = launch {
+            flow<State<K, D>> {
+                val current = latestDisplayedPage ?: throw Exception("Can't go previous")
+                emit(State.Loading())
+                val page = loader.prevOf(current)
+                emit(State.Idle.FromSuccess(page))
+                latestDisplayedPage = page
+            }.catch {
+                emit(State.Idle.FromFailure(it.cause))
+            }.collect { state.value = it }
         }
     }
 }

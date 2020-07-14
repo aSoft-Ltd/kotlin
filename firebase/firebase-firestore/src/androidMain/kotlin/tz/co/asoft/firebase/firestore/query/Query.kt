@@ -27,3 +27,5 @@ actual fun Query.where(fieldPath: String, operator: String, value: Any): Query =
     "array-contains" -> whereArrayContains(fieldPath, value)
     else -> this
 }
+
+actual fun Query.orderedBy(fieldPath: String): Query = orderBy(fieldPath)
