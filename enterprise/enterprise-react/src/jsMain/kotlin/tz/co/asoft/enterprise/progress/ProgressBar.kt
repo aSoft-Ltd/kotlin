@@ -1,5 +1,6 @@
 package tz.co.asoft.enterprise.progress
 
+import kotlinx.coroutines.*
 import kotlinx.css.*
 import kotlinx.css.properties.boxShadowInset
 import react.*
@@ -14,7 +15,8 @@ import tz.co.asoft.tools.onDesktop
 import tz.co.asoft.tools.onMobile
 import kotlin.browser.window
 
-private class ProgressBar(p: Props) : RComponent<Props, State>(p) {
+private class ProgressBar(p: Props) : RComponent<Props, State>(p),
+    CoroutineScope by CoroutineScope(SupervisorJob()) {
     class Props(val value: Number?) : RProps
 
     class State : RState {
@@ -26,21 +28,18 @@ private class ProgressBar(p: Props) : RComponent<Props, State>(p) {
         state = State()
     }
 
-    private var intervalId: Int = -1
-
-    private fun nextIndeterminateValue() {
-        intervalId = window.setTimeout({
-            setState {
-                if (value + dir > 100 || value + dir < 0) {
-                    dir *= -1
-                }
-                value += dir
+    private fun nextIndeterminateValue() = launch {
+        delay(10)
+        setState {
+            if (value + dir > 100 || value + dir < 0) {
+                dir *= -1
             }
-        }, 10)
+            value += dir
+        }
     }
 
     override fun componentWillUnmount() {
-        window.clearInterval(intervalId)
+        cancel()
     }
 
     override fun RBuilder.render(): dynamic = ThemeConsumer { theme ->

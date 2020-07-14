@@ -1,4 +1,4 @@
-package tz.co.asoft.enterprise.composites
+package tz.co.asoft.enterprise.drawer
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -12,8 +12,8 @@ import kotlinx.css.properties.transition
 import react.*
 import styled.css
 import styled.styledDiv
-import tz.co.asoft.enterprise.composites.NavigationDrawer.Props
-import tz.co.asoft.enterprise.composites.NavigationDrawer.State
+import tz.co.asoft.enterprise.drawer.NavigationDrawer.Props
+import tz.co.asoft.enterprise.drawer.NavigationDrawer.State
 import tz.co.asoft.enterprise.simplebar.SimpleBar
 import tz.co.asoft.theme.*
 import tz.co.asoft.tools.onDesktop
