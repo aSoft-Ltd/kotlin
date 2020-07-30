@@ -41,7 +41,7 @@ open class NpmExtension(val project: Project) {
     fun webpackDependencies() {
         dependency("react", "^16.13.1")
         dependency("react-dom", "^16.13.1")
-        dependency("styled-components", "^5.1.0")
+        dependency("styled-components", "4.4.1")
         dependency("inline-style-prefixer", "^6.0.0")
         dependency("react-router-dom", "^5.1.2")
         dependency("text-encoding", "^0.7.0")

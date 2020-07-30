@@ -18,8 +18,7 @@ open class WebPackExtension(project: Project) : BundleConfig {
     override var sourceMapEnabled: Boolean = project.frontendExtension.sourceMaps
 
     @InputDirectory
-    @Optional
-    var contentPath: File? = null
+    var contentPath: File = project.file("build/processedResources/js/main")
 
     @Input
     var publicPath: String = "/"
