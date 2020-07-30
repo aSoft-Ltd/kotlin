@@ -3,3 +3,6 @@ cd ./components/components-react
 
 cd ../../daos/firebase-dao
 ./gradlew :build
+
+cd ../neo4j-dao
+./gradlew :build

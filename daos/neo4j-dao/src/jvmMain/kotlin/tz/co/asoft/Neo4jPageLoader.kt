@@ -1,11 +1,8 @@
-package tz.co.asoft.neo4j
+package tz.co.asoft
 
 import org.neo4j.ogm.cypher.query.Pagination
 import org.neo4j.ogm.cypher.query.SortOrder
 import org.neo4j.ogm.session.Session
-import tz.co.asoft.paging.Page
-import tz.co.asoft.paging.PageLoader
-import tz.co.asoft.paging.VKey
 import kotlin.reflect.KClass
 
 internal class Neo4jPageLoader<D : Neo4JEntity>(
@@ -36,7 +33,8 @@ internal class Neo4jPageLoader<D : Neo4JEntity>(
             return VKey(key.pageNo, lastDoc.uid) to nodes + listOf(lastDoc).filter(predicate)
         }
 
-        val pair = loadPage(pageSize - nodes.size,
+        val pair = loadPage(
+            pageSize - nodes.size,
             VKey(pageNo + 1, null)
         )
         return pair.first to nodes + pair.second
