@@ -12,3 +12,9 @@ data class FileRef(
     val created: Long = DateTime.nowUnixLong(),
     val modified: List<Long> = listOf()
 )
+
+fun FileRef.extension() = name.extension()
+
+fun FileRef.extensionOrNull() = name.extensionOrNull()
+
+fun FileRef.nameWithoutExtension() = name.nameWithoutExtension()

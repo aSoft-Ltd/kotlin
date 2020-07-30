@@ -8,6 +8,3 @@ actual val File.name: String
     get() = name
 
 actual suspend fun File.readBytes(): ByteArray = (this as Blob).readBytes(null)
-
-//actual suspend fun File.readBytes(onProgress: (Int) -> Unit): ByteArray =
-//    (this as Blob).readBytes(onProgress)

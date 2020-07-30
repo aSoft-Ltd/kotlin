@@ -1,4 +1,5 @@
 @file:JvmName("FileCommon")
+
 package tz.co.asoft.io
 
 import kotlin.jvm.JvmName
@@ -9,7 +10,21 @@ expect val File.name: String
 
 expect suspend fun File.readBytes(): ByteArray
 
-//expect suspend fun File.readBytes(onProgress: (Int) -> Unit): ByteArray
+@Deprecated(
+    message = "Use extension()/extensionOrNull() method",
+    replaceWith = ReplaceWith("extensionOrNull()")
+)
+val File.ext
+    get() = name.split(".").lastOrNull()
 
-val File.ext get() = name.split(".").lastOrNull()
-val File.nameWithoutExtension: String get() = (name.split(".") - ext).joinToString(".")
+fun File.extension() = name.extension()
+fun File.extensionOrNull() = name.extensionOrNull()
+
+@Deprecated(
+    message = "Use the method",
+    replaceWith = ReplaceWith("nameWithoutExtension()")
+)
+val File.nameWithoutExtension: String
+    get() = (name.split(".") - ext).joinToString(".")
+
+fun File.nameWithoutExtension() = name.nameWithoutExtension()
