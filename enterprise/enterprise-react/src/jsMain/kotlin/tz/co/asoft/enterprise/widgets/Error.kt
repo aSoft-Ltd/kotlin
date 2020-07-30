@@ -5,9 +5,7 @@ import react.RBuilder
 import styled.css
 import styled.styledDiv
 import tz.co.asoft.react.icons.MdErrorOutline
-import tz.co.asoft.theme.Theme
-import tz.co.asoft.theme.ThemeConsumer
-import tz.co.asoft.theme.errorColor
+import tz.co.asoft.*
 
 fun RBuilder.Error(msg: String, handler: (RBuilder.(Theme) -> Unit)? = null) = ThemeConsumer { theme ->
     styledDiv {

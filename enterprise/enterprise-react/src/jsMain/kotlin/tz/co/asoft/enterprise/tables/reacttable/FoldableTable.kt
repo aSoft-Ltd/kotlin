@@ -7,19 +7,19 @@ import react.RHandler
 import react.buildElement
 import styled.css
 import styled.styledDiv
-import tz.co.asoft.enterprise.tables.TAction
+import tz.co.asoft.ThemeConsumer
+import tz.co.asoft.enterprise.action.AButton
 import tz.co.asoft.enterprise.tables.reacttable.hoc.FoldIconProps
 import tz.co.asoft.enterprise.tables.reacttable.hoc.FoldableTableProps
 import tz.co.asoft.enterprise.tables.reacttable.hoc.foldableTableHOC
+import tz.co.asoft.justifySelf
 import tz.co.asoft.react.icons.MdChevronLeft
 import tz.co.asoft.react.icons.MdChevronRight
-import tz.co.asoft.theme.ThemeConsumer
-import tz.co.asoft.tools.justifySelf
 
 fun <D : Any> RBuilder.FoldableTable(
     data: List<D>,
     columns: List<Column<D>>,
-    actions: List<TAction<D>>? = null,
+    actions: List<AButton<D>>? = null,
     showPagination: Boolean = true,
     showPaginationTop: Boolean = false,
     showPaginationBottom: Boolean = true,

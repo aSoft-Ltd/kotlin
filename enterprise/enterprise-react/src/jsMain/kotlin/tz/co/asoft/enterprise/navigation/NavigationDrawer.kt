@@ -1,4 +1,4 @@
-package tz.co.asoft.enterprise.drawer
+package tz.co.asoft.enterprise.navigation
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -12,13 +12,10 @@ import kotlinx.css.properties.transition
 import react.*
 import styled.css
 import styled.styledDiv
-import tz.co.asoft.enterprise.drawer.NavigationDrawer.Props
-import tz.co.asoft.enterprise.drawer.NavigationDrawer.State
+import tz.co.asoft.*
+import tz.co.asoft.enterprise.navigation.NavigationDrawer.Props
+import tz.co.asoft.enterprise.navigation.NavigationDrawer.State
 import tz.co.asoft.enterprise.simplebar.SimpleBar
-import tz.co.asoft.theme.*
-import tz.co.asoft.tools.onDesktop
-import tz.co.asoft.tools.onMobile
-import tz.co.asoft.tools.onPaper
 
 private class NavigationDrawer(p: Props) : RComponent<Props, State>(p),
     CoroutineScope by CoroutineScope(SupervisorJob()) {

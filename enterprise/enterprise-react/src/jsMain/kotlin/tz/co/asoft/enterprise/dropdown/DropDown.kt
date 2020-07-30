@@ -1,6 +1,7 @@
 package tz.co.asoft.enterprise.dropdown
 
 import kotlinx.css.*
+import kotlinx.css.Color
 import kotlinx.css.properties.border
 import kotlinx.css.properties.boxShadow
 import react.RBuilder
@@ -11,12 +12,8 @@ import styled.css
 import styled.styledDiv
 import styled.styledOption
 import styled.styledSelect
+import tz.co.asoft.*
 import tz.co.asoft.enterprise.dropdown.DropDown.Props
-import tz.co.asoft.theme.ThemeConsumer
-import tz.co.asoft.theme.dropdown_clazz
-import tz.co.asoft.theme.primaryColor
-import tz.co.asoft.tools.onOptionChanged
-import tz.co.asoft.tools.persist
 
 private class DropDown(p: Props) : RComponent<Props, RState>(p) {
     class Props(

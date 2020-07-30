@@ -2,8 +2,8 @@ package tz.co.asoft.enterprise.panels
 
 import kotlinx.css.*
 import styled.StyleSheet
-import tz.co.asoft.tools.onDesktop
-import tz.co.asoft.tools.onMobile
+import tz.co.asoft.onDesktop
+import tz.co.asoft.onMobile
 
 object styles : StyleSheet("application-side") {
     val userImage by css {

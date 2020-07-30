@@ -1,10 +1,10 @@
 package tz.co.asoft.enterprise.buttons
 
 import kotlinx.css.*
+import kotlinx.css.Color
 import kotlinx.css.properties.border
 import styled.StyleSheet
-import tz.co.asoft.theme.*
-import tz.co.asoft.tools.justifySelf
+import tz.co.asoft.*
 
 object styles : StyleSheet("button") {
     private val button_layout by css {

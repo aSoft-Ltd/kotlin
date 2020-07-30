@@ -5,8 +5,8 @@ import kotlinx.css.RuleSet
 import kotlinx.css.backgroundColor
 import kotlinx.css.color
 import styled.StyleSheet
-import tz.co.asoft.theme.Theme
-import tz.co.asoft.theme.dropdown_clazz
+import tz.co.asoft.Theme
+import tz.co.asoft.dropdown_clazz
 
 internal object styles : StyleSheet("themed-react-table") {
     private val follow_theme by css {

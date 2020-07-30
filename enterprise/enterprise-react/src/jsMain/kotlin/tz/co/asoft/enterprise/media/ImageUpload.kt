@@ -14,9 +14,9 @@ import styled.css
 import styled.styledDiv
 import styled.styledImg
 import styled.styledInput
+import tz.co.asoft.UIID
 import tz.co.asoft.enterprise.media.ImageUpload.Props
 import tz.co.asoft.enterprise.media.ImageUpload.State
-import tz.co.asoft.tools.UIID
 
 private class ImageUpload(p: Props) : RComponent<Props, State>(p) {
     class Props(

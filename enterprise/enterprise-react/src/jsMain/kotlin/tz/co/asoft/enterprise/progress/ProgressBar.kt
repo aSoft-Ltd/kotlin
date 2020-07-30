@@ -6,14 +6,9 @@ import kotlinx.css.properties.boxShadowInset
 import react.*
 import styled.css
 import styled.styledProgress
+import tz.co.asoft.*
 import tz.co.asoft.enterprise.progress.ProgressBar.Props
 import tz.co.asoft.enterprise.progress.ProgressBar.State
-import tz.co.asoft.theme.ThemeConsumer
-import tz.co.asoft.theme.primaryColor
-import tz.co.asoft.theme.primaryVariantColor
-import tz.co.asoft.tools.onDesktop
-import tz.co.asoft.tools.onMobile
-import kotlin.browser.window
 
 private class ProgressBar(p: Props) : RComponent<Props, State>(p),
     CoroutineScope by CoroutineScope(SupervisorJob()) {

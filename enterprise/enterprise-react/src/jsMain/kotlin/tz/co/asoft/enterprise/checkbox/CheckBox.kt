@@ -11,12 +11,7 @@ import styled.css
 import styled.styledDiv
 import styled.styledInput
 import styled.styledLabel
-import tz.co.asoft.theme.ThemeConsumer
-import tz.co.asoft.theme.backgroundColor
-import tz.co.asoft.theme.onPrimaryColor
-import tz.co.asoft.theme.primaryColor
-import tz.co.asoft.tools.justifySelf
-import tz.co.asoft.tools.to
+import tz.co.asoft.*
 
 fun RBuilder.CheckBox(
     name: String,

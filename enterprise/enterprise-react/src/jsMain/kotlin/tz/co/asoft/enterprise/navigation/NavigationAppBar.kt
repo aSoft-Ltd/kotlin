@@ -1,4 +1,4 @@
-package tz.co.asoft.enterprise.appbar
+package tz.co.asoft.enterprise.navigation
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.css.*
@@ -8,7 +8,7 @@ import react.RBuilder
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
-import tz.co.asoft.enterprise.drawer.DrawerState
+import tz.co.asoft.enterprise.appbar.AppBar
 import tz.co.asoft.react.icons.MdDehaze
 
 fun RBuilder.NavigationAppBar(

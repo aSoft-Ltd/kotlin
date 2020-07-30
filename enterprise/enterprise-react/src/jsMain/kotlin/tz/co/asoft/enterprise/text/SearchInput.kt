@@ -1,6 +1,7 @@
 package tz.co.asoft.enterprise.text
 
 import kotlinx.css.*
+import kotlinx.css.Color
 import kotlinx.html.id
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onKeyDownFunction
@@ -10,9 +11,8 @@ import react.RBuilder
 import styled.css
 import styled.styledDiv
 import styled.styledInput
+import tz.co.asoft.*
 import tz.co.asoft.react.icons.FaSearch
-import tz.co.asoft.theme.*
-import tz.co.asoft.tools.UIID
 import kotlin.browser.document
 
 fun RBuilder.SearchInput(hint: String, css: RuleSet, onSearch: (String) -> Unit) = ThemeConsumer { theme ->

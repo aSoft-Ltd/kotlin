@@ -1,6 +1,7 @@
-package tz.co.asoft.enterprise.composites
+package tz.co.asoft.enterprise.headers
 
 import kotlinx.css.*
+import kotlinx.css.Color
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.HTMLSelectElement
@@ -8,14 +9,9 @@ import org.w3c.dom.events.Event
 import react.RBuilder
 import react.dom.key
 import styled.*
+import tz.co.asoft.*
 import tz.co.asoft.react.icons.FaUserAlt
 import tz.co.asoft.react.icons.MdClose
-import tz.co.asoft.theme.ThemeConsumer
-import tz.co.asoft.theme.dropdown_clazz
-import tz.co.asoft.theme.onPrimaryColor
-import tz.co.asoft.tools.justifySelf
-import tz.co.asoft.tools.onDesktop
-import tz.co.asoft.tools.onMobile
 
 fun RBuilder.RegionalHeader(
     photoUrl: String,

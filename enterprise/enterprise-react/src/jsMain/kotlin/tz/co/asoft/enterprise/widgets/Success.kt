@@ -5,7 +5,7 @@ import react.RBuilder
 import styled.css
 import styled.styledDiv
 import tz.co.asoft.react.icons.TiTick
-import tz.co.asoft.theme.*
+import tz.co.asoft.*
 
 fun RBuilder.Success(msg: String, handler: (RBuilder.(Theme) -> Unit)? = null) = ThemeConsumer { theme ->
     styledDiv {

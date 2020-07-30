@@ -5,13 +5,8 @@ import kotlinx.html.js.onClickFunction
 import react.*
 import styled.css
 import styled.styledDiv
+import tz.co.asoft.*
 import tz.co.asoft.react.icons.MdClose
-import tz.co.asoft.theme.ThemeConsumer
-import tz.co.asoft.theme.backgroundColor
-import tz.co.asoft.theme.onSurfaceColor
-import tz.co.asoft.theme.surfaceColor
-import tz.co.asoft.tools.onDesktop
-import tz.co.asoft.tools.onMobile
 
 class Dialog : RComponent<Dialog.Props, RState>() {
     class Props(

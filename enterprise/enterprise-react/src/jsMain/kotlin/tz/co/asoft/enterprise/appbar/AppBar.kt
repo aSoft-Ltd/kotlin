@@ -6,10 +6,10 @@ import react.RBuilder
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
-import tz.co.asoft.theme.ThemeConsumer
-import tz.co.asoft.theme.onSurfaceColor
-import tz.co.asoft.theme.surfaceColor
-import tz.co.asoft.tools.justifySelf
+import tz.co.asoft.ThemeConsumer
+import tz.co.asoft.justifySelf
+import tz.co.asoft.onSurfaceColor
+import tz.co.asoft.surfaceColor
 
 fun RBuilder.AppBar(
     left: (StyledDOMBuilder<DIV>.() -> Unit)? = null,
@@ -25,6 +25,7 @@ fun RBuilder.AppBar(
             backgroundColor = theme.surfaceColor
             color = theme.onSurfaceColor
             padding(1.em)
+            zIndex = 10
         }
 
         styledDiv {
