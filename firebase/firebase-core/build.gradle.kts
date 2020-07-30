@@ -5,30 +5,27 @@ plugins {
 kotlin.sourceSets {
     val commonMain by getting {
         dependencies {
-            implementation(kotlin("stdlib-common"))
-            api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.kotlinx.coroutines}")
+            api(kotlin("stdlib-common"))
         }
     }
 
     val androidMain by getting {
         dependencies {
-            implementation(kotlin("stdlib"))
+            api(kotlin("stdlib"))
+            api("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinx.coroutines}")
             api("com.google.firebase:firebase-core:${versions.firebase.core}")
-            api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx.coroutines}")
         }
     }
 
     val jvmMain by getting {
         dependencies {
-            implementation(kotlin("stdlib"))
-            api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx.coroutines}")
+            api(kotlin("stdlib"))
         }
     }
 
     val jsMain by getting {
         dependencies {
-            implementation(kotlin("stdlib-js"))
-            api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.kotlinx.coroutines}")
+            api(kotlin("stdlib-js"))
         }
     }
 }

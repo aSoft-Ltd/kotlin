@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import react.*
 import kotlin.coroutines.CoroutineContext
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 fun useUIID(name: String): UIID {
     val id = UIID.getId(name)
@@ -14,6 +16,8 @@ fun useUIID(name: String): UIID {
 }
 
 fun <T> StateFlow<T>.asState(context: CoroutineContext = Dispatchers.Main) = asState(value, context)
+
+operator fun <T> StateFlow<T>.getValue(thisRef: Any?, property: KProperty<*>): T = asState()
 
 fun <T> Flow<T>.asState(initialState: T, context: CoroutineContext = Dispatchers.Main): T {
     var state by useState(initialState)

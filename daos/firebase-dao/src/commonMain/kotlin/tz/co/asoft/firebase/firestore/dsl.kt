@@ -1,7 +1,7 @@
 package tz.co.asoft.firebase.firestore
 
 import kotlinx.serialization.KSerializer
-import tz.co.asoft.persist.model.Entity
+import tz.co.asoft.Entity
 
 fun <T : Entity> FirestoreDao(
     firestore: FirebaseFirestore,

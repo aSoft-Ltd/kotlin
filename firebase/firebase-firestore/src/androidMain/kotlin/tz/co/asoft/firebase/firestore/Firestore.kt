@@ -1,9 +1,6 @@
 package tz.co.asoft.firebase.firestore
 
-import tz.co.asoft.firebase.core.FirebaseApp
-import tz.co.asoft.firebase.firestore.batch.WriteBatch
-import tz.co.asoft.firebase.firestore.collection.CollectionReference
-import tz.co.asoft.firebase.firestore.document.DocumentReference
+import tz.co.asoft.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore as GFirebaseFirestore
 
 actual typealias FirebaseFirestore = GFirebaseFirestore

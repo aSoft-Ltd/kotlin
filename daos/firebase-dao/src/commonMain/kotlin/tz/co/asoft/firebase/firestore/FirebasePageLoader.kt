@@ -1,19 +1,11 @@
 package tz.co.asoft.firebase.firestore
 
 import kotlinx.serialization.KSerializer
-import tz.co.asoft.firebase.firestore.collection.CollectionReference
-import tz.co.asoft.firebase.firestore.query.fetch
-import tz.co.asoft.firebase.firestore.query.limit
-import tz.co.asoft.firebase.firestore.query.orderedBy
-import tz.co.asoft.firebase.firestore.query.start
-import tz.co.asoft.firebase.firestore.snapshot.DocumentSnapshot
-import tz.co.asoft.firebase.firestore.snapshot.documents
-import tz.co.asoft.firebase.firestore.snapshot.toObject
-import tz.co.asoft.paging.Page
-import tz.co.asoft.paging.PageFetcher
-import tz.co.asoft.paging.PageLoader
-import tz.co.asoft.paging.Pager
-import tz.co.asoft.persist.model.Entity
+import tz.co.asoft.Page
+import tz.co.asoft.PageFetcher
+import tz.co.asoft.PageLoader
+import tz.co.asoft.Pager
+import tz.co.asoft.Entity
 
 internal class FirebasePageLoader<D : Entity>(
     private val serializer: KSerializer<D>,

@@ -1,9 +1,5 @@
 package tz.co.asoft.platform.env
 
-import tz.co.asoft.platform.core.Ctx
-
-actual fun Ctx.env() = getEnv()
-
 fun env() = getEnv()
 
 private val error = Throwable("Can't locate platform.environment.json file")

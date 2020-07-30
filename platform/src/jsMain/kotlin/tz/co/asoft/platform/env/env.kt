@@ -1,10 +1,6 @@
 package tz.co.asoft.platform.env
 
 import kotlinx.serialization.json.JsonObject
-import tz.co.asoft.platform.core.Ctx
-import tz.co.asoft.platform.core.require
-
-actual fun Ctx.env() = getEnv()
 
 fun env() = getEnv()
 
