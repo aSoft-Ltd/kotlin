@@ -20,4 +20,6 @@ cd ../firebase-storage && ./gradlew :build || exit \
 
 cd ../../form/form-react && ./gradlew :build || exit \
 
+cd ../../geo && /gradlew :build || exit \
+
 
