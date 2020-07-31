@@ -1,4 +1,4 @@
-package tz.co.asoft.io
+package tz.co.asoft
 
 internal fun String.extension() = split(".").last()
 

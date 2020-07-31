@@ -1,6 +1,6 @@
-@file:JvmName("FileJvm")
+@file:JvmName("FileAndroid")
 
-package tz.co.asoft.io
+package tz.co.asoft
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

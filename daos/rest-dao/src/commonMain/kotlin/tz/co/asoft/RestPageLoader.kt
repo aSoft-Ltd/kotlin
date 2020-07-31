@@ -1,9 +1,4 @@
-package tz.co.asoft.rest.dao
-
-import tz.co.asoft.paging.Page
-import tz.co.asoft.paging.PageLoader
-import tz.co.asoft.paging.VKey
-import tz.co.asoft.persist.model.Entity
+package tz.co.asoft
 
 internal class RestPageLoader<D : Entity>(
     private val restDao: IRestDao<D>,
@@ -14,7 +9,7 @@ internal class RestPageLoader<D : Entity>(
         val key = at ?: VKey(0, null)
         val pageNo = key.pageNo
         val nodes = mutableListOf<D>()
-        val allNodes: List<D> = restDao.page(PageRequestInfo(key, pageSize))
+        val allNodes: List<D> = restDao.page(RestPageRequestInfo(key, pageSize))
         val startIndex = if (at?.uid == null) 0 else allNodes.indexOfFirst { it.uid == at.uid }
         val unfilteredNodes = allNodes.subList(startIndex, allNodes.size)
 

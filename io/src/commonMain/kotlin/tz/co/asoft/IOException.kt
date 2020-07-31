@@ -1,3 +1,3 @@
-package tz.co.asoft.io
+package tz.co.asoft
 
 expect open class IOException(message: String?) : Exception

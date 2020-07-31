@@ -1,4 +1,4 @@
-package tz.co.asoft.io
+package tz.co.asoft
 
 import android.net.Uri
 import java.net.URI

@@ -1,3 +1,3 @@
-package tz.co.asoft.io
+package tz.co.asoft
 
 actual typealias IOException = java.io.IOException

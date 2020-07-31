@@ -1,4 +1,4 @@
-package tz.co.asoft.io
+package tz.co.asoft
 
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.khronos.webgl.ArrayBuffer

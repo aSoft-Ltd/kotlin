@@ -1,4 +1,4 @@
-package tz.co.asoft.io
+package tz.co.asoft
 
 import kotlinx.serialization.Serializable
 import tz.co.asoft.klock.DateTime

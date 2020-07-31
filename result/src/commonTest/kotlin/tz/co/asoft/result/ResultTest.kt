@@ -2,6 +2,7 @@ package tz.co.asoft.result
 
 import kotlinx.serialization.builtins.list
 import kotlinx.serialization.builtins.nullable
+import tz.co.asoft.Result
 import kotlin.test.Test
 
 class ResultTest {

@@ -1,4 +1,4 @@
-package tz.co.asoft.io
+package tz.co.asoft
 
 import org.w3c.files.Blob
 

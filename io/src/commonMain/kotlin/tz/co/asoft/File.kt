@@ -1,6 +1,6 @@
 @file:JvmName("FileCommon")
 
-package tz.co.asoft.io
+package tz.co.asoft
 
 import kotlin.jvm.JvmName
 

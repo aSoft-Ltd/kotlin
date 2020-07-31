@@ -1,10 +1,8 @@
-package tz.co.asoft.result
+package tz.co.asoft
 
 import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
-import kotlinx.serialization.modules.SerializersModule
-import kotlin.reflect.KClass
 
 sealed class Result<out T> {
     @Serializable
@@ -32,10 +30,10 @@ sealed class Result<out T> {
             try {
                 RJson.parse(Failure.serializer(serializer), json)
             } catch (c: Throwable) {
-                Failure<T>(c.message ?: "Failed to serialize json")
+                Failure<T>(c.message ?: c.cause?.message ?: "Failed to serialize json")
             }
         }
     }
 }
 
-fun <T> Throwable.asFailure() = Result.Failure<T>(message ?: "Unknown Error")
+fun <T> Throwable.asFailure() = Result.Failure<T>(message ?: cause?.message ?: "Unknown Error")
