@@ -13,16 +13,15 @@ android {
 kotlin.sourceSets {
     val commonMain by getting {
         dependencies {
-            implementation(kotlin("stdlib-common"))
+            api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${versions.kotlinx.serialization}")
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.kotlinx.coroutines}")
             api(project(":klock"))
-            api(project(":platform"))
         }
     }
 
     val androidMain by getting {
         dependencies {
-            implementation(kotlin("stdlib"))
+            api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinx.serialization}")
             api("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinx.coroutines}")
             api("com.google.android.gms:play-services-maps:${versions.google.maps}")
         }
@@ -30,14 +29,14 @@ kotlin.sourceSets {
 
     val jvmMain by getting {
         dependencies {
-            implementation(kotlin("stdlib"))
+            api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinx.serialization}")
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx.coroutines}")
         }
     }
 
     val jsMain by getting {
         dependencies {
-            implementation(kotlin("stdlib-js"))
+            api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${versions.kotlinx.serialization}")
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.kotlinx.coroutines}")
         }
     }

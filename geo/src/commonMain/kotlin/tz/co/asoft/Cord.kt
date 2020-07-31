@@ -1,4 +1,4 @@
-package tz.co.asoft.geo
+package tz.co.asoft
 
 import tz.co.asoft.klock.DateTime
 import kotlinx.serialization.Serializable

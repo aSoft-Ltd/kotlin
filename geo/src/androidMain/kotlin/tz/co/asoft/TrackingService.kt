@@ -1,4 +1,4 @@
-package tz.co.asoft.geo.tracker
+package tz.co.asoft
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,11 +7,10 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
-import tz.co.asoft.geo.Track
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-actual class TrackingService actual constructor(ctx: Context) : ITrackingServices, CoroutineScope {
+class TrackingService(ctx: Context) : ITrackingServices, CoroutineScope {
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Default
@@ -27,7 +26,7 @@ actual class TrackingService actual constructor(ctx: Context) : ITrackingService
     override var update_distance: Float = 10f
 
     private val locationManager = ctx.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    private val trackHandlers = mutableSetOf<(Track?) -> Unit>()
+    private val trackHandlers = mutableSetOf<(Cord?) -> Unit>()
 
     private var listener: Listener? = null
 
@@ -44,7 +43,7 @@ actual class TrackingService actual constructor(ctx: Context) : ITrackingService
     }
 
     @SuppressLint("MissingPermission")
-    override fun setTrackListener(handler: (Track?) -> Unit) {
+    override fun onCordChanged(handler: (Cord?) -> Unit) {
         if (provider == null) {
             Log.e("asoft-geo/tracker", "Provider Not Found")
             return
@@ -62,7 +61,7 @@ actual class TrackingService actual constructor(ctx: Context) : ITrackingService
     }
 
     @SuppressLint("MissingPermission")
-    override fun getLocation() = locationManager.getLastKnownLocation(provider).toTrack()
+    override fun getLocation() = locationManager.getLastKnownLocation(provider).toCord()
 
     override fun dispatch() {
         trackHandlers.forEach {
@@ -77,8 +76,8 @@ actual class TrackingService actual constructor(ctx: Context) : ITrackingService
         listener = null
     }
 
-    private fun Location?.toTrack(): Track? = if (this != null) {
-        Track().apply {
+    private fun Location?.toCord(): Cord? = if (this != null) {
+        Cord().apply {
             lat = latitude
             lng = longitude
         }

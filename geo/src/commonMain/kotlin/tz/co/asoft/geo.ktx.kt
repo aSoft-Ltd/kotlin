@@ -1,4 +1,8 @@
-package tz.co.asoft.geo
+@file:JvmName("GeoCommon")
+
+package tz.co.asoft
+
+import kotlin.jvm.JvmName
 
 val Collection<Cord>.average: Cord
     get() = Cord().apply {
