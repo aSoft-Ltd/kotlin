@@ -1,8 +1,7 @@
 package tz.co.asoft
 
-import kotlinx.serialization.*
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 
 sealed class Result<out T> {
     @Serializable
@@ -12,13 +11,6 @@ sealed class Result<out T> {
     class Failure<out T>(val msg: String) : Result<T>()
 
     companion object {
-        val RJson = Json(
-            configuration = JsonConfiguration(
-                ignoreUnknownKeys = true,
-                prettyPrint = true
-            )
-        )
-
         fun <T> stringify(serializer: KSerializer<T>, res: Result<T>) = when (res) {
             is Success -> RJson.stringify(Success.serializer(serializer), res)
             is Failure -> RJson.stringify(Failure.serializer(serializer), res)

@@ -1,4 +1,4 @@
-import tz.co.asoft.phone.Phone
+import tz.co.asoft.Phone
 import kotlin.test.*
 
 class PhoneTest {

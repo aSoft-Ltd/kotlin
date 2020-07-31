@@ -22,6 +22,9 @@ build ../krypto
 build ../logging
 build ../money
 build ../paging/paging-core
+build ../paging-enterprise-react
+build ../../phone
+build ../rest-controller/rest-controller-core
 
 
 

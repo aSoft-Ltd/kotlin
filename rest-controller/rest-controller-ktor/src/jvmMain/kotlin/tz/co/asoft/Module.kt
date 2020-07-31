@@ -1,4 +1,4 @@
-package tz.co.asoft.rest.controller.ktor
+package tz.co.asoft
 
 import io.ktor.application.Application
 import io.ktor.application.ApplicationCall
@@ -13,12 +13,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.list
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
-import tz.co.asoft.persist.model.Entity
-import tz.co.asoft.rest.controller.core.IRestController
-import tz.co.asoft.result.Result
-import tz.co.asoft.result.Result.Companion.RJson
-import tz.co.asoft.result.Result.Success
-import tz.co.asoft.result.asFailure
+import tz.co.asoft.Result.Success
 
 open class Module<T : Entity>(
     version: String,
@@ -28,7 +23,7 @@ open class Module<T : Entity>(
     private val controller: IRestController<T>
 ) : IModule {
 
-    private val path = "/$version/$root" + if (subRoot != null) "/$subRoot" else ""
+    val path = "/$version/$root" + if (subRoot != null) "/$subRoot" else ""
 
     private suspend fun PipelineContext<Unit, ApplicationCall>.getIdsFromBody(): List<String> {
         return RJson.parse(String.serializer().list, call.receiveText())
@@ -108,7 +103,8 @@ open class Module<T : Entity>(
                 val pageSize = call.parameters["pageSize"]?.toInt() ?: throw invalidPageSize
                 if (pageNo == 0) throw invalidPageNo
                 if (pageSize == 0) throw invalidPageSize
-                emit(Success(controller.paged(pageNo, pageSize)))
+//                emit(Success(controller.pa(pageNo, pageSize)))
+                emit(Result.Failure("No page implementation"))
             }.catch {
                 emit(it.asFailure())
             }.collect {

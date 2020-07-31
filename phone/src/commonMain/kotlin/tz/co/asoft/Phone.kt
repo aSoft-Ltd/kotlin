@@ -1,4 +1,4 @@
-package tz.co.asoft.phone
+package tz.co.asoft
 
 class Phone {
     constructor(value: Int) : this(value.toString())

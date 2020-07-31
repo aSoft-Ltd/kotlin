@@ -1,4 +1,4 @@
-package tz.co.asoft.rest.controller.ktor
+package tz.co.asoft
 
 import io.ktor.application.call
 import io.ktor.response.respondText
