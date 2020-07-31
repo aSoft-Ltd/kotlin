@@ -20,7 +20,7 @@ build ../../io
 build ../klock
 build ../krypto
 build ../logging
-
+build ../money
 
 
 
