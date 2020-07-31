@@ -1,13 +1,11 @@
-package tz.co.asoft.firebase.storage
-
-import tz.co.asoft.firebase.core.FirebaseApp
+package tz.co.asoft
 
 actual class FirebaseStorage
 
 actual val FirebaseStorage.app: FirebaseApp
     get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
-actual fun FirebaseStorage.ref(path: String?): StorageReference {
+actual fun FirebaseStorage.ref(path: String?): FirebaseStorageReference {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 }
 

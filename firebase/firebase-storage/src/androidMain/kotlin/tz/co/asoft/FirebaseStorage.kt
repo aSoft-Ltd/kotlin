@@ -1,12 +1,10 @@
-package tz.co.asoft.firebase.storage
-
-import tz.co.asoft.firebase.core.FirebaseApp
+package tz.co.asoft
 
 actual typealias FirebaseStorage = com.google.firebase.storage.FirebaseStorage
 
 actual val FirebaseStorage.app: FirebaseApp get() = app
 
-actual fun FirebaseStorage.ref(path: String?): StorageReference = if(path!=null) {
+actual fun FirebaseStorage.ref(path: String?): FirebaseStorageReference = if (path != null) {
     getReference(path)
 } else {
     reference

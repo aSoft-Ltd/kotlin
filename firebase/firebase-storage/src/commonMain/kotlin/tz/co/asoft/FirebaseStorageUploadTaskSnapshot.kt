@@ -1,8 +1,8 @@
-package tz.co.asoft.firebase.storage
+package tz.co.asoft
 
 import kotlin.math.round
 
-abstract class UploadTaskSnapshot {
+abstract class FirebaseStorageUploadTaskSnapshot {
     abstract val bytesTransferred: Long
     abstract val downloadURL: String?
     abstract val totalBytes: Long

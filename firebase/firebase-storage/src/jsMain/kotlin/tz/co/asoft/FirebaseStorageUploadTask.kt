@@ -1,10 +1,10 @@
-package tz.co.asoft.firebase.storage
+package tz.co.asoft
 
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-actual external class UploadTask {
+actual external class FirebaseStorageUploadTask {
     fun on(
         event: String,
         progress: ((TaskSnapshot) -> Unit)?,
@@ -13,7 +13,7 @@ actual external class UploadTask {
     )
 }
 
-actual suspend fun UploadTask.await() = suspendCancellableCoroutine<Unit> { cont ->
+actual suspend fun FirebaseStorageUploadTask.await() = suspendCancellableCoroutine<Unit> { cont ->
     on(
         event = "state_changed",
         progress = null,
@@ -26,7 +26,7 @@ actual suspend fun UploadTask.await() = suspendCancellableCoroutine<Unit> { cont
     )
 }
 
-actual fun UploadTask.onProgress(call: (UploadTaskSnapshot) -> Unit) = on(
+actual fun FirebaseStorageUploadTask.onProgress(call: (FirebaseStorageUploadTaskSnapshot) -> Unit) = on(
     event = "state_changed",
     progress = {
         call(JSTaskSnapshot(it))

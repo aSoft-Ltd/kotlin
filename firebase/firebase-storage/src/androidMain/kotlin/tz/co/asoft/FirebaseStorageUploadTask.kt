@@ -1,12 +1,12 @@
-package tz.co.asoft.firebase.storage
+package tz.co.asoft
 
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-actual typealias UploadTask = com.google.firebase.storage.UploadTask
+actual typealias FirebaseStorageUploadTask = com.google.firebase.storage.UploadTask
 
-actual suspend fun UploadTask.await() = suspendCancellableCoroutine<Unit> { cont ->
+actual suspend fun FirebaseStorageUploadTask.await() = suspendCancellableCoroutine<Unit> { cont ->
     addOnSuccessListener {
         cont.resume(Unit)
     }
@@ -15,7 +15,7 @@ actual suspend fun UploadTask.await() = suspendCancellableCoroutine<Unit> { cont
     }
 }
 
-actual fun UploadTask.onProgress(call: (UploadTaskSnapshot) -> Unit) {
+actual fun FirebaseStorageUploadTask.onProgress(call: (FirebaseStorageUploadTaskSnapshot) -> Unit) {
     addOnProgressListener {
         call(AndroidUploadTaskSnapshot(it))
     }

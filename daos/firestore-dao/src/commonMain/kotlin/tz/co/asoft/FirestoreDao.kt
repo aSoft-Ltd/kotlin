@@ -1,16 +1,14 @@
-package tz.co.asoft.firebase.firestore
+package tz.co.asoft
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.KSerializer
-import tz.co.asoft.Entity
-import tz.co.asoft.PageLoader
 
-open class FirebaseDao<T : Entity>(
+open class FirestoreDao<T : Entity>(
     override val firestore: FirebaseFirestore,
     override val collectionName: String,
     override val serializer: KSerializer<T>
-) : IFirebaseDao<T> {
+) : IFirestoreDao<T> {
     override suspend fun create(list: Collection<T>): List<T> = batch.run {
         list.forEach {
             val doc = if (it.uid.isNotBlank()) collection.doc(it.uid) else collection.doc()
@@ -57,13 +55,9 @@ open class FirebaseDao<T : Entity>(
 
     override suspend fun load(id: String): T? = load(listOf(id)).firstOrNull()
 
-    override suspend fun all() = collection.where(
-        "deleted" equals false
-    ).fetch().toObjects(serializer)
+    override suspend fun all() = collection.where("deleted" equals false).fetch().toObjects(serializer)
 
-    override suspend fun allDeleted() = collection.where(
-        "deleted" equals true
-    ).fetch().toObjects(serializer)
+    override suspend fun allDeleted() = collection.where("deleted" equals true).fetch().toObjects(serializer)
 
     override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> = FirebasePageLoader(serializer, collection, predicate)
 }

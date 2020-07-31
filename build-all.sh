@@ -1,23 +1,17 @@
-cd ./components/components-react
-./gradlew :build
+cd ./components/components-react && ./gradlew :build || exit \
 
-cd ../../daos/firebase-dao
-./gradlew :build
+cd ../../daos/firestore-dao && ./gradlew :build || exit \
 
-cd ../neo4j-dao
-./gradlew :build
+cd ../neo4j-dao && ./gradlew :build || exit \
 
-cd ../rest-dao
-./gradlew :build
+cd ../rest-dao && ./gradlew :build || exit \
 
-cd ../../email
-./gradlew :build
+cd ../../email && ./gradlew :build || exit \
 
-cd ../enterprise/enterprise-react
-./gradlew :build
+cd ../enterprise/enterprise-react && ./gradlew :build || exit \
 
-cd ../../firebase/firebase-auth
-./gradlew :build
+cd ../../firebase/firebase-auth && ./gradlew :build || exit \
 
-cd ../firebase-core
-./gradlew :build
+cd ../firebase-core && ./gradlew :build || exit \
+
+cd ../firebase-firestore && cd ./gradlew :build || exit \

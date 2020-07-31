@@ -1,10 +1,8 @@
-package tz.co.asoft.firebase.firestore
+package tz.co.asoft
 
 import kotlinx.serialization.KSerializer
-import tz.co.asoft.Entity
-import tz.co.asoft.IDao
 
-interface IFirebaseDao<T : Entity> : IDao<T> {
+interface IFirestoreDao<T : Entity> : IDao<T> {
 
     val firestore: FirebaseFirestore
 

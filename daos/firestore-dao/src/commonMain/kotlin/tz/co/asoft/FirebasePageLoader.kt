@@ -1,36 +1,34 @@
-package tz.co.asoft.firebase.firestore
+package tz.co.asoft
 
 import kotlinx.serialization.KSerializer
-import tz.co.asoft.Page
-import tz.co.asoft.PageFetcher
-import tz.co.asoft.PageLoader
-import tz.co.asoft.Pager
-import tz.co.asoft.Entity
 
 internal class FirebasePageLoader<D : Entity>(
     private val serializer: KSerializer<D>,
-    private val collection: CollectionReference,
+    private val collection: FirestoreCollectionReference,
     override val predicate: (D) -> Boolean = { !it.deleted }
-) : PageLoader<DocumentSnapshot, D> {
+) : PageLoader<FirestoreDocumentSnapshot, D> {
 
     override fun pager(
         pageSize: Int,
         extraPages: Int,
         showTmpPages: Boolean
-    ): Pager<DocumentSnapshot, D> {
+    ): Pager<FirestoreDocumentSnapshot, D> {
         val fetcher = PageFetcher(this, pageSize)
         return Pager(fetcher, showTmpPages)
     }
 
-    private suspend fun loadPage(pageSize: Int, at: DocumentSnapshot?): List<DocumentSnapshot> {
-        val snaps = mutableListOf<DocumentSnapshot>()
+    private suspend fun loadPage(
+        pageSize: Int,
+        at: FirestoreDocumentSnapshot?
+    ): List<FirestoreDocumentSnapshot> {
+        val snaps = mutableListOf<FirestoreDocumentSnapshot>()
         val query = collection.orderedBy("uid")
         val unfilteredSnaps = if (at == null) {
             query.limit(pageSize + 1).fetch().documents
         } else {
             query.start(at).limit(pageSize + 1).fetch().documents
         }
-        val documentPredicate: (DocumentSnapshot) -> Boolean = {
+        val documentPredicate: (FirestoreDocumentSnapshot) -> Boolean = {
             it.toObject(serializer)?.let(predicate) == true
         }
         val lastDoc = unfilteredSnaps.lastOrNull() ?: return snaps
@@ -47,7 +45,7 @@ internal class FirebasePageLoader<D : Entity>(
         return snaps + loadPage(pageSize - snaps.size, lastDoc)
     }
 
-    override suspend fun firstPage(pageSize: Int): Page<DocumentSnapshot, D> {
+    override suspend fun firstPage(pageSize: Int): Page<FirestoreDocumentSnapshot, D> {
         val snaps = loadPage(pageSize, null)
         val key = snaps.firstOrNull()
         val users = snaps.mapNotNull { it.toObject(serializer) }
@@ -62,7 +60,7 @@ internal class FirebasePageLoader<D : Entity>(
         )
     }
 
-    override suspend fun nextOf(node: Page<DocumentSnapshot, D>): Page<DocumentSnapshot, D> {
+    override suspend fun nextOf(node: Page<FirestoreDocumentSnapshot, D>): Page<FirestoreDocumentSnapshot, D> {
         val key = node.nextKey ?: throw Exception("Can't go to next node")
         val snaps = loadPage(node.pageSize, key)
         val users = snaps.mapNotNull { it.toObject(serializer) }
@@ -77,7 +75,7 @@ internal class FirebasePageLoader<D : Entity>(
         )
     }
 
-    override suspend fun prevOf(node: Page<DocumentSnapshot, D>): Page<DocumentSnapshot, D> {
+    override suspend fun prevOf(node: Page<FirestoreDocumentSnapshot, D>): Page<FirestoreDocumentSnapshot, D> {
         val key = node.prev?.key ?: throw Exception("Can't go to prev page")
         val snaps = loadPage(node.pageSize, key)
         val users = snaps.mapNotNull { it.toObject(serializer) }
