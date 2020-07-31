@@ -26,4 +26,8 @@ cd ../http && ./gradlew :build || exit
 
 cd ../icons/react-icons && ./gradlew :build || exit
 
+cd ../../io && ./gradlew :build || exit
+
+
+
 

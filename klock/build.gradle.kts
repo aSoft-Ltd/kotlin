@@ -5,25 +5,31 @@ plugins {
 kotlin.sourceSets {
     val commonMain by getting {
         dependencies {
-            implementation(kotlin("stdlib-common"))
+            api(kotlin("stdlib-common"))
+        }
+    }
+
+    val commonTest by getting {
+        dependencies {
+            implementation(asoft("test"))
         }
     }
 
     val androidMain by getting {
         dependencies {
-            implementation(kotlin("stdlib"))
+            api(kotlin("stdlib"))
         }
     }
 
     val jvmMain by getting {
         dependencies {
-            implementation(kotlin("stdlib"))
+            api(kotlin("stdlib"))
         }
     }
 
     val jsMain by getting {
         dependencies {
-            implementation(kotlin("stdlib-js"))
+            api(kotlin("stdlib-js"))
         }
     }
 }
