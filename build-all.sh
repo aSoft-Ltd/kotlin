@@ -25,6 +25,7 @@ build ../paging/paging-core
 build ../paging-enterprise-react
 build ../../phone
 build ../rest-controller/rest-controller-core
+build ../rest-controller-ktor
 
 
 
