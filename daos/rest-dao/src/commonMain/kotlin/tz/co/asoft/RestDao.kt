@@ -26,7 +26,7 @@ open class RestDao<T : Entity>(
     override suspend fun create(list: Collection<T>): List<T> {
         val json = client.post<String>("$url/$path") {
             appendHeaders()
-            body = Result.RJson.stringify(serializer.list, list.toList())
+            body = RJson.stringify(serializer.list, list.toList())
         }
         return Result.parse(serializer.list, json).response()
     }
@@ -36,7 +36,7 @@ open class RestDao<T : Entity>(
     override suspend fun edit(list: Collection<T>): List<T> {
         val json = client.patch<String>("$url/$path") {
             appendHeaders()
-            body = Result.RJson.stringify(serializer.list, list.toList())
+            body = RJson.stringify(serializer.list, list.toList())
         }
         return Result.parse(serializer.list, json).response()
     }
@@ -46,7 +46,7 @@ open class RestDao<T : Entity>(
     override suspend fun delete(list: Collection<T>): List<T> {
         val json = client.delete<String>("$url/$path") {
             appendHeaders()
-            body = Result.RJson.stringify(serializer.list, list.toList())
+            body = RJson.stringify(serializer.list, list.toList())
         }
         return Result.parse(serializer.list, json).response()
     }
@@ -56,7 +56,7 @@ open class RestDao<T : Entity>(
     override suspend fun wipe(list: Collection<T>): List<T> {
         val json = client.post<String>("$url/$path/wipe") {
             appendHeaders()
-            body = Result.RJson.stringify(serializer.list, list.toList())
+            body = RJson.stringify(serializer.list, list.toList())
         }
         return Result.parse(serializer.list, json).response()
     }
@@ -70,7 +70,7 @@ open class RestDao<T : Entity>(
         }
         val json = client.post<String>("$url/$path/load") {
             appendHeaders()
-            body = Result.RJson.stringify(String.serializer().list, stringIds)
+            body = RJson.stringify(String.serializer().list, stringIds)
         }
         return Result.parse(serializer.list, json).response()
     }
@@ -85,7 +85,7 @@ open class RestDao<T : Entity>(
     override suspend fun page(pi: RestPageRequestInfo): List<T> {
         val json = client.post<String>("$url/$path/page") {
             appendHeaders()
-            body = Result.RJson.stringify(RestPageRequestInfo.serializer(), pi)
+            body = RJson.stringify(RestPageRequestInfo.serializer(), pi)
         }
         return Result.parse(serializer.list, json).response()
     }
