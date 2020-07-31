@@ -1,7 +1,6 @@
 package tz.co.asoft
 
 import kotlinx.serialization.Serializable
-import tz.co.asoft.klock.DateTime
 
 @Serializable
 data class FileRef(

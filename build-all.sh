@@ -28,6 +28,10 @@ cd ../icons/react-icons && ./gradlew :build || exit
 
 cd ../../io && ./gradlew :build || exit
 
+cd ../klock && ./gradlew :build || exit
+
+
+
 
 
 
