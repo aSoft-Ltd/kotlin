@@ -19,6 +19,8 @@ build ../icons/icons-react
 build ../../io
 build ../klock
 build ../krypto
+build ../logging
+
 
 
 

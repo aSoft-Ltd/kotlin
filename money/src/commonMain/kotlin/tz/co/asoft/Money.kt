@@ -1,4 +1,4 @@
-package tz.co.asoft.money
+package tz.co.asoft
 
 import kotlin.math.floor
 

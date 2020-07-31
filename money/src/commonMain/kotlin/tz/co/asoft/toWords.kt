@@ -1,4 +1,4 @@
-package tz.co.asoft.money
+package tz.co.asoft
 
 private fun Int.convertLessThanOneThousand(): String {
     var number = this
