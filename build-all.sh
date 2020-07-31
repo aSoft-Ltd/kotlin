@@ -28,7 +28,7 @@ build ../rest-controller/rest-controller-core
 build ../rest-controller-ktor
 build ../../result
 build ../storage
-
+build ../task
 
 
 
