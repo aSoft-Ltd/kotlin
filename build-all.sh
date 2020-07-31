@@ -16,4 +16,8 @@ cd ../../email
 cd ../enterprise/enterprise-react
 ./gradlew :build
 
+cd ../../firebase/firebase-auth
+./gradlew :build
 
+cd ../firebase-core
+./gradlew :build
