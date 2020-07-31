@@ -32,6 +32,8 @@ build ../task
 build ../theme/theme-core
 build ../theme-react
 build ../../tools/tools-core
+build ../tools-react
+build ../../viewmodel/viewmodel-core
 
 
 

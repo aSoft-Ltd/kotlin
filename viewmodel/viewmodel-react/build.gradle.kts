@@ -7,7 +7,6 @@ kotlin.sourceSets {
         dependencies {
             api(project(":viewmodel-core"))
             api(project(":tools-react"))
-            api("org.jetbrains:kotlin-react:${versions.kotlinjs.react}")
         }
     }
 }
