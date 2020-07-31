@@ -3,7 +3,7 @@
 package tz.co.asoft.enterprise.simplebar
 
 import react.RClass
-import tz.co.asoft.tools.StyledProps
+import tz.co.asoft.StyledProps
 
 external interface SimpleBarProps : StyledProps
 

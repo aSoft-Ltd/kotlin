@@ -7,7 +7,7 @@ import react.RClass
 import styled.css
 import styled.styledButton
 import tz.co.asoft.react.icons.IconProps
-import tz.co.asoft.theme.ThemeConsumer
+import tz.co.asoft.ThemeConsumer
 
 fun RBuilder.OutlinedButton(name: String, icon: RClass<IconProps>? = null, onClick: (() -> Unit)? = null) = ThemeConsumer { theme ->
     styledButton {

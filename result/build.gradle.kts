@@ -9,7 +9,7 @@ kotlin.sourceSets {
         }
     }
 
-    val commonTest by getting{
+    val commonTest by getting {
         dependencies {
             api(asoft("test"))
         }
@@ -18,14 +18,12 @@ kotlin.sourceSets {
     val androidMain by getting {
         dependencies {
             api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinx.serialization}")
-            api(kotlin("reflect"))
         }
     }
 
     val jvmMain by getting {
         dependencies {
             api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinx.serialization}")
-            api(kotlin("reflect"))
         }
     }
 

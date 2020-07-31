@@ -13,13 +13,12 @@ import react.dom.pre
 import styled.css
 import styled.styledDiv
 import styled.styledInput
+import tz.co.asoft.ThemeConsumer
 import tz.co.asoft.enterprise.text.TextInput.Props
 import tz.co.asoft.enterprise.text.TextInput.State
+import tz.co.asoft.onBackgroundColor
+import tz.co.asoft.primaryColor
 import tz.co.asoft.react.icons.IconProps
-import tz.co.asoft.theme.ThemeConsumer
-import tz.co.asoft.theme.onBackgroundColor
-import tz.co.asoft.theme.primaryColor
-import tz.co.asoft.theme.primaryVariantColor
 import kotlin.browser.document
 
 private class TextInput(props: Props) : RComponent<Props, State>(props) {
@@ -113,9 +112,6 @@ private class TextInput(props: Props) : RComponent<Props, State>(props) {
         }
     }
 }
-
-//@Deprecated("Use the other text input")
-//fun RBuilder.TextInput(props: Props) = child(TextInput::class.js, props) {}
 
 fun RBuilder.TextInput(
     name: String,

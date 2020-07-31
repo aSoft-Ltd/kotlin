@@ -10,11 +10,11 @@ import react.RState
 import react.router.dom.browserRouter
 import styled.css
 import styled.styledSection
-import tz.co.asoft.module.AbstractModuleRoute
+import tz.co.asoft.AbstractModuleRoute
 import tz.co.asoft.enterprise.panels.EnterprisePanel.Props
-import tz.co.asoft.tools.onDesktop
-import tz.co.asoft.tools.onMobile
-import tz.co.asoft.tools.onPaper
+import tz.co.asoft.onDesktop
+import tz.co.asoft.onMobile
+import tz.co.asoft.onPaper
 
 class EnterprisePanel : RComponent<Props, RState>() {
     class Props(

@@ -6,5 +6,6 @@ pluginManagement {
 }
 
 includeBuild("../build-src")
+includeBuild("../test")
 include(":klock")
 project(":klock").projectDir = File("../klock")

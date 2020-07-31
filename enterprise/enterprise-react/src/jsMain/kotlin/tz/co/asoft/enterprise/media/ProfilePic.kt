@@ -12,21 +12,19 @@ import org.w3c.files.File
 import org.w3c.files.get
 import react.*
 import styled.css
-import styled.styledDiv
 import styled.styledImg
 import styled.styledInput
+import tz.co.asoft.UIID
 import tz.co.asoft.enterprise.layout.AspectRationDiv
 import tz.co.asoft.enterprise.layout.Grid
 import tz.co.asoft.enterprise.media.ProfilePic.Props
 import tz.co.asoft.enterprise.media.ProfilePic.State
 import tz.co.asoft.enterprise.progress.ProgressBar
-import tz.co.asoft.theme.ThemeConsumer
-import tz.co.asoft.theme.primaryColor
-import tz.co.asoft.tools.UIID
-import tz.co.asoft.tools.justifySelf
-import tz.co.asoft.tools.to
-import kotlin.Float
+import tz.co.asoft.justifySelf
+import tz.co.asoft.primaryColor
+import tz.co.asoft.to
 import kotlin.lazy
+import kotlin.Float
 
 private class ProfilePic : RComponent<Props, State>() {
     class Props(

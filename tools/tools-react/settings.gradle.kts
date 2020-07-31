@@ -6,3 +6,10 @@ pluginManagement {
 }
 
 includeBuild("../../build-src")
+includeBuild("../../test")
+include(":tools-core")
+project(":tools-core").projectDir = File("../tools-core")
+include(":theme-core")
+project(":theme-core").projectDir = File("../../theme/theme-core")
+//include(":theme-react")
+//project(":theme-react").projectDir = File("../../theme/theme-react")

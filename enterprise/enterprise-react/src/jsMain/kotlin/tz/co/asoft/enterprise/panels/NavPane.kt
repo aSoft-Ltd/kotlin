@@ -1,6 +1,7 @@
 package tz.co.asoft.enterprise.panels
 
 import kotlinx.css.*
+import kotlinx.css.Color
 import kotlinx.css.properties.TextDecoration
 import kotlinx.css.properties.s
 import kotlinx.css.properties.transition
@@ -12,8 +13,8 @@ import react.router.dom.navLink
 import styled.css
 import styled.styledDiv
 import styled.styledSection
+import tz.co.asoft.*
 import tz.co.asoft.enterprise.panels.NavPane.Props
-import tz.co.asoft.theme.*
 
 internal class NavPane : RComponent<Props, RState>() {
     class Props(

@@ -4,8 +4,7 @@ import kotlinx.css.*
 import react.RBuilder
 import styled.css
 import styled.styledDiv
-import styled.styledSvg
-import tz.co.asoft.tools.justifySelf
+import tz.co.asoft.justifySelf
 
 /**
  * Make sure to use this inside [RBuilder.AspectRationDiv]

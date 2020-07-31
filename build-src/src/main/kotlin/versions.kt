@@ -6,11 +6,11 @@ object versions {
     val tornadofx = "1.7.19"
     val gson = "2.8.5"
     val coil = "0.8.0"
-    val asoft = "0.1.0-dev-16"
+    val asoft = "0.1.0-dev-17"
 
     object kotlinx {
         val atomicfu = "0.14.2"
-        val coroutines = "1.3.7"
+        val coroutines = "1.3.8"
         val serialization = "0.20.0"
         val html = "0.7.1"
     }
@@ -38,12 +38,12 @@ object versions {
     }
 
     object kotlinjs {
-        val react = "16.13.1-pre.105-kotlin-1.3.72"
+        val react = "16.13.1-pre.110-kotlin-1.3.72"
         val reactDom = react
-        val reactRouterDom = "5.1.2-pre.105-kotlin-1.3.72"
-        val styled = "1.0.0-pre.105-kotlin-1.3.72"
-        val css = "1.0.0-pre.105-kotlin-1.3.72"
-        val extensions = "1.0.1-pre.105-kotlin-1.3.72"
+        val reactRouterDom = "5.1.2-pre.110-kotlin-1.3.72"
+        val styled = "1.0.0-pre.110-kotlin-1.3.72"
+        val css = "1.0.0-pre.110-kotlin-1.3.72"
+        val extensions = "1.0.1-pre.110-kotlin-1.3.72"
     }
 
     object firebase {

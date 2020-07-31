@@ -15,14 +15,10 @@ import styled.css
 import styled.styledDiv
 import styled.styledImg
 import styled.styledSection
-import tz.co.asoft.module.AbstractModuleRoute
+import tz.co.asoft.*
 import tz.co.asoft.enterprise.panels.Application.Props
 import tz.co.asoft.react.icons.FaBars
 import tz.co.asoft.react.icons.FaUserAlt
-import tz.co.asoft.theme.*
-import tz.co.asoft.tools.onDesktop
-import tz.co.asoft.tools.onMobile
-import tz.co.asoft.tools.onPaper
 
 internal class Application : RComponent<Props, RState>() {
     class Props(

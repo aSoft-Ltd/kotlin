@@ -10,5 +10,5 @@ includeBuild("../../test")
 
 include(":firebase-core")
 project(":firebase-core").projectDir = File("../firebase-core")
-include(":platform")
-project(":platform").projectDir = File("../../platform")
+include(":tools-core")
+project(":tools-core").projectDir = File("../../tools/tools-core")

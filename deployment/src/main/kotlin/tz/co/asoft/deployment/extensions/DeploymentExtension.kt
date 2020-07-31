@@ -26,9 +26,7 @@ open class DeploymentExtension(val project: Project) {
         this.deployments.addAll(deployments)
         project.kotlinExt?.targets?.filter {
             !it.name.contains("metadata", ignoreCase = true)
-        }?.forEach {
-            createTasks(it, deployments)
-        }
+        }?.forEach { createTasks(it, deployments) }
 
         if (project.isPureAndroid) {
             val target = project.androidTarget
@@ -103,6 +101,8 @@ open class DeploymentExtension(val project: Project) {
             it.doFirst { _ ->
                 it.manifest { it.attributes["Main-Class"] = target.mainClassName }
                 val compile = project.configurations.getByName("${target.name}RuntimeClasspath")
+                val resDir = target.compilations.getByName("main").defaultSourceSet.resources
+                it.from(resDir)
                 it.from(compile.map { if (it.isDirectory) it else project.zipTree(it) })
             }
         }
@@ -152,7 +152,7 @@ open class DeploymentExtension(val project: Project) {
                 val resDirs = resources?.sourceDirectories?.filterNotNull() ?: listOf()
                 project.copy {
                     resDirs.forEach { dir -> it.from(dir) }
-                    it.from("build/bundle", "src/${target.name}Main/resources")
+                    it.from("build/bundle", "build/processedResources/js/main")
                     it.into(deployDir)
                 }
                 println("Copied into ${deployDir.absolutePath}")

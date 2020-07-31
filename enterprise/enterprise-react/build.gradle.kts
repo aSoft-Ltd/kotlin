@@ -2,12 +2,6 @@ plugins {
     id("asoft-lib")
 }
 
-android {
-    defaultConfig {
-        minSdkVersion(9)
-    }
-}
-
 kotlin.sourceSets {
     val jsMain by getting {
         dependencies {

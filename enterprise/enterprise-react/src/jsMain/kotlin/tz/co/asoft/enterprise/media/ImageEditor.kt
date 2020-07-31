@@ -4,7 +4,6 @@ import kotlinx.css.Align
 import kotlinx.css.LinearDimension
 import kotlinx.css.alignSelf
 import kotlinx.css.pct
-import org.w3c.dom.svg.SVGAnimatedPreserveAspectRatio
 import org.w3c.dom.url.URL
 import org.w3c.files.File
 import react.*

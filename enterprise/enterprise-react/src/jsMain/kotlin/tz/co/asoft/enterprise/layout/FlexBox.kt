@@ -9,8 +9,8 @@ import react.RBuilder
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
-import tz.co.asoft.theme.Theme
-import tz.co.asoft.theme.ThemeConsumer
+import tz.co.asoft.Theme
+import tz.co.asoft.ThemeConsumer
 
 fun RBuilder.FlexBox(
     direction: FlexDirection = FlexDirection.row,

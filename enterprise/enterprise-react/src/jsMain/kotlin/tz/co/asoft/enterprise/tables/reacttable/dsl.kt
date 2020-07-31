@@ -9,10 +9,9 @@ import react.ReactElement
 import react.buildElement
 import styled.css
 import styled.styledDiv
-import tz.co.asoft.enterprise.buttons.*
-import tz.co.asoft.enterprise.tables.TAction
-import tz.co.asoft.enterprise.tables.TAction.*
-import tz.co.asoft.theme.ThemeConsumer
+import tz.co.asoft.ThemeConsumer
+import tz.co.asoft.enterprise.action.AButton
+import tz.co.asoft.enterprise.action.ActionButton
 
 internal var isReactTableCssLoaded = false
 fun <D : Any> Column<D>.access(trans: (D) -> Any) {
@@ -53,7 +52,7 @@ inline fun Column<*>.onFilter(crossinline handler: (key: String, rowContent: Str
 fun <D : Any> RBuilder.ReactTable(
     data: List<D>,
     columns: List<Column<D>>,
-    actions: List<TAction<D>>? = null,
+    actions: List<AButton<D>>? = null,
     showPagination: Boolean = true,
     showPaginationTop: Boolean = false,
     showPaginationBottom: Boolean = true,
@@ -89,7 +88,7 @@ fun <D : Any> RBuilder.ReactTable(
     }
 }
 
-operator fun <D : Any> List<Column<D>>.plus(actions: List<TAction<D>>?) = if (actions == null) {
+operator fun <D : Any> List<Column<D>>.plus(actions: List<AButton<D>>?) = if (actions == null) {
     toTypedArray()
 } else {
     val actionsColumn = RenderColumn<D>("Actions") {
@@ -100,22 +99,7 @@ operator fun <D : Any> List<Column<D>>.plus(actions: List<TAction<D>>?) = if (ac
                 gridTemplateColumns =
                     GridTemplateColumns(actions.joinToString(separator = " ") { "1fr" })
             }
-            for (action in actions) {
-                when (action) {
-                    is ContainedButton -> ContainedButton(
-                        name = action.name,
-                        icon = action.icon
-                    ) { action.handler(it) }
-                    is OutlinedButton -> OutlinedButton(
-                        name = action.name,
-                        icon = action.icon
-                    ) { action.handler(it) }
-                    is TextButton -> TextButton(
-                        name = action.name,
-                        icon = action.icon
-                    ) { action.handler(it) }
-                }
-            }
+            for (action in actions) ActionButton(action, it)
         }
     }
     (this + actionsColumn).toTypedArray()

@@ -5,24 +5,22 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.css.*
 import kotlinx.css.properties.boxShadow
-import kotlinx.html.*
-import kotlinx.html.dom.create
-import kotlinx.html.js.onChangeFunction
+import kotlinx.html.InputType
+import kotlinx.html.id
 import kotlinx.html.js.onClickFunction
-import kotlinx.html.js.onSubmitFunction
-import org.w3c.dom.HTMLFormElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.files.File
 import org.w3c.files.get
 import react.*
-import react.dom.RDOMBuilder
 import react.dom.input
-import styled.*
+import styled.css
+import styled.styledDiv
+import styled.styledH4
+import tz.co.asoft.UIID
 import tz.co.asoft.enterprise.files.FileInput.Props
 import tz.co.asoft.enterprise.files.FileInput.State
 import tz.co.asoft.enterprise.progress.ProgressBar
-import tz.co.asoft.tools.*
-import kotlin.browser.document
+import tz.co.asoft.onFileInputChanged
 
 private class FileInput : RComponent<Props, State>(), CoroutineScope by CoroutineScope(SupervisorJob()) {
     class Props(

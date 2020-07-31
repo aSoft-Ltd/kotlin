@@ -1,6 +1,6 @@
 package color
 
-import tz.co.asoft.color.Color
+import tz.co.asoft.Color
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
