@@ -1,4 +1,4 @@
-package tz.co.asoft.email
+package tz.co.asoft
 
 class Email(value: String) {
     var value: String = ""

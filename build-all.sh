@@ -6,3 +6,6 @@ cd ../../daos/firebase-dao
 
 cd ../neo4j-dao
 ./gradlew :build
+
+cd ../rest-dao
+./gradlew :build

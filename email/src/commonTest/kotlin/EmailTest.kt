@@ -1,4 +1,4 @@
-import tz.co.asoft.email.Email
+import tz.co.asoft.Email
 import kotlin.test.*
 
 class EmailTest {
