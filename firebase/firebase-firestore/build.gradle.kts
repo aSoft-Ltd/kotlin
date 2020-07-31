@@ -26,6 +26,7 @@ kotlin.sourceSets {
 
     val jsMain by getting {
         dependencies {
+            api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.kotlinx.coroutines}")
             api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${versions.kotlinx.serialization}")
         }
     }
