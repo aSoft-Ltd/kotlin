@@ -1,4 +1,4 @@
-package tz.co.asoft.firebase.auth
+package tz.co.asoft
 
 import kotlinx.coroutines.await
 import kotlin.js.Promise
@@ -12,7 +12,7 @@ actual abstract external class FirebaseUser {
     var isAnonymous: Boolean
     var displayName: String?
     fun delete(): Promise<Unit>
-    fun reauthenticateWithCredential(credential: AuthCredential): Promise<dynamic>
+    fun reauthenticateWithCredential(credential: FirebaseAuthCredentials): Promise<dynamic>
 }
 
 actual val FirebaseUser.uid get() = uid
@@ -23,6 +23,6 @@ actual val FirebaseUser.isAnonymous get() = isAnonymous
 actual val FirebaseUser.phoneNumber get() = phoneNumber
 actual val FirebaseUser.displayName get() = displayName
 actual suspend fun FirebaseUser.remove() = delete().await()
-actual suspend fun FirebaseUser.reAuthenticate(credential: AuthCredential) {
+actual suspend fun FirebaseUser.reAuthenticate(credential: FirebaseAuthCredentials) {
     reauthenticateWithCredential(credential).unsafeCast<Promise<dynamic>>().await()
 }

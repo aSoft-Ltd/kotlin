@@ -1,6 +1,6 @@
-package tz.co.asoft.firebase.auth
+package tz.co.asoft
 
-actual interface AuthResult
+actual interface FirebaseAuthResult
 
-actual val AuthResult.user: FirebaseUser?
+actual val FirebaseAuthResult.user: FirebaseUser?
     get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.

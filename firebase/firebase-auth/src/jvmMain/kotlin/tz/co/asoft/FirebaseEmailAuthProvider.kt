@@ -1,8 +1,8 @@
-package tz.co.asoft.firebase.auth
+package tz.co.asoft
 
-actual class EmailAuthProvider {
+actual class FirebaseEmailAuthProvider {
     actual companion object {
-        actual fun getCredential(email: String, pwd: String): AuthCredential {
+        actual fun getCredential(email: String, pwd: String): FirebaseAuthCredentials {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
     }

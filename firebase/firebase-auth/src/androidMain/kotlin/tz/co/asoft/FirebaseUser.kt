@@ -1,6 +1,5 @@
-package tz.co.asoft.firebase.auth
+package tz.co.asoft
 
-import tz.co.asoft.firebase.core.tools.await
 import com.google.firebase.auth.FirebaseUser as GFirebaseUser
 
 actual typealias FirebaseUser = GFirebaseUser
@@ -16,6 +15,6 @@ actual suspend fun FirebaseUser.remove() {
     delete().await()
 }
 
-actual suspend fun FirebaseUser.reAuthenticate(credential: AuthCredential) {
+actual suspend fun FirebaseUser.reAuthenticate(credential: FirebaseAuthCredentials) {
     reauthenticate(credential).await()
 }

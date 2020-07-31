@@ -12,3 +12,8 @@ cd ../rest-dao
 
 cd ../../email
 ./gradlew :build
+
+cd ../enterprise/enterprise-react
+./gradlew :build
+
+

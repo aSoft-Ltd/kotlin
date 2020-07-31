@@ -1,6 +1,4 @@
-package tz.co.asoft.firebase.auth
-
-import tz.co.asoft.firebase.core.FirebaseApp
+package tz.co.asoft
 
 actual class FirebaseAuth
 
@@ -12,14 +10,14 @@ actual val FirebaseAuth.currentUser: FirebaseUser?
 actual suspend fun FirebaseAuth.createUserWithEmailAndPassword(
         email: String,
         password: String,
-        then: (AuthResult) -> Unit
+        then: (FirebaseAuthResult) -> Unit
 ) {
 }
 
 actual suspend fun FirebaseAuth.signInWithEmailAndPassword(
         email: String,
         password: String,
-        then: (AuthResult) -> Unit
+        then: (FirebaseAuthResult) -> Unit
 ) {
 }
 
@@ -30,11 +28,11 @@ actual fun FirebaseApp.auth(): FirebaseAuth {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 }
 
-actual suspend fun FirebaseAuth.makeUserWithEmailAndPassword(email: String, password: String): AuthResult {
+actual suspend fun FirebaseAuth.makeUserWithEmailAndPassword(email: String, password: String): FirebaseAuthResult {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 }
 
-actual suspend fun FirebaseAuth.loginUserWithEmailAndPassword(email: String, password: String): AuthResult {
+actual suspend fun FirebaseAuth.loginUserWithEmailAndPassword(email: String, password: String): FirebaseAuthResult {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 }
 

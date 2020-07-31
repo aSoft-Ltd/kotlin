@@ -1,4 +1,4 @@
-package tz.co.asoft.firebase.auth
+package tz.co.asoft
 
 actual abstract class FirebaseUser
 
@@ -20,5 +20,5 @@ actual val FirebaseUser.isAnonymous: Boolean
 actual suspend fun FirebaseUser.remove() {
 }
 
-actual suspend fun FirebaseUser.reAuthenticate(credential: AuthCredential) {
+actual suspend fun FirebaseUser.reAuthenticate(credential: FirebaseAuthCredentials) {
 }
