@@ -2,10 +2,10 @@ package tz.co.asoft
 
 import org.w3c.dom.HTMLFormElement
 
-class FormBuilder {
+class HTMLFormBuilder {
     private var submitHandler: (HTMLFormElement.() -> Unit)? = null
 
-    infix fun onSubmit(handler: HTMLFormElement.() -> Unit): FormBuilder {
+    infix fun onSubmit(handler: HTMLFormElement.() -> Unit): HTMLFormBuilder {
         submitHandler = handler
         return this
     }

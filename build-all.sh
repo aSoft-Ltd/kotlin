@@ -14,4 +14,8 @@ cd ../../firebase/firebase-auth && ./gradlew :build || exit \
 
 cd ../firebase-core && ./gradlew :build || exit \
 
-cd ../firebase-firestore && cd ./gradlew :build || exit \
+cd ../firebase-firestore && ./gradlew :build || exit \
+
+cd ../firebase-storage && ./gradlew :build || exit \
+
+
