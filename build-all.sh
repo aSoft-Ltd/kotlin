@@ -9,3 +9,6 @@ cd ../neo4j-dao
 
 cd ../rest-dao
 ./gradlew :build
+
+cd ../../email
+./gradlew :build
