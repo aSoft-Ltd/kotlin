@@ -7,9 +7,9 @@ import react.RProviderProps
 import react.createContext
 import kotlin.browser.document
 
-val currentTheme = MutableStateFlow(AquaGreenTheme)
+val currentTheme by lazy { MutableStateFlow(AquaGreenTheme) }
 
-private val ThemeContext = createContext(currentTheme.value)
+private val ThemeContext by lazy { createContext(currentTheme.value) }
 
 fun RBuilder.ThemeProvider(
     theme: Theme,

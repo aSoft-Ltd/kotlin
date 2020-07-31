@@ -29,6 +29,7 @@ build ../rest-controller-ktor
 build ../../result
 build ../storage
 build ../task
+build ../theme/theme-core
 
 
 
