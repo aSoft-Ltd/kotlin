@@ -1,4 +1,4 @@
-package tz.co.asoft.storage
+package tz.co.asoft
 
 interface IStorage {
     val name: String

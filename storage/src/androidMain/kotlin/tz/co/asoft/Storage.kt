@@ -1,8 +1,9 @@
-package tz.co.asoft.storage
+package tz.co.asoft
 
 import android.content.Context
 
-class Storage(ctx: Context, override val name: String) : IStorage {
+class Storage(ctx: Context, override val name: String) :
+    IStorage {
     private val db = ctx.getSharedPreferences(name, Context.MODE_PRIVATE)
 
     override fun get(key: String): String? = db.getString(key, null)

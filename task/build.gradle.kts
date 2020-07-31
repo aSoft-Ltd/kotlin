@@ -34,9 +34,6 @@ kotlin.sourceSets {
         dependencies {
             api(kotlin("stdlib-js"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.kotlinx.coroutines}")
-            api("org.jetbrains:kotlin-extensions:${versions.kotlinjs.extensions}")
-            api("org.jetbrains.kotlinx:kotlinx-html-js:${versions.kotlinx.html}")
-            api("org.jetbrains:kotlin-css-js:${versions.kotlinjs.css}")
         }
     }
 }
