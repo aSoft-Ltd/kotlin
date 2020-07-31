@@ -1,5 +1,6 @@
 build(){
-	cd $1 && echo "building $(pwd)" && ./gradlew :build || exit
+	cd $1 && echo "building $(pwd)"
+	chmod +x gradlew && ./gradlew :build || exit
 }
 
 build ./components/components-react
@@ -34,6 +35,7 @@ build ../theme-react
 build ../../tools/tools-core
 build ../tools-react
 build ../../viewmodel/viewmodel-core
+build ../viewmodel-react
 
 
 
