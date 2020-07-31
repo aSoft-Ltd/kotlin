@@ -1,6 +1,6 @@
 package tz.co.asoft
 
-import tz.co.asoft.klock.DateTime
+import tz.co.asoft.DateTime
 import kotlinx.serialization.Serializable
 
 @Serializable
