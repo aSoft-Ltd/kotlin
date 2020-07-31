@@ -31,6 +31,8 @@ build ../storage
 build ../task
 build ../theme/theme-core
 build ../theme-react
+build ../../tools/tools-core
+
 
 
 
