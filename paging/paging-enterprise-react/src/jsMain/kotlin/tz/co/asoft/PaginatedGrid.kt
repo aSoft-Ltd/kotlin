@@ -1,4 +1,4 @@
-package tz.co.asoft.paging
+package tz.co.asoft
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
@@ -7,8 +7,8 @@ import react.*
 import styled.StyledDOMBuilder
 import tz.co.asoft.enterprise.layout.Grid
 import tz.co.asoft.enterprise.layout.GridAdapter
-import tz.co.asoft.paging.PaginatedGrid.Props
-import tz.co.asoft.paging.PaginatedGrid.State
+import tz.co.asoft.PaginatedGrid.Props
+import tz.co.asoft.PaginatedGrid.State
 import tz.co.asoft.enterprise.widgets.Error
 import tz.co.asoft.enterprise.widgets.Loader
 

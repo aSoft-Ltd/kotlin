@@ -1,14 +1,14 @@
-package tz.co.asoft.paging
+package tz.co.asoft
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import react.*
 import tz.co.asoft.enterprise.layout.Grid
-import tz.co.asoft.enterprise.tables.TAction
 import tz.co.asoft.enterprise.tables.reacttable.Column
 import tz.co.asoft.enterprise.tables.reacttable.FoldableTable
-import tz.co.asoft.paging.PaginatedTable.Props
-import tz.co.asoft.paging.PaginatedTable.State
+import tz.co.asoft.PaginatedTable.Props
+import tz.co.asoft.PaginatedTable.State
+import tz.co.asoft.enterprise.action.AButton
 import tz.co.asoft.enterprise.widgets.Error
 import tz.co.asoft.enterprise.widgets.Loader
 
@@ -17,7 +17,7 @@ private class PaginatedTable<D : Any>(p: Props<D>) : RComponent<Props<D>, State<
     class Props<D : Any>(
         val pager: Pager<*, D>,
         val columns: List<Column<D>>,
-        val actions: List<TAction<D>>?,
+        val actions: List<AButton<D>>?,
         val defaultPageSize: Int,
         val sortable: Boolean,
         val resizable: Boolean,
@@ -76,7 +76,7 @@ private class PaginatedTable<D : Any>(p: Props<D>) : RComponent<Props<D>, State<
 fun <D : Any> RBuilder.PaginatedTable(
     pager: Pager<*, D>,
     columns: List<Column<D>>,
-    actions: List<TAction<D>>? = null,
+    actions: List<AButton<D>>? = null,
     defaultPageSize: Int = 15,
     sortable: Boolean = true,
     resizable: Boolean = true,

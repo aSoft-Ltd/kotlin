@@ -1,4 +1,4 @@
-package tz.co.asoft.paging
+package tz.co.asoft
 
 import react.RBuilder
 import styled.styledDiv

@@ -21,6 +21,7 @@ build ../klock
 build ../krypto
 build ../logging
 build ../money
+build ../paging/paging-core
 
 
 
