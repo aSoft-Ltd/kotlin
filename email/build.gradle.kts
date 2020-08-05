@@ -1,4 +1,5 @@
 plugins {
+    id("root-module")
     id("asoft-lib")
 }
 

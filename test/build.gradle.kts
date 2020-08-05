@@ -1,11 +1,12 @@
 plugins {
     id("asoft-lib")
+    id("root-module")
 }
 
 kotlin.sourceSets {
     val commonMain by getting {
         dependencies {
-            implementation(kotlin("stdlib-common"))
+            api(kotlin("stdlib-common"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.kotlinx.coroutines}")
             api(kotlin("test-common"))
             api(kotlin("test-annotations-common"))
@@ -14,7 +15,7 @@ kotlin.sourceSets {
 
     val androidMain by getting {
         dependencies {
-            implementation(kotlin("stdlib"))
+            api(kotlin("stdlib"))
             api(kotlin("test"))
             api(kotlin("test-junit"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinx.coroutines}")
@@ -26,7 +27,7 @@ kotlin.sourceSets {
 
     val jvmMain by getting {
         dependencies {
-            implementation(kotlin("stdlib"))
+            api(kotlin("stdlib"))
             api(kotlin("test"))
             api(kotlin("test-junit"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx.coroutines}")
@@ -36,7 +37,7 @@ kotlin.sourceSets {
 
     val jsMain by getting {
         dependencies {
-            implementation(kotlin("stdlib-js"))
+            api(kotlin("stdlib-js"))
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.kotlinx.coroutines}")
             api(kotlin("test-js"))
         }

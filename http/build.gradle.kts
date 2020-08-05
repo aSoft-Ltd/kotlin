@@ -1,7 +1,6 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-
 plugins {
     id("asoft-lib")
+    id("root-module")
 }
 
 kotlin.sourceSets {

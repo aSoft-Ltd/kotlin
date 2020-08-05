@@ -1,35 +1,40 @@
 plugins {
     id("asoft-lib")
+	id("root-module")
 }
 
 kotlin.sourceSets {
     val commonMain by getting {
         dependencies {
-            implementation(kotlin("stdlib-common"))
+            api(kotlin("stdlib-common"))
+            api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${versions.kotlinx.serialization}")
         }
     }
 
     val commonTest by getting {
         dependencies {
-            implementation(asoft("test"))
+            api(asoft("test"))
         }
     }
 
     val androidMain by getting {
         dependencies {
-            implementation(kotlin("stdlib"))
+            api(kotlin("stdlib"))
+            api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinx.serialization}")
         }
     }
 
     val jvmMain by getting {
         dependencies {
-            implementation(kotlin("stdlib"))
+            api(kotlin("stdlib"))
+            api("org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinx.serialization}")
         }
     }
 
     val jsMain by getting {
         dependencies {
-            implementation(kotlin("stdlib-js"))
+            api(kotlin("stdlib-js"))
+            api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${versions.kotlinx.serialization}")
         }
     }
 }

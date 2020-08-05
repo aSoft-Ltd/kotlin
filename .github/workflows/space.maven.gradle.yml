@@ -1,4 +1,4 @@
-name: Upload to Space
+name: Build, Test & Upload to Space
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build-all:
+  main:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -22,32 +22,17 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Publish
+
+      - name: Building All
         run: |
           chmod +x build-all.sh
-          ./build-all.sh
+          ./build.sh
         env:
           SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: .
 
-  publish-build-src:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publishing build-src
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -56,48 +41,16 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./build-src
 
-  publish-tools-core:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publishing tools
         run: |
-          chmod +x gradlew
-          ./gradlew :publish
+          chmod +x publish.sh
+          ./publish
         env:
           SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
-        working-directory: ./tools/tools-core
+        working-directory: ./tools
 
-  publish-email:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publishing email
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -106,23 +59,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./email
 
-  publish-klock:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish klock
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -131,23 +68,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./klock
 
-  publish-io:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish io
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -156,23 +77,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./io
 
-  publish-krypto:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish krypto
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -181,23 +86,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./krypto
 
-  publish-persist:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish persist
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -206,23 +95,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./persist
 
-  publish-phone:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish phone
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -231,23 +104,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./phone
 
-  publish-frontend:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish frontend
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -256,23 +113,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./frontend
 
-  publish-deployment:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish deployemtn
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -281,23 +122,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./deployment
 
-  publish-money:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish money
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -306,23 +131,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./money
 
-  publish-storage:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish storage
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -331,23 +140,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./storage
 
-  publish-logging:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish logging
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -356,23 +149,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./logging
 
-  publish-geo:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish geo
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -381,23 +158,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./geo
 
-  publish-http:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish http
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -406,23 +167,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./http
 
-  publish-firebase-core:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish firebase core
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -431,23 +176,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./firebase/firebase-core
 
-  publish-firebase-auth:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish firebase auth
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -456,23 +185,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./firebase/firebase-auth
 
-  publish-firebase-firestore:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish firebase firestore
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -481,23 +194,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./firebase/firebase-firestore
 
-  publish-firebase-storage:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish firebase storage
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -506,23 +203,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./firebase/firebase-storage
 
-  publish-firestore-dao:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish firestore dao
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -531,23 +212,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./daos/firestore-dao
 
-  publish-neo4j-dao:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish neo4j dao
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -556,23 +221,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./daos/neo4j-dao
 
-  publish-rest-dao:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish rest dao
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -581,48 +230,15 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./daos/rest-dao
 
-  publish-icons-react:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish icons
         run: |
-          chmod +x gradlew
-          ./gradlew :publish
+          chmod +x publish.sh
         env:
           SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
-        working-directory: ./icons/icons-react
+        working-directory: ./icons
 
-  publish-theme-core:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish theme-core
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -631,23 +247,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./theme/theme-core
 
-  publish-theme-react:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish theme-react
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -656,73 +256,16 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./theme/theme-react
 
-  publish-viewmodel-core:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish viewmodel
         run: |
-          chmod +x gradlew
-          ./gradlew :publish
+          chmod +x publish.sh
+          ./publish.sh
         env:
           SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
-        working-directory: ./viewmodel/viewmodel-core
+        working-directory: ./viewmodel
 
-  publish-viewmodel-react:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
-        run: |
-          chmod +x gradlew
-          ./gradlew :publish
-        env:
-          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
-          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
-        working-directory: ./viewmodel/viewmodel-react
-
-  publish-enterprise-react:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish enterprise-react
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -731,48 +274,16 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./enterprise/enterprise-react
 
-  publish-components-react:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish components
         run: |
-          chmod +x gradlew
-          ./gradlew :publish
+          chmod +x publish.sh
+          ./publish.sh
         env:
           SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
-        working-directory: ./components/components-react
+        working-directory: ./components
 
-  publish-result:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish result
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -781,23 +292,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./result
 
-  publish-rest-controller-core:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish rest-controller
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -806,23 +301,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./rest-controller/rest-controller-core
 
-  publish-rest-controller-ktor:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish rest-controller-ktor
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -831,23 +310,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./rest-controller/rest-controller-ktor
 
-  publish-paging-core:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish paging-core
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -856,23 +319,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./paging/paging-core
 
-  publish-paging-enterprise-react:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: publish-paging-enterprise-react
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -881,48 +328,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./paging/paging-enterprise-react
 
-  publish-tools-react:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
-        run: |
-          chmod +x gradlew
-          ./gradlew :publish
-        env:
-          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
-          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
-        working-directory: ./tools/tools-react
-
-  publish-form-react:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish form-react
         run: |
           chmod +x gradlew
           ./gradlew :publish
@@ -931,23 +337,7 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         working-directory: ./form/form-react
 
-  publish-task:
-    runs-on: ubuntu-latest
-    needs: build-all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Publish
+      - name: Publish task
         run: |
           chmod +x gradlew
           ./gradlew :publish

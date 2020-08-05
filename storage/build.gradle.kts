@@ -1,5 +1,6 @@
 plugins {
     id("asoft-lib")
+    id("root-module")
 }
 
 android {

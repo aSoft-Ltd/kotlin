@@ -1,16 +1,12 @@
 plugins {
-    id("asoft-lib")
+    id("asoft-lib-jvm")
 }
 
-kotlin.sourceSets {
-    val jvmMain by getting {
-        dependencies {
-            api(project(":rest-controller-core"))
-            api(project(":result"))
-			api(project(":persist"))
-			api(project(":tools-core"))
-            api("io.ktor:ktor-server-cio:${versions.ktor}")
-            api("io.ktor:ktor-network:${versions.ktor}")
-        }
-    }
+dependencies {
+    api(project(":rest-controller-core"))
+    api(project(":result"))
+    api(project(":persist"))
+    api(project(":tools-core"))
+    api("io.ktor:ktor-server-cio:${versions.ktor}")
+    api("io.ktor:ktor-network:${versions.ktor}")
 }
