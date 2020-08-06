@@ -1,8 +1,8 @@
 plugins {
-    id("asoft-lib-browser-mpp")
+    id("asoft-lib-browser")
 }
 
-kotlin.sourceSets["jsMain"].dependencies {
+dependencies {
     api(kotlin("stdlib-js"))
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.kotlinx.coroutines}")
     api("org.jetbrains.kotlinx:kotlinx-html-js:${versions.kotlinx.html}")
