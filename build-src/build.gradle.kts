@@ -19,7 +19,8 @@ repositories {
 
 object versions {
     const val kotlin = "1.3.72"
-    const val asoft = "0.1.0-dev-17"
+    const val asoft = "0.1.0-dev-18"
+    const val gradle = "6.1.1"
 
     object android {
         const val build_tools = "4.0.0" //"4.0.0"
@@ -60,4 +61,9 @@ publishing {
             }
         }
     }
+}
+
+tasks.getByName<Wrapper>("wrapper") {
+    gradleVersion = versions.gradle
+    distributionType = Wrapper.DistributionType.ALL
 }
