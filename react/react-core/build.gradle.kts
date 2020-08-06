@@ -12,5 +12,4 @@ kotlin.sourceSets["jsMain"].dependencies {
     api("org.jetbrains:kotlin-css-js:${versions.kotlinjs.css}")
     api("org.jetbrains:kotlin-react-router-dom:${versions.kotlinjs.reactRouterDom}")
     api(project(":tools"))
-    api(project(":theme-react"))
 }

@@ -7,10 +7,11 @@ pluginManagement {
 
 includeBuild("../build-src")
 
-include(":tools-core")
-project(":tools-core").projectDir = File("../tools/tools-core")
-include(":tools-react")
-project(":tools-react").projectDir = File("../tools/tools-react")
+include(":tools")
+project(":tools").projectDir = File("../tools")
+
+include(":react-core")
+project(":react-core").projectDir = File("../react/react-core")
 
 include(":viewmodel-core")
 include(":viewmodel-react")

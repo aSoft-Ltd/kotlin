@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
+    api(project(":react-core"))
     api(project(":viewmodel-core"))
-    api(project(":tools-react"))
 }
