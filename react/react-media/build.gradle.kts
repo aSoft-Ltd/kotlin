@@ -4,4 +4,5 @@ plugins {
 
 dependencies {
     api(project(":react-feedback"))
+    api(project(":react-buttons"))
 }
