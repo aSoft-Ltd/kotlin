@@ -1,4 +1,4 @@
 echo "publishing storage"
 chmod +x gradlew
-./gradlew :publish || exit
+./gradlew :publishToMavenLocal || exit
 echo "Finished publishing storage"

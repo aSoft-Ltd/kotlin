@@ -1,4 +1,4 @@
 echo "Building storage"
 chmod +x gradlew
-./gradlew :build
+./gradlew :build || exit
 echo "Finished building storage"
