@@ -1,5 +1,7 @@
 publish(){
-	cd $1 && ./publish.sh || exit
+	cd $1 || exit
+	chmod +x publish.sh || exit
+	./publish.sh || exit
 }
 
 publish ./build-src

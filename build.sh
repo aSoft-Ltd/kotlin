@@ -1,5 +1,7 @@
 build(){
-	cd $1 && ./build.sh || exit
+  cd $1 || exit
+  chmod +x build.sh || exit
+	./build.sh || exit
 }
 
 build ./build-src
