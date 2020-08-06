@@ -1,7 +1,7 @@
 echo "Publishing Form"
 chmod +x gradlew
 echo "Publishding form-core"
-./gradlew :form-core:publish || exit
+./gradlew :form-core:publishToMavenLocal || exit
 echo "Publishing form-react"
-./gradlew :form-react:publish || exit
+./gradlew :form-react:publishToMavenLocal || exit
 echo "Finished publishing form"

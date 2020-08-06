@@ -1,7 +1,7 @@
 echo "Building Form"
 chmod +x gradlew
 echo "Running Wrapper"
-./gradlew wrapper
+./gradlew wrapper || exit
 echo "Building form-core"
 ./gradlew :form-core:build || exit
 echo "Building form-react"
