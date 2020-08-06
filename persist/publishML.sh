@@ -1,4 +1,4 @@
 echo "Publishing persist"
 chmod +x gradlew
-./gradlew :publish || exit
+./gradlew :publishToMavenLocal || exit
 echo "Finished publishing persist"
