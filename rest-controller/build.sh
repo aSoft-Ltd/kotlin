@@ -1,7 +1,7 @@
 echo "Building rest-controller"
-chmod +x gradlew
+chmod +x gradlew || exit
 echo "Running wrapper"
-./gradlew wrapper
+./gradlew wrapper || exit
 echo "Building rest-controller-core"
 ./gradlew :rest-controller-core:build || exit
 echo "Building rest-controller-ktor"

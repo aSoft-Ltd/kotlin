@@ -7,8 +7,8 @@ pluginManagement {
 
 includeBuild("../build-src")
 includeBuild("../test")
-include(":tools-core")
-project(":tools-core").projectDir = File("../tools/tools-core")
+include(":tools")
+project(":tools").projectDir = File("../tools")
 include(":result")
 project(":result").projectDir = File("../result")
 include(":persist")

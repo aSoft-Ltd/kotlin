@@ -6,7 +6,7 @@ dependencies {
     api(project(":rest-controller-core"))
     api(project(":result"))
     api(project(":persist"))
-    api(project(":tools-core"))
+    api(project(":tools"))
     api("io.ktor:ktor-server-cio:${versions.ktor}")
     api("io.ktor:ktor-network:${versions.ktor}")
 }
