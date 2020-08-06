@@ -5,12 +5,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.html.DIV
 import react.*
 import styled.StyledDOMBuilder
-import tz.co.asoft.enterprise.layout.Grid
-import tz.co.asoft.enterprise.layout.GridAdapter
 import tz.co.asoft.PaginatedGrid.Props
 import tz.co.asoft.PaginatedGrid.State
-import tz.co.asoft.enterprise.widgets.Error
-import tz.co.asoft.enterprise.widgets.Loader
 
 private class PaginatedGrid<D : Any>(p: Props<D>) : RComponent<Props<D>, State<D>>(p), CoroutineScope by CoroutineScope(SupervisorJob()) {
     class Props<D : Any>(

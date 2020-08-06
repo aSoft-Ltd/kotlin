@@ -3,14 +3,8 @@ package tz.co.asoft
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import react.*
-import tz.co.asoft.enterprise.layout.Grid
-import tz.co.asoft.enterprise.tables.reacttable.Column
-import tz.co.asoft.enterprise.tables.reacttable.FoldableTable
 import tz.co.asoft.PaginatedTable.Props
 import tz.co.asoft.PaginatedTable.State
-import tz.co.asoft.enterprise.action.AButton
-import tz.co.asoft.enterprise.widgets.Error
-import tz.co.asoft.enterprise.widgets.Loader
 
 private class PaginatedTable<D : Any>(p: Props<D>) : RComponent<Props<D>, State<D>>(p),
     CoroutineScope by CoroutineScope(SupervisorJob()) {

@@ -5,26 +5,38 @@ pluginManagement {
     }
 }
 
-includeBuild("../../build-src")
-includeBuild("../../test")
+includeBuild("../build-src")
+includeBuild("../test")
 
 include(":theme-core")
-project(":theme-core").projectDir = File("../../theme/theme-core")
+project(":theme-core").projectDir = File("../theme/theme-core")
 
 include(":theme-react")
-project(":theme-react").projectDir = File("../../theme/theme-react")
+project(":theme-react").projectDir = File("../theme/theme-react")
 
-include(":icons-react")
-project(":icons-react").projectDir = File("../../icons/icons-react")
+include(":icons-react-core")
+project(":icons-react-core").projectDir = File("../icons/icons-react/icons-react-core")
 
-include(":tools-core")
-project(":tools-core").projectDir = File("../../tools/tools-core")
+include(":icons-react-fa")
+project(":icons-react-fa").projectDir = File("../icons/icons-react/icons-react-fa")
+
+include(":tools")
+project(":tools").projectDir = File("../tools")
+
+include(":react-core")
+project(":react-core").projectDir = File("../react/react-core")
+
+include(":react-buttons")
+project(":react-buttons").projectDir = File("../react/react-buttons")
+
+include(":react-layouts")
+project(":react-layouts").projectDir = File("../react/react-layouts")
+
+include(":react-tables")
+project(":react-tables").projectDir = File("../react/react-tables")
+
+include(":react-feedback")
+project(":react-feedback").projectDir = File("../react/react-feedback")
 
 include(":paging-core")
-project(":paging-core").projectDir = File("../paging-core")
-
-include(":tools-react")
-project(":tools-react").projectDir = File("../../tools/tools-react")
-
-include(":enterprise-react")
-project(":enterprise-react").projectDir = File("../../enterprise/enterprise-react")
+include(":paging-react")
