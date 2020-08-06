@@ -1,4 +1,4 @@
 echo "publishing Money"
 chmod +x ./gradlew
-./gradlew :publish || exit
+./gradlew :publishToMavenLocal || exit
 echo "Finished publishing money"
