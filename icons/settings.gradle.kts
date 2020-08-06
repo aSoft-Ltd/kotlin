@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 includeBuild("../build-src")
-include("icons-react:icons-react-core")
-listOf("ai", "bs", "di", "fa", "fc", "fi", "gi", "go", "gr", "io", "md", "ri", "ti", "wi").forEach {
-    include(":icons-react:icons-react-$it")
+listOf("core", "ai", "bs", "di", "fa", "fc", "fi", "gi", "go", "gr", "io", "md", "ri", "ti", "wi").forEach {
+    include(":icons-react-$it")
+    project(":icons-react-$it").projectDir = File("icons-react/icons-react-$it")
 }

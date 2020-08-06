@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(project(":icons-react:icons-react-core"))
+    api(project(":icons-react-core"))
 }

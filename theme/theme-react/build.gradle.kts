@@ -1,10 +1,9 @@
 plugins {
-    id("asoft-lib-browser")
+    id("asoft-lib-browser-mpp")
 }
 
-        dependencies {
-            api(project(":theme-core"))
-            api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.kotlinx.coroutines}")
-            api("org.jetbrains:kotlin-react:${versions.kotlinjs.react}")
-            api("org.jetbrains:kotlin-styled:${versions.kotlinjs.styled}")
-        }
+kotlin.sourceSets["jsMain"].dependencies {
+    api(project(":theme-core"))
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${versions.kotlinx.coroutines}")
+    api("org.jetbrains:kotlin-react:${versions.kotlinjs.react}")
+}

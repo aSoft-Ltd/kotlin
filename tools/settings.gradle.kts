@@ -6,5 +6,5 @@ pluginManagement {
 }
 
 includeBuild("../build-src")
-include(":tools-core")
-include(":tools-react")
+//include(":tools-core")
+//include(":tools-react")

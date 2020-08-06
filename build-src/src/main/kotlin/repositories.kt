@@ -12,4 +12,5 @@ fun RepositoryHandler.repos() {
       }
     }
     mavenCentral()
+    mavenLocal()
 }
