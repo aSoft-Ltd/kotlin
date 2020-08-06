@@ -1,6 +1,6 @@
 echo "Building krypto"
 chmod +x gradlew
 echo "Running Wrapper"
-./gradlew wrapper
-./gradlew :build
+./gradlew wrapper || exit
+./gradlew :build || exit
 echo "Finished building krypto"
