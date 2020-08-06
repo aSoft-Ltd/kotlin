@@ -1,4 +1,4 @@
 echo "publishing test"
 chmod +x gradlew
-./gradlew :publish || exit
+./gradlew :publishMavenLocal || exit
 echo "Finished publishing test"

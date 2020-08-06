@@ -150,16 +150,16 @@ open class GenerateWebPackConfigTask : DefaultTask() {
             project.convention.findPlugin(JavaPluginConvention::class.java)?.sourceSets
         val mainSourceSet: SourceSet? = sourceSets?.findByName("main")
         val resources = mainSourceSet?.output?.resourcesDir
-//
-//        val contentBase = listOfNotNull(
-//            bundle.contentPath?.absolutePath,
-//            file("src/jsMain/resources")?.absolutePath,
-//            file("src/main/resources")?.absolutePath,
-//            "build/processedResources/js/main",
-//            resources?.absolutePath
-//        )
 
-        val contentBase = listOf("build/processedResources/js/main")
+        val contentBase = setOf(
+            bundle.contentPath.absolutePath,
+            file("src/jsMain/resources")?.absolutePath,
+            file("src/main/resources")?.absolutePath,
+            file("build/processedResources/js/main")?.absolutePath,
+            resources?.absolutePath
+        ).mapNotNull { it }
+
+//        val contentBase = listOf("build/processedResources/js/main")
 
         val json = linkedMapOf(
             "mode" to bundle.mode,

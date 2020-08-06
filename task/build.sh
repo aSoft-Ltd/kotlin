@@ -1,5 +1,5 @@
 echo "Building task"
 chmod +x gradlew
-./gradlew wrapper
-./gradlew :build
+./gradlew wrapper || exit
+./gradlew :build || exit
 echo "Finished building task"

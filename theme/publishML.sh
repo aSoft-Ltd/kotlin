@@ -1,7 +1,7 @@
 echo "publishing theme"
 chmod +x gradlew
 echo "publishing theme-core"
-./gradlew :theme-core:publish || exit
+./gradlew :theme-core:publishToMavenLocal || exit
 echo "publishing theme-react"
-./gradlew :theme-react:publish || exit
+./gradlew :theme-react:publishToMavenLocal || exit
 echo "Finished publishing theme"
