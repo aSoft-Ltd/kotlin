@@ -1,13 +1,9 @@
 plugins {
-    id("asoft-lib")
+    id("asoft-lib-browser")
 }
 
-kotlin.sourceSets {
-    val jsMain by getting {
-        dependencies {
-            api(project(":theme-react"))
-            api(project(":tools-react"))
-            api("org.jetbrains:kotlin-react:${versions.kotlinjs.react}")
-        }
-    }
+dependencies {
+    api(project(":theme-react"))
+    api(project(":react-core"))
+    api(project(":form-core"))
 }

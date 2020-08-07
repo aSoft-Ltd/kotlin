@@ -1,7 +1,15 @@
 package tz.co.asoft
 
-data class Currency(val name: String = "") {
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Currency(
+    val name: String,
+    val smallestUnitMultiplier: Int,
+    val smallestUnit: String
+) {
     companion object {
-        val TZS = Currency("TZS")
+        val TZS = Currency("TZS", 100, "cents")
+        val USD = Currency("USD", 100, "cents")
     }
 }

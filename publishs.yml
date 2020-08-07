@@ -1,0 +1,285 @@
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: publishing build-src
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./build-src
+
+
+      - name: publishing components
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./components
+
+
+      - name: publishing daos
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./daos
+
+
+      - name: publishing deployment
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./deployment
+
+
+      - name: publishing email
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./email
+
+
+      - name: publishing firebase
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./firebase
+
+
+      - name: publishing form
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./form
+
+
+      - name: publishing frontend
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./frontend
+
+
+      - name: publishing geo
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./geo
+
+
+      - name: publishing http
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./http
+
+
+      - name: publishing icons
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./icons
+
+
+      - name: publishing io
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./io
+
+
+      - name: publishing klock
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./klock
+
+
+      - name: publishing krypto
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./krypto
+
+
+      - name: publishing logging
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./logging
+
+
+      - name: publishing money
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./money
+
+
+      - name: publishing paging
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./paging
+
+
+      - name: publishing persist
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./persist
+
+
+      - name: publishing phone
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./phone
+
+
+      - name: publishing react
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./react
+
+
+      - name: publishing rest-controller
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./rest-controller
+
+
+      - name: publishing result
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./result
+
+
+      - name: publishing storage
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./storage
+
+
+      - name: publishing task
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./task
+
+
+      - name: publishing theme
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./theme
+
+
+      - name: publishing tools
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./tools
+
+
+      - name: publishing viewmodel
+        run: |
+          chmod +x publish.sh
+          ./publish.sh
+        env:
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
+        working-directory: ./viewmodel
+

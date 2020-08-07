@@ -7,7 +7,7 @@ kotlin.sourceSets {
         dependencies {
             api("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${versions.kotlinx.serialization}")
             api(project(":firebase-core"))
-            api(project(":tools-core"))
+            api(project(":tools"))
         }
     }
 

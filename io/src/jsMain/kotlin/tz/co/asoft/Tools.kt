@@ -10,6 +10,7 @@ import org.w3c.files.Blob
 import org.w3c.files.FileReader
 import kotlin.browser.document
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 inline fun Uint8Array.toByteArray() = ByteArray(length) { this[it] }
 
@@ -20,6 +21,7 @@ suspend fun Blob.readBytes(onProgress: ((Int) -> Unit)? = null): ByteArray =
                 onprogress = { it(((100.0 * it.loaded.toDouble()) / it.total.toDouble()).toInt()) }
             }
             onload = { cont.resume(Uint8Array(result.unsafeCast<ArrayBuffer>()).toByteArray()) }
+            onerror = {cont.resumeWithException(Throwable("Failed to readBytes"))}
             readAsArrayBuffer(this@readBytes)
         }
     }

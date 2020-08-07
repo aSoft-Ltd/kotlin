@@ -1,12 +1,8 @@
 plugins {
-    id("asoft-lib")
+    id("asoft-lib-browser")
 }
 
-kotlin.sourceSets {
-    val jsMain by getting {
-        dependencies {
-            api(project(":viewmodel-core"))
-            api(project(":tools-react"))
-        }
-    }
+dependencies {
+    api(project(":react-core"))
+    api(project(":viewmodel-core"))
 }

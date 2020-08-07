@@ -1,5 +1,7 @@
 plugins {
-    id("multiplatform-lib")
+    kotlin("multiplatform")
+    kotlin("plugin.serialization")
+    id("android-target")
     id("space-maven")
 }
 
@@ -8,4 +10,27 @@ version = versions.asoft
 
 repositories {
     repos()
+}
+
+kotlin {
+    android {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+        publishLibraryVariants("release")
+    }
+
+    jvm {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+    }
+
+    js {
+        useCommonJs()
+    }
 }
