@@ -4,7 +4,7 @@ subprojects=("core" "ai" "bs" "di" "fa" "fc" "fi" "gi" "go" "gr" "io" "md" "ri" 
 chmod +x gradlew
 for sp in ${subprojects[@]}; do
   echo "Publishing icons-react-${sp}"
-  ./gradlew :icons-react:icons-react-${sp}:publish || exit
+  ./gradlew :icons-react-${sp}:publish || exit
 done
 echo "Finished publishing icons-react"
 echo "Finished Publishing Icons"
