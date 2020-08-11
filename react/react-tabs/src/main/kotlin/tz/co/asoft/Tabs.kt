@@ -82,7 +82,7 @@ private class Tabs(p: Props) : RComponent<Props, State>(p) {
         }
     }
 
-    override fun RBuilder.render(): dynamic = Grid(gap = "0em") { theme ->
+    override fun RBuilder.render(): dynamic = Grid(rows = "auto 1fr", gap = "0em") { theme ->
         FlexBox {
             css {
                 borderBottom = "solid ${props.lineSize} ${theme.onSurfaceColor}"
