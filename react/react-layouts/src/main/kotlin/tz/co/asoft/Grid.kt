@@ -10,7 +10,7 @@ import styled.styledDiv
 fun RBuilder.Grid(
     cols: String = "1fr",
     rows: String = "1fr",
-    gap: String = "1em",
+    gap: String,
     builder: StyledDOMBuilder<DIV>.(Theme) -> Unit
 ) = ThemeConsumer { theme ->
     styledDiv {
@@ -24,3 +24,10 @@ fun RBuilder.Grid(
         builder(theme)
     }
 }
+
+fun RBuilder.Grid(
+    cols: String = "1fr",
+    rows: String = "1fr",
+    gap: LinearDimension = 1.em,
+    builder: StyledDOMBuilder<DIV>.(Theme) -> Unit
+) = Grid(cols, rows, gap.value, builder)

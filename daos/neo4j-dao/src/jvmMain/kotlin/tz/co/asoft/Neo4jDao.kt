@@ -10,7 +10,7 @@ import org.neo4j.ogm.cypher.Filter
 import org.neo4j.ogm.session.SessionFactory
 import kotlin.reflect.KClass
 
-open class Neo4JDao<T : Neo4JEntity>(
+open class Neo4jDao<T : Neo4JEntity>(
     config: Configuration,
     override val clazz: KClass<T>,
     override val depth: Int = 10,
@@ -71,5 +71,22 @@ open class Neo4JDao<T : Neo4JEntity>(
         session.loadAll(clazz.java, filter, depth).toList().apply { session.clear() }
     }
 
-    override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> = Neo4jPageLoader(session, clazz, depth, predicate)
+    override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> =
+        Neo4jPageLoader(session, clazz, depth, predicate)
 }
+
+fun <T : Neo4JEntity> Neo4jDao(
+    protocal: String = "http",
+    username: String = "neo4j",
+    password: String = "neo4j",
+    service: String,
+    port: Int = 7474,
+    depth: Int = 10,
+    clazz: KClass<T>,
+    vararg clazzes: KClass<*>
+) = Neo4jDao(
+    config = Configuration.Builder().uri("$protocal://$username:$password@$service:$port").build(),
+    clazz = clazz,
+    depth = depth,
+    clazzes = *clazzes
+)
