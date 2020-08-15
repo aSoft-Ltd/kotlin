@@ -15,13 +15,13 @@ import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import tz.co.asoft.Result.Success
 
-open class Module<T : Entity>(
+open class RestModule<T : Entity>(
     version: String,
     root: String,
     subRoot: String?,
     private val serializer: KSerializer<T>,
     private val controller: IRestController<T>
-) : IModule {
+) : IRestModule {
 
     val path = "/$version/$root" + if (subRoot != null) "/$subRoot" else ""
 
@@ -88,23 +88,6 @@ open class Module<T : Entity>(
         delete(path = path) {
             flow<Result<List<T>>> {
                 emit(Success(controller.delete(getEntitiesFromBody())))
-            }.catch {
-                emit(it.asFailure())
-            }.collect {
-                send(serializer.list, it)
-            }
-        }
-
-        get("$path/paged/{pageNo}/{pageSize}") {
-            val invalidPageNo = Exception("Invalid page number")
-            val invalidPageSize = Exception("Invalid page size")
-            flow<Result<List<T>>> {
-                val pageNo = call.parameters["pageNo"]?.toInt() ?: throw invalidPageNo
-                val pageSize = call.parameters["pageSize"]?.toInt() ?: throw invalidPageSize
-                if (pageNo == 0) throw invalidPageNo
-                if (pageSize == 0) throw invalidPageSize
-//                emit(Success(controller.pa(pageNo, pageSize)))
-                emit(Result.Failure("No page implementation"))
             }.catch {
                 emit(it.asFailure())
             }.collect {

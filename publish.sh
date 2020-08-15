@@ -24,7 +24,7 @@ publish ../paging
 publish ../persist
 publish ../phone
 publish ../react
-publish ../rest-controller
+publish ../rest-api
 publish ../result
 publish ../storage
 publish ../task
