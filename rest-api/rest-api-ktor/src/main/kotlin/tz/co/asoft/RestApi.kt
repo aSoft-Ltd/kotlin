@@ -7,7 +7,7 @@ import io.ktor.routing.routing
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
 
-open class MicroService(val port: Int = 8080, val modules: List<IModule>) {
+open class RestApi(val port: Int = 8080, val modules: List<IRestModule>) {
     fun start() = embeddedServer(CIO, port) {
         installCORS()
         modules.forEach { it.setRoutes(this) }

@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":rest-controller-core"))
+    api(project(":rest-api-core"))
     api(project(":result"))
     api(project(":persist"))
     api(project(":tools"))

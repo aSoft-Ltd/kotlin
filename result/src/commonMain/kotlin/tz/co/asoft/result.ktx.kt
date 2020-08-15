@@ -23,3 +23,9 @@ inline fun <T> Result<T>.collect(handler: (T) -> Unit) {
         handler(data)
     }
 }
+
+inline fun <T> catching(block: () -> T) = try {
+    Result.Success(block())
+} catch (e: Exception) {
+    Result.Failure<T>(e.message ?: "Unknown Error")
+}

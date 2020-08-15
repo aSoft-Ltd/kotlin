@@ -17,5 +17,5 @@ include(":paging-core")
 project(":paging-core").projectDir = File("../paging/paging-core")
 include(":rest-controller-core")
 
-include(":rest-controller-core")
-include(":rest-controller-ktor")
+include(":rest-api-core")
+include(":rest-api-ktor")

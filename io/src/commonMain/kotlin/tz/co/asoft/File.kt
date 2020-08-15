@@ -10,21 +10,8 @@ expect val File.name: String
 
 expect suspend fun File.readBytes(): ByteArray
 
-@Deprecated(
-    message = "Use extension()/extensionOrNull() method",
-    replaceWith = ReplaceWith("extensionOrNull()")
-)
-val File.ext
-    get() = name.split(".").lastOrNull()
-
 fun File.extension() = name.extension()
-fun File.extensionOrNull() = name.extensionOrNull()
 
-@Deprecated(
-    message = "Use the method",
-    replaceWith = ReplaceWith("nameWithoutExtension()")
-)
-val File.nameWithoutExtension: String
-    get() = (name.split(".") - ext).joinToString(".")
+fun File.extensionOrNull() = name.extensionOrNull()
 
 fun File.nameWithoutExtension() = name.nameWithoutExtension()

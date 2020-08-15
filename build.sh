@@ -24,7 +24,7 @@ build ../paging
 build ../persist
 build ../phone
 build ../react
-build ../rest-controller
+build ../rest-api
 build ../result
 build ../storage
 build ../task

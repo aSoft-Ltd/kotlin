@@ -1,13 +1,13 @@
 package tz.co.asoft
 
 import io.ktor.client.request.forms.FormPart
-import io.ktor.client.request.forms.formData
 import io.ktor.http.Headers
 import io.ktor.http.HeadersBuilder
 import io.ktor.http.HttpHeaders
+import io.ktor.http.Url
 
 /**
- * Form builder type used in [formData] builder function.
+ * Form builder type used in [formBuilder] builder function.
  */
 class HttpFormBuilder {
     val parts = mutableListOf<FormPart<*>>()

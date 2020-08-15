@@ -1,12 +1,11 @@
 package tz.co.asoft.test
 
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import org.openqa.selenium.WebDriver
 
 open class BrowserTest(
         val url: String = "http://localhost:8088",
-        val drivers: List<WebDriver> = drivers()
+        val drivers: List<WebDriver> = webDrivers()
 ) : AsyncTest() {
     init {
         drivers.forEach {
