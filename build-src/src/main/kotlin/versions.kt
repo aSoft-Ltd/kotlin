@@ -6,7 +6,7 @@ object versions {
     val tornadofx = "1.7.19"
     val gson = "2.8.5"
     val coil = "0.8.0"
-    val asoft = "0.1.0-dev-19"
+    val asoft = "0.1.0-dev-20"
     val gradle = "6.1.1"
 
     object kotlinx {
