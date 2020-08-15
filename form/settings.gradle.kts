@@ -21,5 +21,6 @@ project(":theme-react").projectDir = File("../theme/theme-react")
 include(":react-core")
 project(":react-core").projectDir = File("../react/react-core")
 
-include(":form-core")
+include(":form-http")
+include(":form-html")
 include(":form-react")

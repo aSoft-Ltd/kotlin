@@ -6,7 +6,6 @@ kotlin.sourceSets {
     val commonMain by getting {
         dependencies {
             api("io.ktor:ktor-client-core:${versions.ktor}")
-            api(project(":tools"))
             api(project(":io"))
         }
     }

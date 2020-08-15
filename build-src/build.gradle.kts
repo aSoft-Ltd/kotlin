@@ -19,7 +19,7 @@ repositories {
 
 object versions {
     const val kotlin = "1.3.72"
-    const val asoft = "0.1.0-dev-20"
+    const val asoft = "0.1.0-dev-19"
     const val gradle = "6.1.1"
 
     object android {
