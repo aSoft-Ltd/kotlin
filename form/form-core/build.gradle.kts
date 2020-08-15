@@ -1,11 +1,31 @@
 plugins {
-    id("asoft-lib-browser-mpp")
+    id("asoft-lib")
 }
 
 kotlin.sourceSets {
     val commonMain by getting {
-        dependencies{
+        dependencies {
+            api("io.ktor:ktor-client-core:${versions.ktor}")
             api(project(":tools"))
+            api(project(":io"))
+        }
+    }
+
+    val androidMain by getting {
+        dependencies {
+            api("io.ktor:ktor-client-android:${versions.ktor}")
+        }
+    }
+
+    val jvmMain by getting {
+        dependencies {
+            api("io.ktor:ktor-client-cio:${versions.ktor}")
+        }
+    }
+
+    val jsMain by getting {
+        dependencies {
+            api("io.ktor:ktor-client-js:${versions.ktor}")
         }
     }
 }

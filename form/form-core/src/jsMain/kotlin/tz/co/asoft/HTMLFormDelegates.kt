@@ -7,7 +7,7 @@ import org.w3c.files.get
 import kotlin.js.Date
 import kotlin.reflect.KProperty
 
-object FormDelegates {
+object HTMLFormDelegates {
     fun <T> error(property: KProperty<*>): T {
         throw Exception("${property.name} is not found in form")
     }
@@ -64,11 +64,11 @@ object FormDelegates {
     }
 }
 
-fun HTMLFormElement.multi() = FormDelegates.Multi(this)
-fun HTMLFormElement.text(default: String? = null) = FormDelegates.Texts(this, default)
-fun HTMLFormElement.int(default: Int? = null) = FormDelegates.Integers(this, default)
-fun HTMLFormElement.double(default: Double? = null) = FormDelegates.Doubles(this, default)
-fun HTMLFormElement.long(default: Long? = null) = FormDelegates.Longs(this, default)
-fun HTMLFormElement.date(default: Date? = null) = FormDelegates.Dates(this, default)
-fun HTMLFormElement.dateLong(default: Long? = null) = FormDelegates.DateLong(this, default)
-fun HTMLFormElement.file() = FormDelegates.Files(this)
+fun HTMLFormElement.multi() = HTMLFormDelegates.Multi(this)
+fun HTMLFormElement.text(default: String? = null) = HTMLFormDelegates.Texts(this, default)
+fun HTMLFormElement.int(default: Int? = null) = HTMLFormDelegates.Integers(this, default)
+fun HTMLFormElement.double(default: Double? = null) = HTMLFormDelegates.Doubles(this, default)
+fun HTMLFormElement.long(default: Long? = null) = HTMLFormDelegates.Longs(this, default)
+fun HTMLFormElement.date(default: Date? = null) = HTMLFormDelegates.Dates(this, default)
+fun HTMLFormElement.dateLong(default: Long? = null) = HTMLFormDelegates.DateLong(this, default)
+fun HTMLFormElement.file() = HTMLFormDelegates.Files(this)
