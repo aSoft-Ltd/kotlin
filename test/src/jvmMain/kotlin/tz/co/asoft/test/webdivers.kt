@@ -5,7 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.opera.OperaDriver
 import org.openqa.selenium.opera.OperaOptions
 
-fun drivers(): List<WebDriver> {
+fun webDrivers(): List<WebDriver> {
     val drivers = mutableListOf<WebDriver>()
 
     System.setProperty("webdriver.opera.driver", "/home/andylamax/Downloads/operadriver_linux64/operadriver")
