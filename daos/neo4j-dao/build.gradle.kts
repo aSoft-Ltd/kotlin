@@ -17,6 +17,12 @@ kotlin.sourceSets {
         }
     }
 
+    val commonTest by getting {
+        dependencies {
+            implementation(asoft("test"))
+        }
+    }
+
     val jvmMain by getting {
         dependencies {
             api("org.neo4j:neo4j-ogm-core:${versions.neo4j}")
