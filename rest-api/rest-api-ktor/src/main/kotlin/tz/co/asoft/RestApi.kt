@@ -7,10 +7,17 @@ import io.ktor.routing.routing
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
 
-open class RestApi(val port: Int = 8080, val modules: List<IRestModule>) {
+open class RestApi(
+    val port: Int = 8080,
+    val log: Logger,
+    val modules: List<IRestModule>
+) {
     fun start() = embeddedServer(CIO, port) {
         installCORS()
-        modules.forEach { it.setRoutes(this) }
+        modules.forEach {
+            it.setRoutes(this,log)
+            log.i("Endpoints at: ${it.path}")
+        }
         routing {
             get("/status") {
                 call.respondText("Healthy")

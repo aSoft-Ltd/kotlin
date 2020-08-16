@@ -29,3 +29,7 @@ inline fun <T> catching(block: () -> T) = try {
 } catch (e: Exception) {
     Result.Failure<T>(e.message ?: "Unknown Error")
 }
+
+fun <T> Throwable.asFailure() = Result.Failure<T>(message ?: cause?.message ?: "Unknown Error")
+
+fun <T> T.asSuccess() = Result.Success(this)
