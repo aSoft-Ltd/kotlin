@@ -16,15 +16,12 @@ import kotlinx.serialization.builtins.serializer
 import tz.co.asoft.Result.Success
 
 open class RestModule<T : Entity>(
-    version: String,
-    root: String,
-    subRoot: String?,
+    override val version: String,
+    override val root: String,
+    override val subRoot: String?,
     private val serializer: KSerializer<T>,
     private val controller: IRestController<T>
 ) : IRestModule {
-
-    val path = "/$version/$root" + if (subRoot != null) "/$subRoot" else ""
-
     private suspend fun PipelineContext<Unit, ApplicationCall>.getIdsFromBody(): List<String> {
         return RJson.parse(String.serializer().list, call.receiveText())
     }
@@ -33,11 +30,13 @@ open class RestModule<T : Entity>(
         return RJson.parse(serializer.list, call.receiveText())
     }
 
-    override fun setRoutes(app: Application) = app.routing {
+    override fun setRoutes(app: Application, log: Logger) = app.routing {
         post(path = path) {
+            log.i("Creating entity at $path")
             flow<Result<List<T>>> {
                 emit(Success(controller.create(getEntitiesFromBody())))
             }.catch {
+                log.e("Failed to create entity at $path", it)
                 emit(it.asFailure())
             }.collect {
                 send(serializer.list, it)
@@ -45,9 +44,11 @@ open class RestModule<T : Entity>(
         }
 
         post("$path/load") {
+            log.i("Loading entity at $path/load")
             flow<Result<List<T>>> {
                 emit(Success(controller.load(getIdsFromBody())))
             }.catch {
+                log.e("Failed to load entity at $path/load", it)
                 emit(it.asFailure())
             }.collect {
                 send(serializer.list, it)
@@ -55,9 +56,11 @@ open class RestModule<T : Entity>(
         }
 
         post("$path/wipe") {
+            log.i("Wiping entities at $path/wipe")
             flow<Result<List<T>>> {
                 emit(Success(controller.wipe(getEntitiesFromBody())))
             }.catch {
+                log.e("Failed to wipe entity at $path/wipe")
                 emit(it.asFailure())
             }.collect {
                 send(serializer.list, it)
@@ -65,20 +68,24 @@ open class RestModule<T : Entity>(
         }
 
         patch(path = path) {
+            log.i("Editing entity at $path")
             flow<Result<List<T>>> {
                 emit(Success(controller.edit(getEntitiesFromBody())))
             }.catch {
+                log.e("Failed to edit entity at $path", it)
                 emit(it.asFailure())
             }.collect {
                 send(serializer.list, it)
             }
         }
 
-        get("$path/{id}") {
+        get("$path/{uid}") {
+            log.i("Loading entity at $path/{uid}")
             flow<Result<T?>> {
-                val id = call.parameters["id"] ?: throw Exception("Couldn't get id")
+                val id = call.parameters["uid"] ?: throw Exception("Couldn't get uid")
                 emit(Success(controller.load(id)))
             }.catch {
+                log.e("Failed to load entity at $path/{uid}", it)
                 emit(it.asFailure())
             }.collect {
                 send(serializer.nullable, it)
@@ -86,9 +93,11 @@ open class RestModule<T : Entity>(
         }
 
         delete(path = path) {
+            log.i("Deleting entity at $path")
             flow<Result<List<T>>> {
                 emit(Success(controller.delete(getEntitiesFromBody())))
             }.catch {
+                log.e("Failed to delete entity at $path", it)
                 emit(it.asFailure())
             }.collect {
                 send(serializer.list, it)
@@ -96,9 +105,11 @@ open class RestModule<T : Entity>(
         }
 
         get("$path/all") {
+            log.i("Loading all entities at $path/all")
             flow<Result<List<T>>> {
                 emit(Success(controller.all()))
             }.catch {
+                log.e("Failed to load all entities at $path/all", it)
                 emit(it.asFailure())
             }.collect {
                 send(serializer.list, it)
@@ -106,9 +117,11 @@ open class RestModule<T : Entity>(
         }
 
         get("$path/all-deleted") {
+            log.i("Loading all deleted entities at $path/all-deleted")
             flow<Result<List<T>>> {
                 emit(Success(controller.allDeleted()))
             }.catch {
+                log.e("Failed to load entities at $path/all-deleted", it)
                 emit(it.asFailure())
             }.collect {
                 send(serializer.list, it)

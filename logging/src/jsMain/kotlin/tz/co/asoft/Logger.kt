@@ -21,7 +21,7 @@ actual open class Logger actual constructor(
         log.send()
     }
 
-    actual fun e(msg: String, c: Exception?) {
+    actual fun e(msg: String, c: Throwable?) {
         val log = Log(
             Log.Level.ERROR.name,
             msg,
@@ -31,7 +31,7 @@ actual open class Logger actual constructor(
         log.send()
     }
 
-    actual fun e(c: Exception?) {
+    actual fun e(c: Throwable?) {
         val log = Log(
             Log.Level.ERROR.name,
             c?.message ?: "No Message",
@@ -41,7 +41,7 @@ actual open class Logger actual constructor(
         log.send()
     }
 
-    actual fun f(msg: String, c: Exception?) {
+    actual fun f(msg: String, c: Throwable?) {
         val log = Log(
             Log.Level.FAILURE.name,
             msg,
@@ -51,7 +51,7 @@ actual open class Logger actual constructor(
         log.send()
     }
 
-    actual fun f(c: Exception?) {
+    actual fun f(c: Throwable?) {
         val log = Log(
             Log.Level.FAILURE.name,
             c?.message ?: "No Message",

@@ -27,5 +27,3 @@ sealed class Result<out T> {
         }
     }
 }
-
-fun <T> Throwable.asFailure() = Result.Failure<T>(message ?: cause?.message ?: "Unknown Error")
