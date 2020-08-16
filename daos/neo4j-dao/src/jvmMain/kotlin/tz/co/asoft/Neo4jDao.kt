@@ -17,9 +17,7 @@ open class Neo4jDao<T : Neo4JEntity>(
     vararg clazzes: KClass<*>
 ) : INeo4jDao<T> {
     override val session by lazy {
-        val klasses = (setOf(clazz) + clazzes).map {
-            listOf(it.java.`package`.name, it.java.canonicalName)
-        }.flatten().toSet()
+        val klasses = (setOf(clazz) + clazzes).map { it.java.canonicalName }.toSet()
         SessionFactory(config, *klasses.toTypedArray()).openSession()
     }
 
