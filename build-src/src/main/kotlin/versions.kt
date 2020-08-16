@@ -2,7 +2,7 @@ object versions {
     val kotlin = "1.3.72"
     val selenium = "4.0.0-alpha-4"
     val ktor = "1.3.2"
-    val neo4j = "3.2.9"
+    val neo4j = "3.2.14"
     val tornadofx = "1.7.19"
     val gson = "2.8.5"
     val coil = "0.8.0"
