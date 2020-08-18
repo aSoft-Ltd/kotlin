@@ -10,7 +10,7 @@ import org.neo4j.ogm.cypher.Filter
 import org.neo4j.ogm.session.SessionFactory
 import kotlin.reflect.KClass
 
-open class Neo4jDao<T : Neo4JEntity>(
+open class Neo4jDao<T : Entity>(
     config: Configuration,
     override val clazz: KClass<T>,
     override val depth: Int = 10,
@@ -23,10 +23,12 @@ open class Neo4jDao<T : Neo4JEntity>(
 
     override suspend fun create(list: Collection<T>) = withContext(Dispatchers.IO) {
         session.save(list, depth)
-        val noIds = list.filter { it.uid != null }.map { it.apply { uid = id.toString() } }
+        //Check here
+        val noIds = list.filter { it.uid != null }.map { it.apply { uid = uid.toString() } }
         if (noIds.isNotEmpty()) session.save(noIds, depth)
         session.clear()
         list.toList()
+
     }
 
     override suspend fun create(t: T) = create(listOf(t)).first()
@@ -75,7 +77,7 @@ open class Neo4jDao<T : Neo4JEntity>(
         Neo4jPageLoader(session, clazz, depth, predicate)
 }
 
-fun <T : Neo4JEntity> Neo4jDao(
+fun <T : Entity> Neo4jDao(
     protocal: String = "http",
     username: String = "neo4j",
     password: String = "neo4j",
