@@ -11,7 +11,7 @@ open class FirestoreDao<T : Entity>(
 ) : IFirestoreDao<T> {
     override suspend fun create(list: Collection<T>): List<T> = batch.run {
         list.forEach {
-            val doc = if (it.uid.isNotBlank()) collection.doc(it.uid) else collection.doc()
+            val doc = if (it.uid != null) collection.doc(it.uid) else collection.doc()
             put(doc, it.apply { uid = doc.id }, serializer)
         }
         submit()
@@ -36,7 +36,7 @@ open class FirestoreDao<T : Entity>(
     override suspend fun delete(t: T): T = delete(listOf(t)).first()
 
     override suspend fun wipe(list: Collection<T>): List<T> = batch.run {
-        list.forEach { delete(docRef(it.uid)) }
+        list.mapNotNull { it.uid }.forEach { delete(docRef(it)) }
         submit()
         return list.toList()
     }

@@ -13,7 +13,6 @@ publish ../firebase
 publish ../form
 publish ../frontend
 publish ../geo
-publish ../http
 publish ../icons
 publish ../io
 publish ../klock

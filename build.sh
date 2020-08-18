@@ -13,7 +13,6 @@ build ../firebase
 build ../form
 build ../frontend
 build ../geo
-build ../http
 build ../icons
 build ../io
 build ../klock

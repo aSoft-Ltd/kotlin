@@ -3,9 +3,12 @@ package tz.co.asoft
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.CORS
+import io.ktor.features.maxAgeDuration
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.headersOf
+import kotlin.time.ExperimentalTime
+import kotlin.time.days
 
 val HttpHeaders.XAuthToken get() = "X-Auth-Token"
 
@@ -14,21 +17,27 @@ fun Application.installCORS() {
         method(HttpMethod.Options)
         method(HttpMethod.Patch)
         method(HttpMethod.Delete)
-        headersOf(HttpHeaders.AccessControlAllowOrigin, "*")
-        headersOf(
-            HttpHeaders.AccessControlAllowMethods to listOf(
-                HttpMethod.Get.value,
-                HttpMethod.Post.value,
-                HttpMethod.Put.value,
-                HttpMethod.Patch.value,
-                HttpMethod.Delete.value,
-                HttpMethod.Head.value,
-                HttpMethod.Options.value
-            ),
-            HttpHeaders.AccessControlAllowHeaders to listOf(
-                HttpHeaders.Origin, HttpHeaders.ContentType, HttpHeaders.XAuthToken
-            )
-        )
+        header(HttpHeaders.XForwardedProto)
         anyHost()
+        allowCredentials = true
+        maxAgeInSeconds = 1000
+        allowNonSimpleContentTypes = true
+
+//        headersOf(HttpHeaders.AccessControlAllowOrigin, "*")
+//        headersOf(HttpHeaders.AccessControlMaxAge, "1000")
+//        headersOf(
+//            HttpHeaders.AccessControlAllowMethods to listOf(
+//                HttpMethod.Get.value,
+//                HttpMethod.Post.value,
+//                HttpMethod.Put.value,
+//                HttpMethod.Patch.value,
+//                HttpMethod.Delete.value,
+//                HttpMethod.Head.value,
+//                HttpMethod.Options.value
+//            ),
+//            HttpHeaders.AccessControlAllowHeaders to listOf(
+//                HttpHeaders.Origin, HttpHeaders.ContentType, HttpHeaders.XAuthToken
+//            )
+//        )
     }
 }

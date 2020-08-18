@@ -23,7 +23,7 @@ open class Neo4jDao<T : Neo4JEntity>(
 
     override suspend fun create(list: Collection<T>) = withContext(Dispatchers.IO) {
         session.save(list, depth)
-        val noIds = list.filter { it.uid.isBlank() }.map { it.apply { uid = id.toString() } }
+        val noIds = list.filter { it.uid != null }.map { it.apply { uid = id.toString() } }
         if (noIds.isNotEmpty()) session.save(noIds, depth)
         session.clear()
         list.toList()
