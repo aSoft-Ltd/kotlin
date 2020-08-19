@@ -53,6 +53,13 @@ open class FirestoreDao<T : Entity>(
         }
     }
 
+    override suspend fun load(startAt: String?, limit: Int) = if (startAt == null) {
+        collection.where("deleted" equals false)
+    } else {
+        val startDoc = collection.doc(startAt).fetch()
+        collection.where("deleted" equals false).start(at = startDoc)
+    }.limit(limit).fetch().toObjects(serializer)
+
     override suspend fun load(id: String): T? = load(listOf(id)).firstOrNull()
 
     override suspend fun all() = collection.where("deleted" equals false).fetch().toObjects(serializer)

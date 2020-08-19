@@ -8,19 +8,12 @@ internal class FirebasePageLoader<D : Entity>(
     override val predicate: (D) -> Boolean = { !it.deleted }
 ) : PageLoader<FirestoreDocumentSnapshot, D> {
 
-    override fun pager(
-        pageSize: Int,
-        extraPages: Int,
-        showTmpPages: Boolean
-    ): Pager<FirestoreDocumentSnapshot, D> {
+    override fun pager(pageSize: Int, extraPages: Int, showTmpPages: Boolean): Pager<FirestoreDocumentSnapshot, D> {
         val fetcher = PageFetcher(this, pageSize)
         return Pager(fetcher, showTmpPages)
     }
 
-    private suspend fun loadPage(
-        pageSize: Int,
-        at: FirestoreDocumentSnapshot?
-    ): List<FirestoreDocumentSnapshot> {
+    private suspend fun loadPage(pageSize: Int, at: FirestoreDocumentSnapshot?): List<FirestoreDocumentSnapshot> {
         val snaps = mutableListOf<FirestoreDocumentSnapshot>()
         val query = collection.orderedBy("uid")
         val unfilteredSnaps = if (at == null) {

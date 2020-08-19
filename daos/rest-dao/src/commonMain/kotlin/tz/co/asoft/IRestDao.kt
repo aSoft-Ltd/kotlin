@@ -5,14 +5,10 @@ import kotlinx.serialization.KSerializer
 
 interface IRestDao<T : Entity> : IDao<T> {
     val client: HttpClient
-    val url: String
-    val version: String
+    val options: RestOptions
     val root: String
     val subRoot: String?
-    val headers: Map<String, String>?
     val serializer: KSerializer<T>
 
-    val path get() = "$version/$root" + if (subRoot != null) "/$subRoot" else ""
-
-    suspend fun page(pi: RestPageRequestInfo): List<T>
+    val path get() = "${options.url}/${options.version}/$root" + if (subRoot != null) "/$subRoot" else ""
 }

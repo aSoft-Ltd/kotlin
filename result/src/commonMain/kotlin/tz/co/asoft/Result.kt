@@ -1,6 +1,7 @@
 package tz.co.asoft
 
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 sealed class Result<out T> {
@@ -8,7 +9,12 @@ sealed class Result<out T> {
     class Success<out T>(val data: T) : Result<T>()
 
     @Serializable
-    class Failure<out T>(val msg: String) : Result<T>()
+    class Failure<out T>(
+        @SerialName("error") val msg: String,
+        val type: String,
+        val reason: String? = null,
+        val stackTrace: String? = null
+    ) : Result<T>()
 
     companion object {
         fun <T> stringify(serializer: KSerializer<T>, res: Result<T>) = when (res) {
@@ -22,7 +28,12 @@ sealed class Result<out T> {
             try {
                 RJson.parse(Failure.serializer(serializer), json)
             } catch (c: Throwable) {
-                Failure<T>(c.message ?: c.cause?.message ?: "Failed to serialize json")
+                Failure<T>(
+                    msg = c.message ?: c.cause?.message ?: "Failed to serialize json",
+                    type = c::class.simpleName ?: "Unknown Type",
+                    reason = c.cause?.message,
+                    stackTrace = c.cause?.cause?.message
+                )
             }
         }
     }

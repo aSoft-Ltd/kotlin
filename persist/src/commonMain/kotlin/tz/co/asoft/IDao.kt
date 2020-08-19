@@ -28,5 +28,7 @@ interface IDao<T : Entity> {
 
     suspend fun allDeleted(): List<T>
 
+    suspend fun load(startAt: String?, limit: Int): List<T>
+
     fun pageLoader(predicate: (T) -> Boolean = { !it.deleted }): PageLoader<*, T>
 }

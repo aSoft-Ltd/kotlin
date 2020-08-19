@@ -79,6 +79,21 @@ open class RestModule<T : Entity>(
             }
         }
 
+        get(path = "$path/page") {
+            log.i("Loading paged data at $path")
+            flow<Result<List<T>>> {
+                val params = call.request.queryParameters
+                val size = params["size"]?.toIntOrNull() ?: throw Exception("Must provide page size i.e. ?size=10")
+                val startAt = params["startAt"]
+                emit(Success(controller.load(startAt = startAt, limit = size)))
+            }.catch {
+                log.e("Failed to edit entity at $path", it)
+                emit(it.asFailure())
+            }.collect {
+                send(serializer.list, it)
+            }
+        }
+
         get("$path/{uid}") {
             log.i("Loading entity at $path/{uid}")
             flow<Result<T?>> {

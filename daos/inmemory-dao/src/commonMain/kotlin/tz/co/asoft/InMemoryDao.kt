@@ -29,6 +29,18 @@ open class InMemoryDao<T : Entity>(private val prefix: String) : IDao<T> {
 
     override suspend fun load(ids: Collection<Any>) = ids.mapNotNull { load(it.toString()) }
 
+    override suspend fun load(startAt: String?, limit: Int): List<T> {
+        val keys = data.keys.toList()
+        val startIndex = keys.indexOf(startAt)
+        if (startIndex == -1) throw Exception("There are no keys with uid: $startAt")
+        val desired = if (keys.size - startIndex > limit) {
+            keys.subList(startIndex, startIndex + limit)
+        } else {
+            keys.subList(startIndex, keys.size)
+        }
+        return desired.mapNotNull { data[it] }
+    }
+
     override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> {
         TODO("Not yet implemented")
     }

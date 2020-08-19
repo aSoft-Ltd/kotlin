@@ -7,6 +7,7 @@ import kotlinx.coroutines.withContext
 import org.neo4j.ogm.config.Configuration
 import org.neo4j.ogm.cypher.ComparisonOperator
 import org.neo4j.ogm.cypher.Filter
+import org.neo4j.ogm.cypher.query.Pagination
 import org.neo4j.ogm.session.SessionFactory
 import kotlin.reflect.KClass
 
@@ -28,7 +29,6 @@ open class Neo4jDao<T : Entity>(
         if (noIds.isNotEmpty()) session.save(noIds, depth)
         session.clear()
         list.toList()
-
     }
 
     override suspend fun create(t: T) = create(listOf(t)).first()
@@ -68,13 +68,16 @@ open class Neo4jDao<T : Entity>(
         session.loadAll(clazz.java, filter, depth).toList().apply { session.clear() }
     }
 
+    override suspend fun load(startAt: String?, limit: Int) = withContext(Dispatchers.IO) {
+        emptyList<T>()
+    }
+
     override suspend fun allDeleted(): List<T> = withContext(Dispatchers.IO) {
         val filter = Filter("deleted", ComparisonOperator.EQUALS, true)
         session.loadAll(clazz.java, filter, depth).toList().apply { session.clear() }
     }
 
-    override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> =
-        Neo4jPageLoader(session, clazz, depth, predicate)
+    override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> = Neo4jPageLoader(session, clazz, depth, predicate)
 }
 
 fun <T : Entity> Neo4jDao(

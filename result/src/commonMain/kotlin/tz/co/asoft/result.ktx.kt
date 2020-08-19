@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package tz.co.asoft
 
 fun <T> Result<T>.response(): T = when (this) {
@@ -5,7 +7,7 @@ fun <T> Result<T>.response(): T = when (this) {
     is Result.Failure -> throw Exception(msg)
 }
 
-fun <T> Result<T>.responseOrNull(): T? = try {
+inline fun <T> Result<T>.responseOrNull(): T? = try {
     response()
 } catch (e: Exception) {
     null
@@ -27,9 +29,14 @@ inline fun <T> Result<T>.collect(handler: (T) -> Unit) {
 inline fun <T> catching(block: () -> T) = try {
     Result.Success(block())
 } catch (e: Exception) {
-    Result.Failure<T>(e.message ?: "Unknown Error")
+    e.asFailure<T>()
 }
 
-fun <T> Throwable.asFailure() = Result.Failure<T>(message ?: cause?.message ?: "Unknown Error")
+fun <T> Throwable.asFailure() = Result.Failure<T>(
+    msg = message ?: cause?.message ?: "Unknown Error",
+    type = this::class.simpleName ?: "Unknown type",
+    reason = cause?.message,
+    stackTrace = cause?.cause?.message
+)
 
-fun <T> T.asSuccess() = Result.Success(this)
+inline fun <T> T.asSuccess() = Result.Success(this)

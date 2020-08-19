@@ -5,7 +5,7 @@ import org.neo4j.ogm.cypher.query.SortOrder
 import org.neo4j.ogm.session.Session
 import kotlin.reflect.KClass
 
-internal class Neo4jPageLoader<D : Neo4JEntity>(
+internal class Neo4jPageLoader<D : Entity>(
     private val session: Session,
     private val clazz: KClass<D>,
     private val depth: Int,

@@ -8,7 +8,7 @@ data class Log(
     var msg: String = "",
     var source: String = "anonymous"
 ) : Entity {
-    override var uid = ""
+    override var uid: String? = null
     override var deleted = false
 
     var time = DateTime.nowUnixLong()

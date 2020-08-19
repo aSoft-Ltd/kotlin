@@ -9,40 +9,36 @@ internal class MongoPageLoader<D : Entity>(
     val collection: MongoCollection<Document>,
     val serializer: KSerializer<D>,
     override val predicate: (D) -> Boolean
-) : PageLoader<VKey, D> {
+) : PageLoader<String, D> {
 
-    private suspend fun loadPage(pageSize: Int, at: VKey?): Pair<VKey, List<D>> {
-        val key = at ?: VKey(0, null)
-        val pageNo = key.pageNo
-        val docs = if (key.pageNo == 0) {
+    private suspend fun loadPage(pageSize: Int, at: String?): Pair<String, List<D>> {
+        val key = if (at == null || at.isBlank()) "" else at
+        val docs = if (key.isBlank()) {
             collection.find()
         } else {
-            collection.find(gte("uid", key.uid))
+            collection.find(gte("uid", key))
         }.limit(pageSize)
         val nodes = mutableListOf<D>()
         val allNodes: List<D> = docs.mapNotNull { it.to(serializer) }
-        val startIndex = if (at?.uid == null) 0 else allNodes.indexOfFirst { it.uid == at.uid }
+        val startIndex = if (key == null) 0 else allNodes.indexOfFirst { it.uid == key }
         val unfilteredNodes = allNodes.subList(startIndex, allNodes.size)
 
         val lastDoc = unfilteredNodes.lastOrNull() ?: return key to nodes
         val filteredSnaps = (unfilteredNodes - lastDoc).filter(predicate)
         nodes += filteredSnaps
         if (nodes.size >= pageSize) {
-            return VKey(key.pageNo, lastDoc.uid) to nodes + listOf(lastDoc).filter(predicate)
+            return key to nodes + listOf(lastDoc).filter(predicate)
         }
 
         if (unfilteredNodes.size < pageSize) {
-            return VKey(key.pageNo, lastDoc.uid) to nodes + listOf(lastDoc).filter(predicate)
+            return key to nodes + listOf(lastDoc).filter(predicate)
         }
 
-        val pair = loadPage(
-            pageSize - nodes.size,
-            VKey(pageNo + 1, null)
-        )
+        val pair = loadPage(pageSize - nodes.size, key)
         return pair.first to nodes + pair.second
     }
 
-    override suspend fun prevOf(node: Page<VKey, D>): Page<VKey, D> {
+    override suspend fun prevOf(node: Page<String, D>): Page<String, D> {
         val key = node.prev?.key ?: throw Exception("Can't go prev with null key")
         val data = loadPage(node.pageSize, key)
         val nextKey = if (data.second.size < (node.pageSize + 1)) null else data.first
@@ -56,7 +52,7 @@ internal class MongoPageLoader<D : Entity>(
         )
     }
 
-    override suspend fun nextOf(node: Page<VKey, D>): Page<VKey, D> {
+    override suspend fun nextOf(node: Page<String, D>): Page<String, D> {
         val key = node.nextKey ?: throw Exception("Can't go next with null key")
         val data = loadPage(node.pageSize, key)
         val nextKey = if (data.second.size < (node.pageSize + 1)) null else data.first
@@ -70,13 +66,12 @@ internal class MongoPageLoader<D : Entity>(
         )
     }
 
-    override suspend fun firstPage(pageSize: Int): Page<VKey, D> {
+    override suspend fun firstPage(pageSize: Int): Page<String, D> {
         val data = loadPage(pageSize, null)
-        val key = VKey(0, null)
         val nextKey = if (data.second.size < (pageSize + 1)) null else data.first
         return Page(
             data = if (data.second.size < pageSize) data.second else data.second.dropLast(1),
-            key = key,
+            key = null,
             prev = null,
             next = null,
             nextKey = nextKey,

@@ -8,23 +8,21 @@ import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
 open class RestDao<T : Entity>(
-    override val url: String,
-    override val version: String,
+    override val options: RestOptions,
     override val serializer: KSerializer<T>,
     override val root: String,
     override val subRoot: String?,
-    override val headers: Map<String, String>? = null
+    override val client: HttpClient
 ) : IRestDao<T> {
-    override val client = HttpClient { }
 
     fun HttpRequestBuilder.appendHeaders() {
-        this@RestDao.headers?.forEach { (k, v) ->
+        options.headers.forEach { (k, v) ->
             header(k, v)
         }
     }
 
     override suspend fun create(list: Collection<T>): List<T> {
-        val json = client.post<String>("$url/$path") {
+        val json = client.post<String>(path) {
             appendHeaders()
             body = RJson.stringify(serializer.list, list.toList())
         }
@@ -34,7 +32,7 @@ open class RestDao<T : Entity>(
     override suspend fun create(t: T) = create(listOf(t)).first()
 
     override suspend fun edit(list: Collection<T>): List<T> {
-        val json = client.patch<String>("$url/$path") {
+        val json = client.patch<String>(path) {
             appendHeaders()
             body = RJson.stringify(serializer.list, list.toList())
         }
@@ -44,7 +42,7 @@ open class RestDao<T : Entity>(
     override suspend fun edit(t: T) = edit(listOf(t)).first()
 
     override suspend fun delete(list: Collection<T>): List<T> {
-        val json = client.delete<String>("$url/$path") {
+        val json = client.delete<String>(path) {
             appendHeaders()
             body = RJson.stringify(serializer.list, list.toList())
         }
@@ -54,7 +52,7 @@ open class RestDao<T : Entity>(
     override suspend fun delete(t: T) = delete(listOf(t)).first()
 
     override suspend fun wipe(list: Collection<T>): List<T> {
-        val json = client.post<String>("$url/$path/wipe") {
+        val json = client.post<String>("$path/wipe") {
             appendHeaders()
             body = RJson.stringify(serializer.list, list.toList())
         }
@@ -68,7 +66,7 @@ open class RestDao<T : Entity>(
         if (stringIds.isNotEmpty()) {
             return emptyList()
         }
-        val json = client.post<String>("$url/$path/load") {
+        val json = client.post<String>("$path/load") {
             appendHeaders()
             body = RJson.stringify(String.serializer().list, stringIds)
         }
@@ -76,29 +74,32 @@ open class RestDao<T : Entity>(
     }
 
     override suspend fun load(id: String): T? {
-        val json = client.get<String>("$url/$path/$id") {
+        val json = client.get<String>("$path/$id") {
             appendHeaders()
         }
         return Result.parse(serializer.nullable, json).response()
     }
 
-    override suspend fun page(pi: RestPageRequestInfo): List<T> {
-        val json = client.post<String>("$url/$path/page") {
+    override suspend fun load(startAt: String?, limit: Int): List<T> {
+        var query = "size=$limit"
+        if (startAt != null) {
+            query += "&startAt=$startAt"
+        }
+        val json = client.get<String>("$path/page?$query") {
             appendHeaders()
-            body = RJson.stringify(RestPageRequestInfo.serializer(), pi)
         }
         return Result.parse(serializer.list, json).response()
     }
 
     override suspend fun all(): List<T> {
-        val json = client.get<String>("$url/$path/all") {
+        val json = client.get<String>("$path/all") {
             appendHeaders()
         }
         return Result.parse(serializer.list, json).response()
     }
 
     override suspend fun allDeleted(): List<T> {
-        val json = client.get<String>("$url/$path/all-deleted") {
+        val json = client.get<String>("$path/all-deleted") {
             appendHeaders()
         }
         return Result.parse(serializer.list, json).response()
