@@ -115,11 +115,6 @@ private class NavigationDrawer(p: Props) : RComponent<Props, State>(p),
     }
 }
 
-sealed class DrawerState {
-    object Opened : DrawerState()
-    object Closed : DrawerState()
-}
-
 fun RBuilder.NavigationDrawer(
     drawer: RBuilder.() -> Unit,
     content: RBuilder.() -> Unit,
