@@ -1,3 +1,5 @@
 package tz.co.asoft
 
-class NavMenu(val name: String, val link: String, val show: suspend () -> Boolean)
+import react.RClass
+
+class NavMenu(val name: String, val link: String, val icon: RClass<IconProps>, val show: suspend () -> Boolean)

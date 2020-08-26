@@ -15,3 +15,7 @@ external interface StyledProps : RProps {
 fun RElementBuilder<StyledProps>.css(builder: CSSBuilder.() -> Unit) {
     attrs.style = CSSBuilder().apply(builder).toStyle()
 }
+
+fun RElementBuilder<*>.style(builder: CSSBuilder.() -> Unit) {
+    attrs.asDynamic().style = CSSBuilder().apply(builder).toStyle()
+}

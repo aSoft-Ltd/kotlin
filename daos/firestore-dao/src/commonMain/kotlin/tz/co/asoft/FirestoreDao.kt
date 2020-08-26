@@ -46,7 +46,7 @@ open class FirestoreDao<T : Entity>(
     override suspend fun load(ids: Collection<Any>): List<T> = coroutineScope {
         ids.toSet().filter {
             it.toString().isNotBlank()
-        }.mapNotNull {
+        }.map {
             async { docRef(it.toString()).fetch().toObject(serializer) }
         }.mapNotNull {
             it.await()

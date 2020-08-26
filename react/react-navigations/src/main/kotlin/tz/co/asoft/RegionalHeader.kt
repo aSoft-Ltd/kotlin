@@ -15,8 +15,7 @@ fun RBuilder.RegionalHeader(
     title: String,
     selectedRegion: String?,
     regions: List<String>,
-    onRegionChanged: (String) -> Unit,
-    onCloseClicked: () -> Unit
+    onRegionChanged: (String) -> Unit
 ) = ThemeConsumer { theme ->
     styledDiv {
         css {
@@ -42,19 +41,11 @@ fun RBuilder.RegionalHeader(
                     justifySelf = JustifyContent.center
                 }
             }
-            if (photoUrl.isNotBlank()) {
-                styledImg(src = photoUrl) {
-                    css {
-                        width = 100.pct
-                        borderRadius = 50.pct
-                    }
-                }
-            } else {
-                styledDiv {
-                    css { fontSize = 2.em }
-                    FaUserAlt {}
-                }
-            }
+            ProfilePic(
+                name = title,
+                src = photoUrl,
+                radius = 50.pct
+            )
         }
 
         styledDiv {
@@ -88,17 +79,6 @@ fun RBuilder.RegionalHeader(
                     }
                 }
             }
-        }
-
-        styledDiv {
-            css {
-                onDesktop {
-                    display = Display.none
-                }
-                onMobile { fontSize = 1.5.em }
-            }
-            attrs.onClickFunction = { onCloseClicked() }
-            FaTimes {}
         }
     }
 }

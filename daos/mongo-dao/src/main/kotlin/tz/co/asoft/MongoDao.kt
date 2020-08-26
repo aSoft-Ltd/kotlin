@@ -1,24 +1,29 @@
 package tz.co.asoft
 
 import com.mongodb.client.model.Filters.*
+import com.mongodb.client.model.Indexes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.KSerializer
+import org.bson.types.ObjectId
 
 open class MongoDao<T : Entity>(
     override val options: MongoOptions,
     override val serializer: KSerializer<T>,
     collection: String
 ) : IMongoDao<T> {
-    open val collection = db.getCollection(collection)
-    override suspend fun create(list: Collection<T>) = withContext(Dispatchers.IO) {
-        val docs = list.toDocuments(serializer)
-        collection.insertMany(docs)
-        docs.to(serializer)
+    open val collection = db.getCollection(collection).apply {
+        createIndex(Indexes.ascending("uid"))
     }
 
+    override suspend fun create(list: Collection<T>) = list.map { create(it) }
+
     override suspend fun create(t: T) = withContext(Dispatchers.IO) {
-        val doc = t.toDocument(serializer)
+        val id = ObjectId.get()
+        if (t.uid == null) t.uid = id.toHexString()
+        val doc = t.toDocument(serializer).apply {
+            append("_id", id)
+        }
         collection.insertOne(doc)
         doc.to(serializer)
     }
@@ -36,7 +41,7 @@ open class MongoDao<T : Entity>(
         edit(it)
     }
 
-    override suspend fun delete(t: T): T = edit(listOf(t)).first()
+    override suspend fun delete(t: T): T = delete(listOf(t)).first()
 
     override suspend fun wipe(list: Collection<T>) = list.map { wipe(it) }
 
@@ -67,7 +72,7 @@ open class MongoDao<T : Entity>(
             collection.find(eq("deleted", false))
         } else {
             collection.find(and(gte("uid", startAt), eq("deleted", false)))
-        }.limit(size).mapNotNull { it.to(serializer) }
+        }.sort(eq("uid", 1)).limit(size).mapNotNull { it.to(serializer) }
     }
 
     override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> = MongoPageLoader(collection, serializer, predicate)

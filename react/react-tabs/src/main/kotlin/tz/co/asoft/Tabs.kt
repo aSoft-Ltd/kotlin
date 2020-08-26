@@ -115,10 +115,10 @@ private class Tabs(p: Props) : RComponent<Props, State>(p) {
 
 fun RBuilder.Tabs(
     vararg tabs: Tab
-) = child(Tabs::class.js, Props(2.px, null, tabs.toList())) {}
+) = child(Tabs::class.js, Props(1.px, null, tabs.toList())) {}
 
 fun RBuilder.Tabs(
-    lineSize: LinearDimension = 2.px,
+    lineSize: LinearDimension = 1.px,
     beforeTabs: (StyledDOMBuilder<DIV>.() -> Unit)? = null,
     tabs: List<Tab>
 ) = child(Tabs::class.js, Props(lineSize, beforeTabs, tabs)) {}

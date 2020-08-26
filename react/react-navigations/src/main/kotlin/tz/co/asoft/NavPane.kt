@@ -18,8 +18,7 @@ private class NavPane : RComponent<Props, RState>() {
     class Props(
         val drawerController: MutableStateFlow<DrawerState>,
         val header: StyledDOMBuilder<DIV>.(Theme) -> Unit,
-        val moduleGroups: Map<String, List<NavMenu>>,
-        val iconResolver: RBuilder.(link: String) -> RClass<*>
+        val moduleGroups: Map<String, List<NavMenu>>
     ) : RProps
 
     private fun RBuilder.group(handler: StyledDOMBuilder<DIV>.() -> Unit) = Grid { theme ->
@@ -86,9 +85,7 @@ private class NavPane : RComponent<Props, RState>() {
                     css {
                         justifySelf = JustifyContent.center
                     }
-                    props.apply {
-                        (iconResolver(navMenu.name)){}
-                    }
+                    navMenu.icon {}
                 }
 
                 styledDiv {
@@ -103,7 +100,7 @@ private class NavPane : RComponent<Props, RState>() {
 
     override fun RBuilder.render(): dynamic = ThemeConsumer { theme ->
         Scroller {
-            css {
+            style {
                 width = 100.pct
                 height = 100.vh
                 borderRight = "solid 1px ${theme.onBackgroundVariantColor}"
@@ -133,6 +130,5 @@ private class NavPane : RComponent<Props, RState>() {
 fun RBuilder.NavPane(
     drawerController: MutableStateFlow<DrawerState>,
     moduleGroups: Map<String, List<NavMenu>>,
-    header: StyledDOMBuilder<DIV>.(Theme) -> Unit,
-    iconResolver: RBuilder.(link: String) -> RClass<*>
-) = child(NavPane::class.js, Props(drawerController, header, moduleGroups, iconResolver)) {}
+    header: StyledDOMBuilder<DIV>.(Theme) -> Unit
+) = child(NavPane::class.js, Props(drawerController, header, moduleGroups)) {}

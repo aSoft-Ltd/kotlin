@@ -6,19 +6,10 @@ import org.bson.Document
 import org.bson.types.ObjectId
 
 fun <T : Entity> T.toDocument(serializer: SerializationStrategy<T>): Document {
-    val doc = Document.parse(Json.stringify(serializer, this))
-    if (uid != null) doc.append("_id", uid)
-    return doc
+    return Document.parse(Json.stringify(serializer, this))
 }
 
-fun <T : Entity> Document.to(serializer: DeserializationStrategy<T>): T {
-    val objId = when(val id = get("_id")) {
-        is ObjectId -> id.toHexString()
-        else -> id.toString()
-    }
-    set("uid", objId)
-    return Json.parse(serializer, toJson())
-}
+fun <T : Entity> Document.to(serializer: DeserializationStrategy<T>): T = Json.parse(serializer, toJson())
 
 fun <T : Entity> Collection<Document>.to(serializer: DeserializationStrategy<T>) = map { it.to(serializer) }
 

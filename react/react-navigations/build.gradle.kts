@@ -5,4 +5,5 @@ plugins {
 dependencies {
     api(project(":icons-react-fa"))
     api(project(":react-layouts"))
+    api(project(":react-media"))
 }
