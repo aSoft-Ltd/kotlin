@@ -1,4 +1,4 @@
 echo "publishing logging"
 chmod +x gradlew
-./gradlew :publish || exit
+./gradlew :logging-core:publish || exit
 echo "Finished publishing logging"

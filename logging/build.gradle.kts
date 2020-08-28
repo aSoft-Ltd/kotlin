@@ -1,13 +1,9 @@
 plugins {
-    id("asoft-lib")
     id("root-module")
+    id("asoft-lib")
 }
 
-kotlin.sourceSets {
-    val commonMain by getting {
-        dependencies {
-            api(project(":klock"))
-            api(project(":persist"))
-        }
-    }
+kotlin.js {
+    useCommonJs()
+    browser {}
 }
