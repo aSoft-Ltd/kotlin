@@ -13,5 +13,5 @@ kotlin {
     }
 }
 dependencies {
-    implementation(project(":logging-core"))
+    implementation(project(":logging-console"))
 }

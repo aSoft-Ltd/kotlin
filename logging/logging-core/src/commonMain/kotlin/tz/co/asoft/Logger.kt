@@ -1,19 +1,25 @@
 package tz.co.asoft
 
 class Logger(vararg appenders: Appender) : Appender {
-    private val appenders = appenders.toList()
-
-    override var options = AppenderOptions()
-        set(value) {
-            appenders.forEach { it.options = value }
-            field = value
+    companion object {
+        fun of(source: String): Logger = Logger(*Logging.appenders.toTypedArray()).apply {
+            extra["source"] = source
         }
 
-    override fun append(level: LogLevel, msg: String, vararg data: Pair<String, Any?>) {
-        appenders.forEach { it.append(level, msg, *data) }
+        fun of(vararg data: Pair<String, Any?>) = Logger(*Logging.appenders.toTypedArray()).apply {
+            extra.putAll(data.toMap())
+        }
     }
 
-    override fun obj(vararg o: Any?) = appenders.forEach { it.obj(*o) }
+    private val appenders = appenders.toList()
 
-    override fun obj(o: Any?) = appenders.forEach { it.obj(o) }
+    internal val extra = mutableMapOf<String, Any?>()
+
+    private inline fun Map<String, Any?>.toArray() = map { (k, v) -> k to v }
+
+    override fun append(level: LogLevel, msg: String, vararg data: Pair<String, Any?>) {
+        appenders.forEach { it.append(level, msg, *(extra.toArray() + data.toList()).toTypedArray()) }
+    }
+
+    override fun append(vararg o: Any?) = appenders.forEach { it.append(o) }
 }

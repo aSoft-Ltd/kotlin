@@ -5,13 +5,8 @@ plugins {
 kotlin.sourceSets {
     val commonMain by getting {
         dependencies {
-            api(kotlin("stdlib"))
-        }
-    }
-
-    val jsMain by getting {
-        dependencies {
-            api(kotlin("stdlib-js"))
+            api(project(":logging-core"))
+            api(project(":form-http"))
         }
     }
 

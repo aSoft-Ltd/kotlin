@@ -6,16 +6,15 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import tz.co.asoft.*
 import kotlin.browser.document
-import kotlin.dom.createElement
 
 fun main() {
     val div = (document.createElement("div") as HTMLDivElement).apply {
         val log = logger(verbose = false)
         val txt = input("Test Msg")
         val verbose = input("","checkbox")
-        log.options = AppenderOptions(verbose = verbose.checked,source = "Lamax")
+        log.options = ConsoleAppenderOptions(verbose = verbose.checked,source = "Lamax")
         verbose.onchange = {
-            log.options = AppenderOptions(verbose = verbose.checked,source = "Lamax")
+            log.options = ConsoleAppenderOptions(verbose = verbose.checked,source = "Lamax")
             undefined
         }
         button("Debug") {
@@ -44,9 +43,9 @@ fun main() {
 
         button("Dynamic Verbosity") {
             val opts = log.options
-            log.options = AppenderOptions(verbose = true)
+            log.options = ConsoleAppenderOptions(verbose = true)
             log.d(txt.value,"options" to log.options)
-            log.options = AppenderOptions(verbose = false)
+            log.options = ConsoleAppenderOptions(verbose = false)
         }
     }
     document.body?.appendChild(div)
