@@ -52,7 +52,7 @@ open class RestDao<T : Entity>(
     override suspend fun delete(t: T) = delete(listOf(t)).first()
 
     override suspend fun wipe(list: Collection<T>): List<T> {
-        val json = client.post<String>("$path/wipe") {
+        val json = client.delete<String>("$path/wipe") {
             appendHeaders()
             body = RJson.stringify(serializer.list, list.toList())
         }

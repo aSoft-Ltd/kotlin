@@ -25,5 +25,4 @@ include(":logging-console")
 include(":logging-file")
 include(":logging-rest")
 
-include(":logging-server-ktor")
 //include(":samples:browser")
