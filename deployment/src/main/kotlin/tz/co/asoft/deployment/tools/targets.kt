@@ -23,5 +23,4 @@ var KotlinJvmTarget.mainClassName: String
     set(value) {
         project.extension?.targetMainClassNames?.put(this, value)
     }
-    get() = project.extension?.targetMainClassNames?.get(this)
-        ?: throw Exception("Main Class Name for target ${this.name} isn't set")
+    get() = project.extension?.targetMainClassNames?.get(this) ?: throw Exception("Main Class Name for target ${this.name} isn't set")

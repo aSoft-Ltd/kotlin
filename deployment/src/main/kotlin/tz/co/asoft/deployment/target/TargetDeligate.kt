@@ -14,8 +14,7 @@ class TargetDeligate(private val values: MutableMap<String, Any>) {
     fun join(vararg t: Deployment): TargetDeligate {
         t.forEach {
             it.values.forEach { (k, v) ->
-                if (k != "name")
-                    values.putIfAbsent(k, v)
+                if (k != "name") values.putIfAbsent(k, v)
             }
         }
         return this

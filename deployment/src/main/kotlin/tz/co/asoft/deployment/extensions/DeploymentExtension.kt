@@ -40,7 +40,7 @@ open class DeploymentExtension(val project: Project) {
                 deployment.envTaskName(target),
                 EnvironmentJsonFileTask::class.java,
                 target.toTarget,
-                deployment
+                deployment.copy(values = deployment.values + target.configs)
             ).apply {
                 group = "environment"
             }
