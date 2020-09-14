@@ -26,7 +26,7 @@ open class KonfigJsonFileTask @Inject constructor(
     @Input
     var konfig: Konfig? = null
 
-    @OutputFiles
+    @OutputFile
     val outputFile = outputDir.getOrCreateNewFile("konfig.json")
 
     @TaskAction
