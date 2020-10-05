@@ -1,6 +1,5 @@
 package tz.co.asoft
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.*
 
 fun Any?.toJsonElement(): JsonElement = when (this) {

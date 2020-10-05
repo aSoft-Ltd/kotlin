@@ -1,3 +1,5 @@
+@file:Suppress("PackageDirectoryMismatch")
+
 package tz.co.asoft
 
 import tz.co.asoft.internal.arraycopy

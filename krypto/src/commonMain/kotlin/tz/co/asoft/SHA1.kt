@@ -1,11 +1,13 @@
+@file:Suppress("PackageDirectoryMismatch")
+
 package tz.co.asoft
 
 import tz.co.asoft.internal.arraycopy
 import tz.co.asoft.internal.readS32_be
-import tz.co.asoft.internal.rotateLeft
+
 
 class SHA1 : SHA(chunkSize = 64, digestSize = 20) {
-    companion object : HashFactory({ SHA1() }) {
+    companion object : HasherFactory({ SHA1() }) {
         private val H = intArrayOf(
             0x67452301L.toInt(),
             0xEFCDAB89L.toInt(),
@@ -29,6 +31,7 @@ class SHA1 : SHA(chunkSize = 64, digestSize = 20) {
         coreReset()
     }
 
+    @OptIn(ExperimentalStdlibApi::class)
     override fun coreUpdate(chunk: ByteArray) {
         for (j in 0 until 16) w[j] = chunk.readS32_be(j * 4)
         for (j in 16 until 80) w[j] = (w[j - 3] xor w[j - 8] xor w[j - 14] xor w[j - 16]).rotateLeft(1)
