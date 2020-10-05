@@ -1,8 +1,9 @@
 package tz.co.asoft
 
+import kotlinx.serialization.StringFormat
 import kotlinx.serialization.json.*
 
-fun String.toJsonObject(): JsonObject = KJson.parse(JsonObjectSerializer, this)
+fun String.toJsonObject(): JsonObject = Json.parse(JsonObjectSerializer, this)
 
 fun JsonElement.toKObject(): Any? = when (this) {
     is JsonLiteral -> body
@@ -19,6 +20,7 @@ fun JsonObject.toMap(): Map<String, Any> {
     return map
 }
 
-fun Map<String, Any?>.getMap(key: String) = this[key] as Map<String, Any?>
-
-fun Map<String, Any?>.getList(key: String) = this[key] as List<Any?>
+fun StringFormat.parseKotlinMap(json: String): Map<String, Any> {
+    val jsonObject = Json.parse(JsonObjectSerializer, json)
+    return jsonObject.toMap()
+}
