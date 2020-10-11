@@ -3,8 +3,10 @@
 package tz.co.asoft
 
 @OptIn(ExperimentalStdlibApi::class)
-fun JWT.token(): String {
-    val headerHex = header.toJson().toByteArray().base64.replace("=", "")
-    val payloadHex = payload.toJson().toByteArray().base64.replace("=", "")
-    return "$headerHex.$payloadHex" + (signature?.let { ".$it" } ?: "")
-}
+fun JWT.token() = "$headerInBase64.$payloadInBase64" + (signature?.let { ".$it" } ?: "")
+
+val JWT.headerInBase64 get() = header.toJson().toByteArray().base64Url
+
+val JWT.payloadInBase64 get() = payload.toJson().toByteArray().base64Url
+
+val JWT.message get() = "$headerInBase64.$payloadInBase64".toByteArray()

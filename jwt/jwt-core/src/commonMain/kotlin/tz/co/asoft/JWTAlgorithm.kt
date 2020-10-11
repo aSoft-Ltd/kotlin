@@ -2,14 +2,25 @@ package tz.co.asoft
 
 open class JWTAlgorithm(
     val name: String,
-    private val signer: JWTSigner,
-    private val verifier: JWTVerifier
-) : JWTSigner by signer, JWTVerifier by verifier {
-    open fun createJWT(builder: JWTBuilder.() -> Unit): JWT {
-        val jwt = JWTBuilder().apply {
+    private val rotator: KeyRotator,
+    private val signer: JWTSigner
+) : JWTSigner by signer {
+    open suspend fun createJWT(builder: JWTPayload.() -> Unit): JWT {
+        val key = rotator.nextSigningKey()
+
+        val header = JWTHeader {
+            alg = name
+            key.uid?.let {
+                kid = it
+            }
+            typ = "JWT"
+        }
+
+        val payload = JWTPayload {
             builder()
-            header.alg = name
-        }.build()
-        return sign(jwt)
+            iat = DateTime.nowUnixLong()
+            exp = DateTime.nowUnixLong() + 1.days.millisecondsLong
+        }
+        return sign(JWT(header, payload), key)
     }
 }

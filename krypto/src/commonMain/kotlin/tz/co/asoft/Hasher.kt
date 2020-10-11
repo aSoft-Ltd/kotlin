@@ -67,7 +67,9 @@ inline class Hash(val bytes: ByteArray) {
         fun fromHex(hex: String): Hash = Hash(Hex.decode(hex))
         fun fromBase64(base64: String): Hash = Hash(Base64.decodeIgnoringSpaces(base64))
     }
+
     val base64 get() = Base64.encode(bytes)
+    val base64Url get() = base64.replace("=", "").replace("/", "_")
     val hex get() = Hex.encode(bytes)
     val hexLower get() = Hex.encodeLower(bytes)
     val hexUpper get() = Hex.encodeUpper(bytes)

@@ -90,3 +90,4 @@ object Base64 {
 
 fun String.fromBase64(ignoreSpaces: Boolean = false): ByteArray = if (ignoreSpaces) Base64.decodeIgnoringSpaces(this) else Base64.decode(this)
 val ByteArray.base64: String get() = Base64.encode(this)
+val ByteArray.base64Url: String get() = base64.replace("=", "").replace("/", "_")

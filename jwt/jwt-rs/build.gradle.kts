@@ -6,9 +6,8 @@ kotlin.sourceSets {
     val commonMain by getting {
         dependencies {
             api(project(":krypto"))
-            api(project(":klock"))
-            api(project(":mapper"))
             api(project(":security-keys"))
+            api(project(":jwt-core"))
         }
     }
 
