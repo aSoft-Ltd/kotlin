@@ -1,5 +1,10 @@
 import tz.co.asoft.*
 
-class TestSigner : JWTSigner {
-    override fun sign(jwt: JWT, key: SecurityKey) = jwt.copy(signature = jwt.message.base64Url + Base64.encode(key.value.toByteArray()))
+object TestSigner : JWTSigner {
+    override fun sign(jwt: JWT, key: SecurityKey): JWT {
+        val message = "${jwt.headerInBase64}.${jwt.payloadInBase64}"
+        val secret = key.value.toByteArray().base64Url
+        val hash = Base64.encode("$message.$secret".toByteArray()).replace("=", "")
+        return jwt.copy(signature = hash)
+    }
 }

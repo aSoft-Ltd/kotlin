@@ -8,8 +8,7 @@ data class JWT(
     val signature: String? = null
 ) {
     companion object {
-        @OptIn(ExperimentalStdlibApi::class)
-        fun from(token: String): JWT {
+        fun parse(token: String): JWT {
             val splits = token.split(".")
             val h = splits[0]
             val p = splits[1]
@@ -21,6 +20,12 @@ data class JWT(
                 payload = payload.toJsonObject().toMap().toMutableMap(),
                 signature = signature
             )
+        }
+
+        fun parseOrNull(token: String): JWT? = try {
+            parse(token)
+        } catch (_: Throwable) {
+            null
         }
     }
 }

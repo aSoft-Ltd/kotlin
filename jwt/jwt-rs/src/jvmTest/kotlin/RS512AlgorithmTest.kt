@@ -37,14 +37,14 @@ class RS512AlgorithmTest {
     fun `should verify without having algorithm instance`() {
         val token1 =
             "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6MjJ9.eyJ1aWQiOjU1LCJhaWQiOjU1LCJhY2NvdW50TmFtZSI6ImFuZGVyc29uIiwidXNlck5hbWUiOiJhbmRlcnNvbiJ9.f7WJCmqa/jjaxItBlbtwnVMuG1GYyArG7M36/e1nA/m3nfRYn+Wr5m5Gvquk0S5VfVM38gU0jXFoOCMyJkC24rEbnUhsieRv0gvEstLXPZT9APfFrIVIC3ZmJCAHnJpeNb1VFaVth9oxhjpj0UKqDPyy3E+RxofHY+EJBBYUMpI="
-        val jwt1 = JWT.from(token1)
+        val jwt1 = JWT.parse(token1)
         val key1 = SecurityKey(uid = "0", value = publicKey)
-        assertEquals(JWTVerification.Valid, verifyRS512(jwt1, key1))
+        assertEquals(JWTVerification.Valid, jwt1.verifyRS512(key1))
 
         val token2 =
             "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6MjJ9.eyJ1aWQiOjU1LCJhaWQiOjU1LCJhY3NvdW50TmFtZSI6ImFuZGVyc29uIiwidXNlck5hbWUiOiJhbmRlcnNvbiJ9.f7WJCmqa/jjaxItBlbtwnVMuG1GYyArG7M36/e1nA/m3nfRYn+Wr5m5Gvquk0S5VfVM38gU0jXFoOCMyJkC24rEbnUhsieRv0gvEstLXPZT9APfFrIVIC3ZmJCAHnJpeNb1VFaVth9oxhjpj0UKqDPyy3E+RxofHY+EJBBYUMpI="
-        val jwt2 = JWT.from(token2)
+        val jwt2 = JWT.parse(token2)
         assertNotEquals(token1, token2)
-        assertEquals(JWTVerification.Invalid, verifyRS512(jwt2, key1))
+        assertEquals(JWTVerification.Invalid, jwt2.verifyRS512(key1))
     }
 }

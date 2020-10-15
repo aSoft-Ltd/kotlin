@@ -113,3 +113,16 @@ val JWTPayload.claimsOrNull
     } catch (t: Throwable) {
         null
     }
+
+var JWTPayload.hosts: List<String>
+    set(value) {
+        put("hosts", value)
+    }
+    get() = (get("hosts") as? List<String>) ?: error("hosts not found in payload")
+
+val JWTPayload.hostsOrNull
+    get() = try {
+        hosts
+    } catch (t: Throwable) {
+        null
+    }
