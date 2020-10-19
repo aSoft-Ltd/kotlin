@@ -1,5 +1,7 @@
 package tz.co.asoft
 
+import com.mongodb.MongoClient
+import com.mongodb.client.MongoDatabase
 import com.mongodb.client.model.Filters.*
 import com.mongodb.client.model.Indexes
 import kotlinx.coroutines.Dispatchers
@@ -8,10 +10,27 @@ import kotlinx.serialization.KSerializer
 import org.bson.types.ObjectId
 
 open class MongoDao<T : Entity>(
-    override val options: MongoOptions,
+    override val db: MongoDatabase,
     override val serializer: KSerializer<T>,
     collection: String
 ) : IMongoDao<T> {
+
+    constructor(
+        options: MongoOptions,
+        client: MongoClient = options.toClient(),
+        db: MongoDatabase = client.getDatabase(options.database),
+        serializer: KSerializer<T>,
+        collection: String
+    ) : this(client, options.database, db, serializer, collection)
+
+    constructor(
+        client: MongoClient,
+        dbName: String,
+        db: MongoDatabase = client.getDatabase(dbName),
+        serializer: KSerializer<T>,
+        collection: String
+    ) : this(db, serializer, collection)
+
     open val collection = db.getCollection(collection).apply {
         createIndex(Indexes.ascending("uid"))
     }
@@ -75,5 +94,6 @@ open class MongoDao<T : Entity>(
         }.sort(eq("uid", 1)).limit(size).mapNotNull { it.to(serializer) }
     }
 
-    override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> = MongoPageLoader(collection, serializer, predicate)
+    override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> =
+        MongoPageLoader(collection, serializer, predicate)
 }
