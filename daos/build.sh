@@ -10,6 +10,6 @@ echo "Building mongo-dao"
 ./gradlew :mongo-dao:build || exit
 echo "Building inmemory-dao"
 ./gradlew :inmemory-dao:build || exit
-echo "Building rest-dao"
-./gradlew :rest-dao:build || exit
+echo "Building restful-dao"
+./gradlew :restful-dao:build || exit
 echo "Finished building daos"

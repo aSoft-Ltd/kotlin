@@ -29,6 +29,6 @@ project(":result").projectDir = File("../result")
 
 include(":firestore-dao")
 include(":neo4j-dao")
-include(":rest-dao")
+include(":restful-dao")
 include(":mongo-dao")
 include(":inmemory-dao")
