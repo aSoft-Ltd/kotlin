@@ -7,13 +7,13 @@ import kotlinx.serialization.builtins.list
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
-open class RestDao<T : Entity>(
-    override val options: RestOptions,
+open class RestfulDao<T : Entity>(
+    override val options: RestfulOptions,
     override val serializer: KSerializer<T>,
     override val root: String,
     override val subRoot: String?,
     override val client: HttpClient
-) : IRestDao<T> {
+) : IRestfulDao<T> {
 
     fun HttpRequestBuilder.appendHeaders() {
         options.headers.forEach { (k, v) ->
@@ -105,5 +105,5 @@ open class RestDao<T : Entity>(
         return Result.parse(serializer.list, json).response()
     }
 
-    override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> = RestPageLoader(this, predicate)
+    override fun pageLoader(predicate: (T) -> Boolean): PageLoader<*, T> = RestfulPageLoader(this, predicate)
 }

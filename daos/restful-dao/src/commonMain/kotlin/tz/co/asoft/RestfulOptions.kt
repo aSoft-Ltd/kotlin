@@ -1,6 +1,6 @@
 package tz.co.asoft
 
-class RestOptions(
+class RestfulOptions(
     val url: String,
     val version: String,
     val headers: Map<String, String>

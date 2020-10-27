@@ -1,7 +1,7 @@
 package tz.co.asoft
 
-internal class RestPageLoader<D : Entity>(
-    private val restDao: IRestDao<D>,
+internal class RestfulPageLoader<D : Entity>(
+    private val restfulDao: IRestfulDao<D>,
     override val predicate: (D) -> Boolean
 ) : PageLoader<VKey, D> {
 
@@ -9,7 +9,7 @@ internal class RestPageLoader<D : Entity>(
         val key = at ?: VKey(0, null)
         val pageNo = key.pageNo
         val nodes = mutableListOf<D>()
-        val allNodes: List<D> = restDao.load(at?.uid, pageSize)
+        val allNodes: List<D> = restfulDao.load(at?.uid, pageSize)
         val startIndex = if (at?.uid == null) 0 else allNodes.indexOfFirst { it.uid == at.uid }
         val unfilteredNodes = allNodes.subList(startIndex, allNodes.size)
 

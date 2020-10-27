@@ -18,6 +18,12 @@ kotlin.sourceSets {
         }
     }
 
+    val commonTest by getting {
+        dependencies {
+            api(asoft("test"))
+        }
+    }
+
     val androidMain by getting {
         dependencies {
             api(kotlin("stdlib"))
