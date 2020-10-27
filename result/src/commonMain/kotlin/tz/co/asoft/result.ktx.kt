@@ -2,28 +2,14 @@
 
 package tz.co.asoft
 
-import kotlinx.serialization.KSerializer
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
-fun <T> Either.Companion.stringify(
-    serializer: KSerializer<T>,
-    res: Result<T>
-): String = stringify(serializer, Failure.serializer(), res)
-
-fun <T> Either.Companion.parse(
-    serializer: KSerializer<T>,
-    json: String
-): Result<T> = try {
-    parse(serializer, Failure.serializer(), json)
-} catch (c: Throwable) {
-    Either.Right(
-        Failure(
-            error = c.message ?: c.cause?.message ?: "Failed to serialize json",
-            type = c::class.simpleName ?: "Unknown Type",
-            reason = c.cause?.message,
-            stackTrace = c.cause?.cause?.message
-        )
-    )
-}
+inline val <T> Result<T>.status: ResultStatus
+    get() = when (this) {
+        is Either.Left -> ResultStatus.Success
+        is Either.Right -> ResultStatus.Failure
+    }
 
 fun <T> Result<T>.response(): T = when (this) {
     is Either.Left -> value
@@ -64,4 +50,29 @@ fun Throwable.asFailure() = Failure(
     stackTrace = cause?.cause?.message
 )
 
+fun <T> Throwable.toFailure(): Result<T> = Either.Right(
+    Failure(
+        error = message ?: cause?.message ?: "Unknown Error",
+        type = this::class.simpleName ?: "Unknown type",
+        reason = cause?.message,
+        stackTrace = cause?.cause?.message
+    )
+)
+
 inline fun <T> T.asSuccess(): Result<T> = Success(this)
+
+@OptIn(ExperimentalContracts::class)
+fun <T> Result<T>.isSuccess(): Boolean {
+    contract {
+        returns(true) implies (this@isSuccess is Either.Left)
+    }
+    return this is Either.Left
+}
+
+@OptIn(ExperimentalContracts::class)
+fun <T> Result<T>.isFailure(): Boolean {
+    contract {
+        returns(true) implies (this@isFailure is Either.Right)
+    }
+    return this is Either.Right
+}
