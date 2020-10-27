@@ -1,5 +1,3 @@
-package tz.co.asoft.result
-
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -2,13 +2,11 @@ package tz.co.asoft
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 sealed class Either<out L, out R> {
-    @Serializable
-    class Left<L, R>(val value: L) : Either<L, R>()
-
-    @Serializable
-    class Right<L, R>(val value: R) : Either<L, R>()
+    data class Left<L, R>(val value: L) : Either<L, R>()
+    data class Right<L, R>(val value: R) : Either<L, R>()
 
     companion object {
         fun <L, R> stringify(
@@ -16,8 +14,8 @@ sealed class Either<out L, out R> {
             rightSerializer: KSerializer<R>,
             e: Either<L, R>
         ) = when (e) {
-            is Left -> Json.stringify(Left.serializer(leftSerializer, rightSerializer), e)
-            is Right -> Json.stringify(Right.serializer(leftSerializer, rightSerializer), e)
+            is Left -> Json.stringify(leftSerializer, e.value)
+            is Right -> Json.stringify(rightSerializer, e.value)
         }
 
         fun <L, R> parse(
@@ -25,9 +23,9 @@ sealed class Either<out L, out R> {
             rightSerializer: KSerializer<R>,
             json: String
         ): Either<L, R> = try {
-            Json.parse(Left.serializer(leftSerializer, rightSerializer), json)
+            Left(Json.parse(leftSerializer, json))
         } catch (_: Throwable) {
-            Json.parse(Right.serializer(leftSerializer, rightSerializer), json)
+            Right(Json.parse(rightSerializer, json))
         }
     }
 }

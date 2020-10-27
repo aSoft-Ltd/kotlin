@@ -34,7 +34,7 @@ class EitherTest {
         val thing2: Either<String, Int> = Either.Right(1)
         println(Either.stringify(String.serializer(), Int.serializer(), thing2))
 
-        val thing1Json = """{"value":{"name":"Stompy"}}"""
+        val thing1Json = """{"name":"Stompy"}"""
         val fromThing1 = Either.parse(Cat.serializer(), Dog.serializer(), thing1Json)
         assertTrue(fromThing1.value is Cat)
     }
