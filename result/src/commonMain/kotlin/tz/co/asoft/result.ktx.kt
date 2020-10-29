@@ -11,7 +11,7 @@ inline val <T> Result<T>.status: ResultStatus
         is Either.Right -> ResultStatus.Failure
     }
 
-fun <T> Result<T>.response(): T = when (this) {
+inline fun <T> Result<T>.response(): T = when (this) {
     is Either.Left -> value
     is Either.Right -> throw Exception(value.error)
 }
@@ -35,7 +35,13 @@ inline fun <T> Result<T>.collect(handler: (T) -> Unit) {
     }
 }
 
-fun <T> Success(value: T): Result<T> = Either.Left(value)
+inline fun <T> Success(value: T): Result<T> = Either.Left(value)
+
+inline fun <T> Result<T>.success() = left()
+inline fun <T> Result<T>.successOrNull() = leftOrNull()
+
+inline fun Result<*>.failure() = right()
+inline fun Result<*>.failureOrNull() = rightOrNull()
 
 inline fun <T> catching(block: () -> T): Result<T> = try {
     Either.Left(block())
@@ -43,19 +49,14 @@ inline fun <T> catching(block: () -> T): Result<T> = try {
     Either.Right(e.asFailure())
 }
 
-fun Throwable.asFailure() = Failure(
+inline fun Throwable.asFailure() = Failure(
     error = message ?: cause?.message ?: "Unknown Error",
     type = this::class.simpleName ?: "Unknown type",
     reason = cause?.message,
     stackTrace = cause?.cause?.message
 )
 
-fun <T> Throwable.toFailure(): Result<T> = Failure(
-    error = message ?: cause?.message ?: "Unknown Error",
-    type = this::class.simpleName ?: "Unknown type",
-    reason = cause?.message,
-    stackTrace = cause?.cause?.message
-).toResult()
+inline fun <T> Throwable.toFailure(): Result<T> = asFailure().toResult()
 
 inline fun <T> T.asSuccess(): Result<T> = Success(this)
 
