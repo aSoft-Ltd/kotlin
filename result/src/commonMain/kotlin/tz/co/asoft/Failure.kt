@@ -9,5 +9,5 @@ class Failure(
     val reason: String? = null,
     val stackTrace: String? = null
 ) {
-    override fun toString() = "Failure(error=$error)"
+    override fun toString() = "Failure($error)"
 }

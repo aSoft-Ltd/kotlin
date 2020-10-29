@@ -50,14 +50,12 @@ fun Throwable.asFailure() = Failure(
     stackTrace = cause?.cause?.message
 )
 
-fun <T> Throwable.toFailure(): Result<T> = Either.Right(
-    Failure(
-        error = message ?: cause?.message ?: "Unknown Error",
-        type = this::class.simpleName ?: "Unknown type",
-        reason = cause?.message,
-        stackTrace = cause?.cause?.message
-    )
-)
+fun <T> Throwable.toFailure(): Result<T> = Failure(
+    error = message ?: cause?.message ?: "Unknown Error",
+    type = this::class.simpleName ?: "Unknown type",
+    reason = cause?.message,
+    stackTrace = cause?.cause?.message
+).toResult()
 
 inline fun <T> T.asSuccess(): Result<T> = Success(this)
 
